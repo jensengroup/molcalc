@@ -1,0 +1,15 @@
+<script>
+
+document.writeln(location.href  + "<br>")
+document.writeln(navigator.userAgent + " " + navigator.appVersion + "<br>")
+
+function test(n){}
+
+document.write("<br>call<br>")
+t = new Date()
+for (var i = 0; i < 1000000; i++) { 
+x = test(30)
+}
+document.write(((new Date()) - t))
+
+</script>

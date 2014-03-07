@@ -1,0 +1,159 @@
+/* Reset All Style */
+@import url(reset.meyer.css);
+@import url(ui.css);
+
+/* Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Fjalla+One);
+@import url(http://fonts.googleapis.com/css?family=Oxygen:700);
+
+@import url(http://fonts.googleapis.com/css?family=Quattrocento:700);
+
+
+/* Default Style */
+html {}
+body {
+    margin:0;
+    padding:0;
+    font:12px/20px tahoma, sans-serif;
+    color:#333;
+
+    background:#fff;
+    background:#f7f7f7;
+
+    cursor:default;
+}
+
+/* Firefox has very big "12px" font */
+@-moz-document url-prefix() {
+    body {
+        font:11px/20px tahoma, sans-serif;
+    }
+}
+
+
+/* Paragraf Style */
+
+a {
+    text-decoration:none;
+    color:#0373BB;
+}
+a:hover {
+	color:#000;
+}
+a:active {
+    outline: none;
+}
+:focus {
+    -moz-outline-style: none;
+}
+:-moz-any-link:focus {
+    outline: none;
+}
+
+strong {
+    font-weight:bold;
+}
+
+em {
+    font-style:italic;
+}
+
+sup {font-size:xx-small; vertical-align:top;display:inline-block;margin:-2px 0 0 0;} 
+sub {font-size:xx-small; vertical-align:bottom;display:inline-block;margin:0 0 -2px 0;} 
+
+h1, h2, h3, h4 {
+
+    padding:10px 0 20px 0;
+
+}
+
+h1 {
+    font-size:30px;
+    font-weight:bold;
+    font-family:Quattrocento, serif;
+}
+
+h2 {
+    font-size:20px;
+    font-family:Oxygen, sans-serif;
+}
+
+h3 {
+    font-size:15px;
+    font-weight:bold;
+    font-family:Fjalla+One, sans-serif;
+}
+
+h4 {
+    font-size:15px;
+    font-family:Fjalla+One, sans-serif;
+}
+
+p {
+    margin:0 0 20px 0;
+}
+
+article ul, article ol {
+    margin:10px 0 20px 20px;
+    list-style:square;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    width:100%;
+    margin:0 0 20px 0;
+}
+
+table tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+table tr td {
+    background:#fff;
+    background:rgba(255,255,255,.8);
+    background:rgba(240,240,240,.2);
+    padding:10px 10px;
+    line-height:20px;
+
+    vertical-align:top;
+
+    border-width:0 1px 1px 0;
+    border-style:solid;
+    border-color:#bbb;
+}
+
+table tr td p {margin:0;}
+table tr td img {float:none;display:inline;}
+table tr td.right {text-align:right;}
+table tr td.center {text-align:center;}
+
+.code {
+    font-family:monospace;
+    font-size:10px;
+    margin:20px 0;
+    padding:5px;
+    color:#333;
+    background:white;
+}
+
+
+
+/* LAYOUT */
+
+section {
+    background: #fff;
+    margin: 10px 0px 10px 0px;
+    padding: 20px 20px 20px 20px;
+    border-width: 1px;
+    border-color: rgba(0,0,0,0.0);
+    border-style: solid;
+    border-radius: 2px;
+    box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+
+    display:block;
+}
+
+

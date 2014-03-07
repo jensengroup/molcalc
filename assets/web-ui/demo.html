@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+<head>
+
+    <meta charset="utf-8">
+
+    <!-- Do not translate 'apps' -->
+    <meta name="google" content="notranslate" />
+
+    <title>UI Demo</title>
+
+    <!-- Style -->
+    <link rel="stylesheet" href="style/screen.css" />
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <link rel="stylesheet" href="/sites/all/themes/rsldc2012/style/screenIE7.css">
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="script/jquery.prompt.js"></script>
+    <script type="text/javascript" src="script/demo.js"></script>
+
+
+    <style>
+
+    body {
+        width:500px;
+        margin:0 auto;
+    }
+
+    </style>
+
+</head>
+<body>
+
+    <hr />
+    <br />
+
+    <h1>Benzene</h1>
+
+    <br />
+
+
+    <h1>Hello 1</h1>
+    <h2>Hello 2</h2>
+    <h3>Hello 3</h3>
+    <h4>Hello 4</h4>
+
+    <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the <strong>industry's</strong> <em>standard</em> dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type
+        specimen book. It has survived not only five centuries, but also the leap into
+        electronic typesetting, remaining <a href="#">essentially</a> unchanged. It was popularised in
+        the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+        and more recently with desktop publishing software like Aldus PageMaker
+        including versions of Lorem Ipsum.
+    </p>
+
+    <hr />
+
+    <h2> Tables </h2>
+
+    <table>
+    <tbody><tr><td class="center" colspan="3" style="font-weight:bold">Enthalpy</td></tr>
+    <tr><td class="center" style="width:50%">Property</td><td style="width:25%" class="center">Value</td><td style="width:25%" class="center">Unit</td></tr>
+    <tr><td>Translational</td><td class="right">6.20</td><td class="right">kJ mol<sup>-1</sup> </td></tr><tr>
+    </tr><tr><td>Rotational</td><td class="right">3.72</td><td class="right">kJ mol<sup>-1</sup> </td></tr><tr>
+    </tr><tr><td>Vibrational</td><td class="right">79.01</td><td class="right">kJ mol<sup>-1</sup></td></tr><tr>
+    </tr><tr><td>Total (Trans. + Rot. + Vib.)</td><td class="right">88.93</td><td class="right">kJ mol<sup>-1</sup></td></tr><tr></tr>
+    </tbody>
+    </table>
+
+    <hr />
+
+    <h2>Form / Input </h2>
+
+    <h3>Text</h3>
+
+    <div>
+        <input type="text" />
+    </div>
+
+    <br />
+
+    <div>
+        <input type="text" placeholder="Placeholder" />
+    </div>
+
+    <br />
+
+    <h3>Checkbox</h3>
+
+
+    <div class="checkbox">
+        <input type="checkbox" name="checkbox1" class="checkbox-input" id="checkbox1" />
+        <label class="checkbox-label" for="checkbox1">
+            <div class="checkbox-inner"></div>
+            <div class="checkbox-switch"></div>
+        </label>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <div class="checkbox">
+        <input type="checkbox" name="checkbox2" class="checkbox-input" id="checkbox2" CHECKED />
+        <label class="checkbox-label" for="checkbox2">
+            <div class="checkbox-inner"></div>
+            <div class="checkbox-switch"></div>
+        </label>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <h3>Ajax Input</h3>
+
+    <div>
+        <input type="text" placeholder="Search" class="loading" />
+    </div>
+
+    <br />
+
+    <div>
+        <input type="text" placeholder="Search" class="fail" />
+    </div>
+
+    <br />
+
+    <div>
+        <input type="text" placeholder="Search" class="success" />
+    </div>
+
+    <br />
+
+
+    <hr />
+
+    <h2>Hover Help</h2>
+
+    <br />
+    <br />
+
+    <div class="hvrHlpCnt" style="visibility:visible;opacity:1;">
+        <div class="hvrHlp">
+            Hello World!
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+
+    <div class="hvrHlpCnt" style="visibility:visible;opacity:1;">
+        <div class="hvrHlp">
+            Message on two lines<br />is manageable.
+        </div>
+    </div>
+
+
+    <hr />
+
+    <h2>Buttons</h2>
+
+    <br />
+
+    <style>
+        .grouped li {
+            float:left;
+        }
+    </style>
+
+    <ul class="grouped">
+        <li><a href="#click_me" class="button">Button 01</a></li>
+        <li><a href="#click_me" class="button">Button 02</a></li>
+        <li><a href="#click_me" class="button">Button 03</a></li>
+        <li><a href="#click_me" class="button">Button 04</a></li>
+    </ul>
+
+    <div class="clean"></div>
+
+    <br />
+
+    <style>
+        .buttons li {
+            float:left;
+            margin:0 10px 10px 0;
+        }
+    </style>
+
+    <ul class="buttons">
+        <li><a href="#click_me" class="button">Button</a></li>
+        <li><a href="#click_me" class="button inactive">Inactive Button</a></li>
+        <li><a href="#click_me" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Load a molecule from database</span></span>Hover Button</a></li>
+        <li><a href="#click_me" class="button active">Active Button</a></li>
+        <li><a href="#click_me" class="button focus">Focus Button</a></li>
+    </ul>
+
+    <br />
+    <br />
+
+    <a href="#" rel="" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Start from Benzene structure</span></span><span class="text">Benzene</span></a>
+
+
+    <hr />
+
+    <h2>Prompt box<h2>
+
+    <h3>Standard prompt</h3>
+
+    <br />
+
+    <div class="prompt-box">
+        <div class="prompt-header"><strong>Title</strong></div>
+        <div class="prompt-message"><p>Are you sure? You won't be able to edit the molecule beyond this point.</p></div>
+        <div class="prompt-respond">
+            <div></div>
+            <ul>
+                <li><a class="button">Yes, I'm sure.</a></li>
+                <li><a class="button">No, wait!</a></li>
+            </ul>
+            <div class="clean"></div>
+        </div>
+    </div>
+
+    <br />
+
+    <h3>Form</h3>
+
+    <br />
+
+    <div class="prompt-box">
+        <div class="prompt-header"><strong>Find molecule</strong></div>
+        <div class="prompt-message">
+
+            <div class="form">
+                <input placeholder="fx. Ethanol" type="text" />
+                <p><br />Large molecules will be ignored.</p>
+            </div>
+
+        </div>
+
+        <div class="prompt-respond">
+            <div></div>
+            <ul>
+                <li><a class="button">Search</a></li>
+                <li><a class="button">Cancel</a></li>
+            </ul>
+            <div class="clean"></div>
+        </div>
+    </div>
+
+    <br />
+
+    <h3>No title</h3>
+
+    <br />
+
+    <div class="prompt-box">
+        <!-- <div class="prompt&#45;header"></div> -->
+        <div class="prompt-message"><p>An error has occurred, sorry.</p></div>
+        <div class="prompt-respond">
+            <div></div>
+            <ul>
+                <li><a class="button">Okay</a></li>
+            </ul>
+            <div class="clean"></div>
+        </div>
+    </div>
+
+    <br />
+
+    <h3>Loading</h3>
+
+    <br />
+
+    <div class="prompt-box">
+        <div class="prompt-header"><strong>Server Calculation</strong></div>
+        <div class="prompt-message">
+
+            <div class="loading_bar">
+                <div class="high" style="left: 60%;">
+                    <div class="highHlp">
+                        <div class="nom">60%</div>
+                    </div>
+                </div>
+                <div class="bar" style="width: 60%;"></div>
+            </div>
+            <p>Setting up calculation&hellip;</p>
+
+
+        </div>
+        <!-- <div class="prompt&#45;respond"></div> -->
+    </div>
+
+
+    <br />
+
+
+
+    <p><a class="button promptBoxDemo" href="#">Prompt Box Demo</a></p>
+
+
+
+    <hr />
+
+    <br />
+    <br />
+    <br />
+
+    <section>
+
+    been the industry's standard dummy text ever since the 1500s, when an
+    unknown printer took a galley of type and scrambled it to make a type specimen
+    book. It has survived not only five centuries, but also the leap into
+    electronic typesetting, remaining essentially unchanged. It was popularised in
+    the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageM
+
+
+    </section>
+
+
+
+    <br />
+    <br />
+    <br />
+    <br />
+
+
+    <hr />
+
+    <h2>Switches</h2>
+
+    <br />
+
+    <div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked />
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <div class="onoffswitch-inner"></div>
+        <div class="onoffswitch-switch"></div>
+    </label>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch2" />
+    <label class="onoffswitch-label" for="myonoffswitch2">
+        <div class="onoffswitch-inner"></div>
+        <div class="onoffswitch-switch"></div>
+    </label>
+    </div>
+
+
+    <br />
+    <br />
+
+</body>
+</html>
+

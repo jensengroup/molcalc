@@ -1,0 +1,4 @@
+!   Calculation of molecular orbitals
+!   using a small and quick basis set
+ $CONTRL COORD=CART UNITS=ANGS SCFTYP=RHF ICHARG=0 MAXIT=60 $END
+ $BASIS GBASIS=STO NGAUSS=3 $END

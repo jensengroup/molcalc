@@ -1,0 +1,14 @@
+<script>
+
+document.writeln(location.href  + "<br>")
+document.writeln(navigator.userAgent + " " + navigator.appVersion + "<br>")
+
+var d = new Date(); var x = ""; for (var i = 0; i < 1000000; i++) x += "x";
+document.writeln("x+=x: " + ((new Date())-d))
+
+
+var d = new Date(); var x = []; for (var i = 0; i < 1000000;i++)x.push("x'");x.join("");
+
+document.writeln("x.join: " + ((new Date())-d))
+
+</script>

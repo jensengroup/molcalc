@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta charset="utf-8">
+<script type="text/javascript" src="jquery/jquery.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmoljQueryExt.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolCore.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolApplet.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolApi.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolControls.js"></script>
+<script type="text/javascript" src="../../jsmoljs/j2sjmol.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmol.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolMenu.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolJSV.js"></script>
+<script type="text/javascript" src="../../jsmoljs/JSmolTest.js"></script>
+
+<script type="text/javascript">
+
+var jmolApplet0; // set up in HTML table, below
+var Info;
+
+;(function() {
+
+// logic is set by indicating order of USE -- default is HTML5 for this test page, though
+var use = "HTML5"//"JAVA HTML5 IMAGE" // WEBGL only by request by link below.
+var s = document.location.search;
+
+
+// Developers: The debugCode flag is checked in j2s/java/core.z.js, 
+// and, if TRUE, skips loading the core methods, forcing those
+// to be read from their individual directories. Set this
+// true if you want to do some code debugging by inserting
+// System.out.println, document.title, or alert commands
+// anywhere in the Java or Jmol code.
+
+Jmol.debugCode = true;//(s.indexOf("debugcode") >= 0);
+
+//if (s.indexOf("?") < 0) s = "USE=HTML5"
+
+if (s.indexOf("USE=") >= 0)
+  use = s.split("USE=")[1].split("&")[0]
+else if (s.indexOf("JAVA") >= 0)
+  use = "JAVA"
+else if (s.indexOf("IMAGE") >= 0)
+  use = "IMAGE"
+else if (s.indexOf("NOWEBGL") >= 0)
+  use = "JAVA IMAGE"
+else if (s.indexOf("WEBGL") >= 0)
+  use = "WEBGL HTML5"
+if (s.indexOf("NOWEBGL") >= 0)
+  use = use.replace(/WEBGL/,"")
+var useSignedApplet = (s.indexOf("SIGNED") >= 0);
+if(useSignedApplet && use == "HTML5") use = "JAVA";
+
+jmol_isReady = function(applet) {
+	document.title = (applet._id + " is ready")
+	Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+ 
+}		
+
+
+})();
+
+
+
+Info = {
+	width: 800,
+	height: 300,
+	debug: false,
+	color: "0xC0C0C0",
+  disableJ2SLoadMonitor: false,
+  disableInitialConsole: false,
+	addSelectionOptions: true,
+	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+	use: "HTML5",
+	readyFunction: null,
+	script: "load data/t.jdx",
+  console: "consolediv"
+}
+
+$(document).ready(function() {
+  Jmol.setDocument(0);
+  $("#jsvdiv").html(Jmol.getAppletHtml(Jmol.getJSVApplet("jsv",Info)));
+});
+
+</script>
+</head>
+<body>
+<div id=consolediv style="position:relative;left:850px;top:0px;width:300px;height:300px;overflow:auto"></div>
+<div id=jsvdiv style="position:relative;left:10px;top:-300px;width:800px;height:350px">
+</div>
+<div style="position:absolute;left:300px;top:350px">
+<a href="javascript:Jmol.script(jsv, 'gridon')">grid on</a> <a href="javascript:Jmol.script(jsv, 'gridon false')">grid off</a>
+<a href="javascript:Jmol.script(jsv, 'showpeaklist')">show peak list</a>
+<a href="javascript:Jmol.script(jsv, 'load data/vinylpyrr.jdx;view 1.2;showIntegration')">load vinylpyrr.jdx (1HNMR)</a>
+<a href="javascript:Jmol.script(jsv, 'load data/t2d.jdx')">load t2d.jdx (2D NMR)</a>
+<a href="javascript:Jmol.script(jsv, 'print PDF')">print PDF</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<script>
+
+document.writeln(location.href  + "<br>")
+document.writeln(navigator.userAgent + " " + navigator.appVersion + "<br>")
+
+document.write("<br>for (var i = 0; i < x.length; i++)<br>")
+t = new Date()
+x = [1,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6]
+for (var i = 0; i < 100000; i++) {
+  for (var j = 0; j < x.length; j++) {
+  	y = 3;
+  }
+}
+document.write(((new Date()) - t))
+
+document.write("<br>for (var i = x.length; --i >= 0;)<br>")
+t = new Date()
+x = [1,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6]
+for (var i = 0; i < 100000; i++) {
+  for (var j = x.length; --j >= 0;) {
+  	y = 3;
+  }
+}
+document.write(((new Date()) - t))
+
+
+
+</script>

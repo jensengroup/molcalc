@@ -1,0 +1,14 @@
+
+ $basis
+    gbasis=pm3
+ $end
+
+ $contrl
+    scftyp=rhf
+    runtyp=hessian 
+    icharg=0
+ $end
+
+ $force
+    nvib=2
+ $end

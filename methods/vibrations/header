@@ -1,0 +1,5 @@
+! Vibration calculation after a 30 step 
+! geometry optimisation via PM3
+ $BASIS GBASIS=PM3 $END
+ $CONTRL SCFTYP=RHF RUNTYP=HESSIAN ICHARG=0 MAXIT=60 $END
+

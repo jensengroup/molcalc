@@ -1,0 +1,532 @@
+/* MolCalc Style Sheet */
+
+/* Reset All Style */
+@import url(../web-ui/style/reset.meyer.css);
+@import url(../web-ui/style/ui.css);
+
+/* Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Quattrocento:700); /* h1, Sans-serif */
+@import url(http://fonts.googleapis.com/css?family=Oxygen);
+
+
+/* Default Style */
+html {height:100%;}
+body {
+
+    position:relative;
+    min-height:100%;
+
+    margin:0;
+    padding:0;
+    font:11px/20px tahoma, sans-serif;
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+    color:#333;
+
+    background:#fff;
+    background:#f7f7f7;
+    /* background:#f9f9f9; */
+
+    cursor:default;
+}
+
+/* Firefox has very big "12px" font */
+@-moz-document url-prefix() {
+    body {
+        /* font:11px/20px tahoma, sans-serif; */
+    }
+}
+
+
+/* Paragraf Style */
+
+a {
+    text-decoration:none;
+    color:#0373BB;
+}
+a:hover {
+    color:#000;
+}
+a:active {
+    outline: none;
+}
+:focus {
+    -moz-outline-style: none;
+}
+:-moz-any-link:focus {
+    outline: none;
+}
+
+strong {
+    font-weight:bold;
+}
+
+em {
+    font-style:italic;
+}
+
+sup {font-size:xx-small; vertical-align:top;display:inline-block;margin:-2px 0 0 0;} 
+sub {font-size:xx-small; vertical-align:bottom;display:inline-block;margin:0 0 -2px 0;} 
+
+h1, h2, h3, h4 {
+
+    padding:10px 0 20px 0;
+
+}
+
+h1 {
+    font-size:30px;
+    font-weight:bold;
+    font-family:Fjalla+One, serif;
+}
+
+h2 {
+    font-size:20px;
+    font-family:Oxygen, sans-serif;
+}
+
+h3 {
+    font-size:15px;
+    font-weight:bold;
+    font-family:Fjalla+One, sans-serif;
+}
+
+h4 {
+    font-size:15px;
+    font-family:Fjalla+One, sans-serif;
+}
+
+p {
+    margin:0 0 20px 0;
+}
+
+article ul, article ol {
+    margin:10px 0 20px 20px;
+    list-style:square;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    width:100%;
+    margin:0 0 20px 0;
+}
+
+table tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+table tr td {
+    background:#fff;
+    background:rgba(255,255,255,.8);
+    background:rgba(240,240,240,.2);
+    padding:10px 10px;
+    line-height:20px;
+
+    vertical-align:top;
+
+    border-width:0 1px 1px 0;
+    border-style:solid;
+    border-color:#bbb;
+}
+
+table tr td p {margin:0;}
+table tr td img {float:none;display:inline;}
+table tr td.right {text-align:right;}
+table tr td.center {text-align:center;}
+
+.code {
+    font-family:monospace;
+    font-size:10px;
+    margin:20px 0;
+    padding:5px;
+    color:#333;
+    background:white;
+}
+
+
+/* Elements */
+
+.button.green {
+    padding:8px;
+    background:#0373BB;
+    border-color:#0373BB;
+    color:#fff;
+}
+
+
+
+
+/* LAYOUT */
+
+.calculationtype,
+.section {
+    background: #fff;
+    margin: 10px 0px 10px 0px;
+    padding: 20px 20px 20px 20px;
+    border-width: 1px;
+    border-color: rgba(0,0,0,0.0);
+    border-style: solid;
+    border-radius: 2px;
+    box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+
+    display:block;
+}
+
+
+
+/* Layout */
+
+header .container,
+article .container,
+footer .container {
+    width:980px;
+    margin:0 auto;
+
+    position:relative;
+}
+
+header {
+    height:70px;
+    border-width:0 0 1px 0;
+    border-style:solid;
+    border-color:#ddd;
+}
+header .logo {
+    display:inline-block;
+    height:70px;
+    overflow:hidden;
+}
+header .logo h1 {
+    font-weight:normal;
+    color:#222;
+}
+header .logo h1 .sep {
+    display:block;
+
+    font-family:Oxygen, sans-serif;
+    text-shadow:1px 1px 0 #fff;
+
+    padding:5px 20px;
+}
+header .logo h1 .ret {
+    display:block;
+    text-align:center;
+    margin:4px 0 0 0;
+
+    font-family:Oxygen, sans-serif;
+    font-size:13px;
+    color:#888;
+
+}
+header a:hover h1 .ret {
+    color:inherit;
+}
+
+header nav {
+    position:absolute;
+    right:0;
+    top:0;
+}
+header nav ul {}
+header nav ul li {
+    float:left;
+    margin:0 20px 0 0;
+}
+header nav ul li a {
+    color:#000;
+
+    display:block;
+    padding:45px 8px 4px 8px;
+
+    border-width:0 0 2px 0;
+    border-color:#333;
+    border-style:solid;
+
+}
+header nav ul li.active a,
+header nav ul li a:hover {
+    background:#fff;
+}
+header nav ul li a:hover {
+    border-color:#0373BB;
+}
+
+
+.body {
+
+    padding:20px 0 70px 0;
+
+}
+
+footer {
+
+    width:100%;
+
+    line-height:40px;
+    height:40px;
+    border-width:1px 0 0 0;
+    border-style:solid;
+    border-color:#ddd;
+
+    position:absolute;
+    bottom:0;
+}
+
+
+footer .container {
+    padding:0 20px;
+}
+
+footer .left {}
+footer .right {
+    float:right;
+}
+
+
+/* Pages */
+
+
+/* Editor */
+.column_editor {
+}
+.column_editor .column {
+    display:block;
+}
+.column_editor .column.alpha {
+    float:left;
+    width:340px;
+}
+.column_editor .column.gamma {
+    width:620px;
+    min-height:640px;
+    float:right;
+}
+
+.editor {}
+.editor .category {}
+.editor .category h3 {
+    display:block;
+    text-align:center;
+    font-size:13px;
+    font-weight:normal;
+    text-shadow:1px 1px 0 #fff;
+
+    border-bottom:1px solid #ddd;
+    box-shadow:0 1px 0 #fff;
+    padding:10px 0;
+}
+.editor .category .editorset {
+    margin:0 0 10px 0;
+}
+.editor .category .editorset .actions {}
+.editor .category .editorset .actions ul {
+    list-style:none;
+}
+.editor .category .editorset .actions ul li {
+    margin:0 10px 10px 0;
+    float:left;
+}
+
+/* atoms */
+.editor .category .editorset .actions li .button {
+    min-width:17px;
+    text-align:center;
+}
+
+/* Canvas */
+.column_editor .canvas_jsmol {
+    width:620px;
+    height:630px;
+    position:relative;
+    z-index:0;
+}
+
+.column_editor .canvas_jsmol div {}
+
+article h1 {
+    margin:10px 0 10px 20px;
+}
+
+
+
+/* Elements */
+
+.view_navigation {
+    height:20px;
+    margin:0 0 20px 20px;
+}
+.view_navigation ul {
+    list-style:none;
+    margin:0;
+}
+.view_navigation ul li {
+    margin:0 10px 0 0;
+    float:left;
+}
+
+/* Calculation List */
+
+.calculation-list {
+    width:1000px;
+}
+.calculation-list ul {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+.calculation-list ul li {
+    float: left;
+    margin: 20px 0 0 20px;
+
+    position:relative;
+}
+.calculation-list ul li a {
+    display: block;
+    background: white;
+
+    width:306px;
+    height:100px;
+
+    overflow:hidden;
+}
+.calculation-list ul li a img {
+    position:absolute;
+    left:0;
+    top:0;
+
+    height:100px;
+}
+.calculation-list ul li a .title {
+    position:absolute;
+    left:120px;
+    top:40%;
+
+}
+
+
+/* Molecule */
+
+.calculation-specific {}
+.calculation-specific .calculationtype {
+
+
+    min-height:400px;
+
+}
+
+.calculation-specific .calculationtype h2 {
+    display: block;
+}
+
+
+/* Calculation Types */
+
+/* orbitals */
+.calculationtype.orbitals {}
+.calculationtype.orbitals {}
+.calculationtype.orbitals .choicelist {
+
+    overflow-y: auto;
+    direction: rtl;
+}
+.calculationtype.orbitals .choicelist ul {
+    list-style: none;
+    margin:0 0 0 5px;
+    direction: ltr;
+}
+.calculationtype.orbitals .choicelist ul li {
+    width:100%;
+    position: relative;
+    height:40px;
+    line-height:40px;
+
+}
+.calculationtype.orbitals .choicelist ul li:nth-child(odd){ 
+    background: rgba(0,0,0,0.05);
+}
+.calculationtype.orbitals .choicelist ul li .number {
+    display: inline-block;
+    width: 30px;
+    text-align: right;
+}
+.calculationtype.orbitals .choicelist ul li .amount {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+
+    font-weight: bold;
+}
+.calculationtype.orbitals .choicelist ul li .unit {
+    display: inline-block;
+    width: 30px;
+    text-align: right;
+}
+.calculationtype.orbitals .choicelist ul li .button {
+    width:20px;
+    overflow:hidden;
+    text-indent:-100px;
+    position:absolute;
+    top:8px;
+    right:8px;
+    background-image:url(../images/pixelated-dark/arrow-right.gif);
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+}
+
+/* vibrations */
+.calculationtype.vibrations {}
+.calculationtype.vibrations .choicelist {
+
+    overflow-y: auto;
+    direction: rtl;
+
+    height:360px;
+
+}
+.calculationtype.vibrations .choicelist ul {
+    list-style: none;
+    margin:0 0 0 5px;
+    direction: ltr;
+}
+.calculationtype.vibrations .choicelist ul li {
+    width:100%;
+    position: relative;
+    height:40px;
+    line-height:40px;
+
+}
+.calculationtype.vibrations .choicelist ul li:nth-child(odd){ 
+    background: rgba(0,0,0,0.05);
+}
+.calculationtype.vibrations .choicelist ul li .number {
+    display: inline-block;
+    width: 30px;
+    text-align: right;
+}
+.calculationtype.vibrations .choicelist ul li .amount {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+
+    font-weight: bold;
+}
+.calculationtype.vibrations .choicelist ul li .unit {
+    display: inline-block;
+    width: 30px;
+    text-align: right;
+}
+.calculationtype.vibrations .choicelist ul li .button {
+    width:20px;
+    overflow:hidden;
+    text-indent:-100px;
+    position:absolute;
+    top:8px;
+    right:8px;
+    background-image:url(../images/pixelated-dark/arrow-right.gif);
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+}
+

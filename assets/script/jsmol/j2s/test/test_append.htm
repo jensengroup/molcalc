@@ -1,0 +1,142 @@
+<script>
+document.write("<br>/\\/<br>")
+t = new Date()
+ x = '\\2\\3\\4\\5'
+for (var i = 0; i < 100000; i++) {
+ y = x.split(/\\/)
+
+}
+document.write(((new Date()) - t) + " " + x + " " + y.length + " " + x.split(/\\/).length)
+document.write("<br>\"\\\"<br>")
+t = new Date()
+for (var i = 0; i < 100000; i++) {
+ y = x.split("\\")
+
+}
+document.write(((new Date()) - t) + " " + x + " " + y.length + " " + x.split(/\\/).length)
+document.write("<br>substring /\\/<br>")
+t = new Date()
+for (var i = 0; i < 100000; i++) {
+ y = x.substring(1).split(/\\/)
+
+}
+document.write(((new Date()) - t) + " " + x + " " + y.length + " " + x.split(/\\/).length)
+document.write("<br>substring \"\\\"<br>")
+t = new Date()
+for (var i = 0; i < 100000; i++) {
+ y = x.substring(1).split("\\")
+
+}
+document.write(((new Date()) - t) + " " + x + " " + y.length + " " + x.split(/\\/).length)
+
+
+
+
+x = "~O,org.jmol.api.JmolAdapter,~S,java.net.URL,java.net.URL,~S,org.jmol.api.JmolStatusListener,org.jmol.api.ApiPlatform"
+document.write("<br>formatParameters")
+
+
+expExpandParameters = function ($0, $1) {
+	if ($1 == 'N') {
+		return "Number";
+	} else if ($1 == 'B') {
+		return "Boolean"
+	} else if ($1 == 'S') {
+		return "String";
+	} else if ($1 == 'O') {
+		return "Object";
+	} else if ($1 == 'A') {
+		return "Array"
+	}
+	return "Unknown";
+}
+
+formatParameters = function (funParams) {
+	if (funParams == null || funParams.length == 0) {
+		return "\\void";
+	} else {
+		/* 
+		 * If funParams is Array, funParams.toString() will
+		 * also return "*,*,..." string.
+		 */
+		var s = funParams;
+		s = s.replace (/~([NABSO])/g, expExpandParameters);
+		return s.replace (/\s+/g, "").replace (/^|,/g, "\\")
+				.replace (/\$/g, "org.eclipse.s");
+	}
+};
+
+
+t = new Date()
+for (var i = 0; i < 100000; i++) {
+ y = formatParameters(x)
+
+}
+document.write("<br>" + ((new Date()) - t) + " " +  y)
+
+
+document.write("<br>fix()")
+
+fix = function(x) {
+  x = simpleReplace(x, "~N", "Number")
+  x = simpleReplace(x, "~B", "Boolean")
+  x = simpleReplace(x, "~S", "String")
+  x = simpleReplace(x, "~O", "Object")
+  x = simpleReplace(x, "~A", "Array")
+  return "\\" + simpleReplace(x,",","\\")
+
+}
+
+simpleReplace = 
+function (str, strFrom, strTo) {
+if (str == null || str.indexOf (strFrom) < 0 || strFrom == (strTo)) return str;
+var fromLength = strFrom.length;
+if (fromLength == 0) return str;
+var isOnce = (strTo.indexOf (strFrom) >= 0);
+var ipt;
+while (str.indexOf (strFrom) >= 0) {
+var s =  ""
+var ipt0 = 0;
+while ((ipt = str.indexOf (strFrom, ipt0)) >= 0) {
+s += (str.substring (ipt0, ipt)) +  (strTo);
+ipt0 = ipt + fromLength;
+}
+s += (str.substring (ipt0));
+str = s.toString ();
+if (isOnce) break;
+}
+return str;
+}
+
+t = new Date()
+for (var i = 0; i < 100000; i++) {
+ y = fix(x)
+
+}
+document.write("<br>" + ((new Date()) - t) + " " +  y)
+
+
+
+document.write("<br>for (var i = 0; i < x.length; i++)<br>")
+t = new Date()
+x = [1,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6]
+for (var i = 0; i < 100000; i++) {
+  for (var j = 0; j < x.length; j++) {
+  	y = 3;
+  }
+}
+document.write(((new Date()) - t))
+
+document.write("<br>for (var i = x.length; --i >= 0;)<br>")
+t = new Date()
+x = [1,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6]
+for (var i = 0; i < 100000; i++) {
+  for (var j = x.length; --j >= 0;) {
+  	y = 3;
+  }
+}
+document.write(((new Date()) - t))
+
+
+
+</script>
