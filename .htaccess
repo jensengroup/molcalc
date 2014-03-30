@@ -1,0 +1,41 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+
+    # Remove www from url
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ http%2://%1%{REQUEST_URI} [L,R=301]
+
+    # Removes trailing slashes (prevents SEO duplicate content issues)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)/$ $1 [L,R=301]
+
+    # Change for specific system
+    RewriteRule ^editor /molcalc [R=301,L]
+
+    # Rewrite url for parameters, and keep GET query string
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteRule ^([^/\.]+)/([^/\.]+)/([^/\.]+)$ index.php?a=$1&b=$2&c=$3&%{QUERY_STRING} [L]
+
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteRule ^([^/\.]+)/([^/\.]+)$ index.php?a=$1&b=$2&%{QUERY_STRING} [L]
+
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteRule ^([^/\.]+)$ index.php?a=$1&%{QUERY_STRING} [L]
+
+    # Removes access to the system folder by users.
+    # Additionally this will allow you to create a System.php controller,
+    # previously this would not have been possible.
+    # 'system' can be replaced if you have renamed your system folder.
+    # RewriteCond %{REQUEST_URI} ^system.*
+    # RewriteRule ^(.*)$ /index.php/$1 [L] 
+
+    # Checks to see if the user is attempting to access a valid file,
+    # such as an image or css document, if this isn't true it sends the
+    # request to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?request=$1&%{QUERY_STRING} [L]
+
+</IfModule>
+

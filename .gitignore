@@ -1,0 +1,16 @@
+# Mac Files
+.DS_Store
+
+# Swap files
+*~
+*.swp
+
+# Python files
+*.py[cod]
+
+# Data Folder
+data/**/*
+
+# Settings file
+settings.ini
+
