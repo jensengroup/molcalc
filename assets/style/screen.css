@@ -342,6 +342,11 @@ footer .right {
     height:630px;
     position:relative;
     z-index:0;
+
+    /* loading */
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-image: url(../images/loading_editor.gif);
 }
 
 .column_editor .canvas_jsmol div {}
