@@ -1,9 +1,8 @@
-
 # The Molecule Calculator (MolCalc)
 
 Hosted at [molcalc.org](http://molcalc.org)
 
-![Editor Screenshot](https://raw.github.com/jensengroup/molcalc/master/manual/screenshots/molcalc_editor.png)
+![Editor Screenshot](http://pubs.acs.org/appl/literatum/publisher/achs/journals/content/jceda8/2013/jceda8.2013.90.issue-8/ed400164n/production/images/large/ed-2013-00164n_0003.jpeg)
 
 
 ## Installation
