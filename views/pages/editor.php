@@ -114,9 +114,9 @@ var myInfo1 = {
                         <div class="editorset">
                             <div class="actions center calculation">
                                 <ul style="">
-                                    <li class="action name"><a rel="" class="green button"><span class="hvrHlpCnt "><span class="hvrHlp">Get the name of current structure</span></span><span class="text">Find Name</span></a></li>
-                                    <li><a class="green button calculate"><span class="hvrHlpCnt"><span class="hvrHlp">Is it time to calculate some properties?</span></span><span class="text">Calculate Properties</span></a></li>
+                                    <!-- TODO <li class="action name"><a rel="" class="green button"><span class="hvrHlpCnt "><span class="hvrHlp">Get the name of current structure</span></span><span class="text">Find Name</span></a></li> -->
                                 </ul>
+                                <a class="green button calculate"><span class="hvrHlpCnt"><span class="hvrHlp">Is it time to calculate some properties?</span></span><span class="text">Calculate Properties</span></a>
                             </div>
                         </div>
 
