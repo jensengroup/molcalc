@@ -89,7 +89,7 @@ switch($step)
         mkdir($calculationType);
 
         shell_exec('babel -xf '.CALPATH.'/'.$calculationType.'/header -ixyz coordinates.xyz -ogamin '.$calculationType.'/'.$hash.'.inp');
-        shell_exec('sed -i "s/ICHARG=0/ICHARG='.$moleculeCharge.'/" '.$calculationType.'/'.$hash.'.inp');
+        shell_exec('sed -i "s/icharg=0/icharg='.$moleculeCharge.'/" '.$calculationType.'/'.$hash.'.inp');
 
         $json['next_step'] = 2;
         $json['next_pct']  = 95;

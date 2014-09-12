@@ -1,7 +1,24 @@
 !Calculate solvent effects
- $SYSTEM MWORDS=125 $END
- $BASIS GBASIS=PM3 $END
- $CONTRL SCFTYP=RHF RUNTYP=ENERGY ICHARG=0 $END
- $PCM SOLVNT=WATER MXTS=15000 ICAV=1 IDISP=1 $END
- $TESCAV MTHALL=4 NTSALL=60 $END
- 
+ $system
+    mwords=125
+ $end
+ $basis
+    gbasis=PM3
+ $end
+ $contrl
+    scftyp=RHF
+    runtyp=energy
+    icharg=0
+ $end
+
+ $pcm
+    solvnt=water
+    mxts=15000
+    icav=1
+    idisp=1
+ $end
+ $tescav
+    mthall=4
+    ntsall=60
+ $end
+
