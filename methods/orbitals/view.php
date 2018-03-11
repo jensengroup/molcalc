@@ -63,7 +63,7 @@ for($k=0;$k<count($result);$k++): ?>
       View
     </a>
 </li>
-<? endfor; ?>
+<?php endfor; ?>
 
 </ul>
 
