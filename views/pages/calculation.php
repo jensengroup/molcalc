@@ -106,7 +106,7 @@ var myInfo1 = {
 
         <div class="clean"></div>
     </div>
-<?
+<?php
     endforeach;
 ?>
 
