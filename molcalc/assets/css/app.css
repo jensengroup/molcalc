@@ -1,0 +1,340 @@
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* fonts ************************************************************/
+
+
+/* default **********************************************************/
+
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+
+body {
+    /* font-family: "Fira Sans", sans-serif; */
+    font-family: Montserrat, sans-serif;
+
+	width: 100vw;
+	height: 100vh;
+
+	position: absolute;
+}
+
+.hidden {display: none;}
+
+/* default **********************************************************/
+
+.molcalc {
+	width: 100vw;
+	height: 100vh;
+}
+
+
+.molcalc {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 350px 1fr 1fr;
+ 	grid-template-rows: 80px auto 50px;
+    grid-template-areas:
+        "header navigation navigation"
+        "editor view view"
+        "footer footer footer";
+}
+
+
+.molcalc {
+    justify-content: center;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 1fr 1fr;
+	grid-template-rows: 40px auto;
+    grid-template-areas:
+        "header navigation-control"
+        "view view";
+
+    overflow-x: hidden;
+    position: relative;
+}
+
+
+.mc-header {
+    grid-area: header;
+    /* background: #222; */
+    /* color: #fff; */
+
+	line-height: 40px;
+}
+
+.mc-header h1 {
+    font-size: 25px;
+	line-height: 40px;
+    font-weight: bold;
+    letter-spacing: 0px;
+
+    padding: 0 10px;
+}
+
+.mc-footer {
+    grid-area: footer;
+    display: none;
+}
+
+.mc-navigation {
+    background: #fff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+
+    padding: 5px;
+}
+
+.mc-navigation-control {
+    text-align: right;
+    grid-area: navigation-control;
+	line-height: 40px;
+	padding: 0 10px 0 0;
+}
+
+.mc-navigation {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 350px;
+    right: -390px;
+
+    transition: transform .2s ease-in-out;
+
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    z-index:10;
+}
+
+#nav:target {
+    transform: translateX(-390px);
+}
+
+.mc-editor {
+    color: #555;
+
+    background: white;
+
+    width: 100%;
+
+    position: absolute;
+    bottom: 0;
+
+    font-size: 25px;
+    line-height: 50px;
+}
+
+.mc-editor ul {
+    display: block;
+    text-align: center;
+}
+.mc-editor ul li {
+    display: inline-block;
+    padding: 0 6px;
+}
+.mc-editor ul li label {}
+
+.mc-view {
+    grid-area: view;
+    background:#fff;
+}
+
+
+.toggle-control {
+    text-align: right;
+    margin: 0 0 20px 0;
+}
+.toggle {
+    display: inline-block;
+    /* background: #000; */
+    color: #000;
+    text-decoration: none;
+
+    font-size: 30px;
+}
+
+
+canvas.ChemDoodleWebComponent{
+    /* border: none; */
+}
+/* #sketcherSingle_button_move_label, */
+/* #sketcherSingle_button_erase_label, */
+/* #sketcherSingle_button_center, */
+/* #sketcherSingle_buttons_flip, */
+/* #sketcherSingle_button_open, */
+/* #sketcherSingle_button_save, */
+/* #sketcherSingle_button_template_label, */
+/* #sketcherSingle_button_label_pt_label, */
+/* #sketcherSingle_button_label_si_label, */
+/* #sketcherSingle_buttons_bond_dd, */
+/* #sketcherSingle_button_chain_label, */
+/* #sketcherSingle_open_popover {display: none;} */
+
+/* #sketcherSingle_button_center, */
+
+
+
+
+body .mc-editor-2d-tools {
+
+    padding: 10px 0;
+}
+
+body .mc-editor-2d-tools hr {
+    margin: 10px 0;
+    border:0;
+    border-top: 1px solid #eee;
+}
+body .mc-editor-2d-tools label {
+    display: inline-block;
+    margin: 0 10px;
+
+    font-size: 25px;
+    line-height: 40px;
+    width: 40px;
+    height: 40px;
+
+    background: white;
+    text-align:center;
+
+    margin: 5px;
+    cursor: pointer;
+
+    border: 1px solid #333;
+    border-radius: 3px;
+}
+.ui-state-active {}
+.ui-state-hover {}
+
+#mc-editor-2d div:first-child {
+    display: none;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 1px;  /* remove scrollbar space */
+    /* background: transparent;  /* optional: just make scrollbar invisible */ */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #000;
+}
+
+
+
+/* Button */
+.button {
+    display:inline-block;
+    padding:5px 6px;
+
+    cursor:pointer;
+
+    border-width:1px;
+    border-style:solid;
+    border-color:#fff;
+
+    border-radius: 3px;
+
+    background:
+        rgba(255,255,255,0.75);
+
+    box-shadow:
+        0 0 1px rgba(0, 0, 0, 0.2),
+        0px 1px 0px rgba(0,0,0,0.2);
+
+    line-height:inherit;
+
+    user-select: none;
+}
+
+
+.button:hover {
+    /* background:rgba(255,255,255,1.0); */
+}
+.button:focus,
+.button.focus {
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,0.1);
+    background:rgba(0,0,0,0.01);
+    cursor:default;
+}
+.button:active {
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,0.1);
+    background:rgba(0,0,0,0.01);
+}
+.button.active {
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,0.1);
+    background:rgba(0,0,0,0.01);
+    color:#222;
+    cursor:default;
+
+    background: rgba(35,110,158,0.9);
+    color: #fff;
+}
+.button.inactive {
+    color:#aaa;
+    cursor:default;
+}
+.button.inactive:active,
+.button.inactive:focus {
+    background:
+        rgba(255,255,255,0.75);
+    box-shadow:
+        0 0 1px rgba(0,0,0,0.2),
+        1px 1px 3px rgba(0,0,0,0.3);
+}
+
+
