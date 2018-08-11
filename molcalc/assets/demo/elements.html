@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800" /> -->
-    <link rel="stylesheet" href="./css/app.css" />
-    <link rel="stylesheet" href="./fontawesome/css/fontawesome-all.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../fontawesome/css/fontawesome-all.css" />
 
     <style>
         .demo {
@@ -59,26 +59,41 @@
 		<h2>Loading</h2>
 
         <div class="show" style="width:400px;">
-
             <div class="meter">
                 <span style="width: 25%"></span>
             </div>
+        </div>
 
+        <div class="show">
+            <span class="spinner"></span>
         </div>
 
 		<h2>Menu</h2>
 
 		<div class="show">
+            <span class="border-menu">
+                <span class="border-menu-inner"></span>
+            </span>
+        </div>
+
+		<div class="show">
+            <span class="border-menu active">
+                <span class="border-menu-inner"></span>
+            </span>
+        </div>
+
+		<div class="show">
             <a class="button icon">
-                <span class="border-menu"></span>
+                <i class="fas fa-bars"></i>
             </a>
         </div>
 
 		<div class="show">
             <a class="button icon active">
-                <span class="border-menu"></span>
+                <i class="fas fa-times"></i>
             </a>
         </div>
+
 
         <h2>Buttons</h2>
 
@@ -126,6 +141,13 @@
 
         <div class="show">
             <a class="button icon highlight" href="#">Cl</a>
+        </div>
+
+
+        <div class="show">
+            <a href="#" class="button">
+                <i class="fas fa-arrow-left"></i> Menu
+            </a>
         </div>
 
 
@@ -203,8 +225,9 @@
 				<div class="prompt-header">Search for a molecule</div>
                 <div class="prompt-message">
                     <input type="text" placeholder="SMILES" />
-
-                    <p>Maximum of 20 non-Hydrogen atoms</p>
+                    <br />
+                    <br />
+                    Maximum of 20 non-Hydrogen atoms
                 </div>
 				<div class="prompt-respond">
 					<ul>
