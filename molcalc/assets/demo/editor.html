@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>MolCalc</title>
+
+    <meta name="google" content="notranslate" />
+	<meta name="mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800" /> -->
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../fontawesome/css/all.css" />
+
+    <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>
+
+</head>
+<body>
+
+
+    <section class="molcalc" id="molcalc-view">
+
+        <section class="mc-header">
+            <h1>MolCalc</h1>
+        </section>
+
+        <section class="mc-mobile-navigation toggle700">
+            <a class="button icon" href="#">
+				<i class="fas fa-toolbox"></i>
+            </a>
+        </section>
+
+        <section class="mc-navigation sidebar" id="nav">
+            <ul>
+                <li><a class="" href="#">New molecule</a></li>
+                <li><a class="" href="#">Help</a></li>
+                <li><a class="" href="#">About</a></li>
+                <li><a class="" href="#">GitHub</a></li>
+            </ul>
+        </section>
+
+        <section class="mc-footer">
+            <p>Problems? Submit issues to <a href="https://github.com/jensengroup/molcalc">github.com/jensengroup/molcalc</a></p>
+        </section>
+
+        <!-- content -->
+
+        <section class="mc-editor-searchbar">
+            <input type="text" placeholder="Search" />
+            <a class="button icon">
+            <i class="fas fa-search"></i>
+            </a>
+        </section>
+
+
+        <section class="mc-editor-tools sidebar">
+
+            <section class="toolset tool-choice">
+				<h2>Choose view</h2>
+                <ul>
+                    <li><a href="#" class="button">3D</a></li>
+                    <li><a href="#" class="button">2D</a></li>
+                </ul>
+            </section>
+
+            <section class="toolset jsmol">
+
+                <h2>Atom manipulation</h2>
+
+                <ul>
+                    <li class="action atom"><a rel="off" class="button"><span class="hvrHlpCnt "><span class="hvrHlp">Turn off atom manipulation</span></span>	<span class="text">Off</span></a></li>
+                    <li class="action atom"><a rel="dra" class="button"><span class="hvrHlpCnt "><span class="hvrHlp">Drag selected atom</span></span>	<span class="text">Drag</span></a></li>
+                    <li class="action atom"><a rel="x" class="button"><span class="hvrHlpCnt "><span class="hvrHlp">Remove selected atom from stucture</span></span>	<span class="text">Delete</span></a></li>
+                </ul>
+
+                <ul>
+                    <li class="action atom"><a rel="H"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Hydrogen</span></span><span class="text">H</span></a></li>
+                    <li class="action atom"><a rel="Li" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Lithium</span></span><span class="text">Li</span></a></li>
+                    <li class="action atom"><a rel="Be" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Beryllium</span></span><span class="text">Be</span></a></li>
+                    <li class="action atom"><a rel="C"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Carbon</span></span><span class="text">C</span></a></li>
+                    <li class="action atom"><a rel="N"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Nitrogen</span></span><span class="text">N</span></a></li>
+                    <li class="action atom"><a rel="O"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Oxygen</span></span><span class="text">O</span></a></li>
+                    <li class="action atom"><a rel="F"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Fluorine</span></span><span class="text">F</span></a></li>
+                    <li class="action atom"><a rel="Ne" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Neon</span></span><span class="text">Ne</span></a></li>
+                    <li class="action atom"><a rel="Na" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Sodium</span></span><span class="text">Na</span></a></li>
+                    <li class="action atom"><a rel="Mg" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Magnesium</span></span><span class="text">Mg</span></a></li>
+                    <li class="action atom"><a rel="Al" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Aluminium</span></span><span class="text">Al</span></a></li>
+                    <li class="action atom"><a rel="Si" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Silicon</span></span><span class="text">Si</span></a></li>
+                    <li class="action atom"><a rel="P"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Phosphorus</span></span><span class="text">P</span></a></li>
+                    <li class="action atom"><a rel="S"  class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Sulfur</span></span><span class="text">S</span></a></li>
+                    <li class="action atom"><a rel="Cl" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Chlorine</span></span><span class="text">Cl</span></a></li>
+                    <li class="action atom"><a rel="Ar" class="button icon"><span class="hvrHlpCnt"><span class="hvrHlp">Argon</span></span><span class="text">Ar</span></a></li>
+                </ul>
+
+                <ul>
+                    <li class="action atom remove"><a rel="Pl" class="button icon"><span class="hvrHlpCnt "><span class="hvrHlp">Increase charge of selected atom</span></span>	<span class="text">+1</span></a></li>
+                    <li class="action atom remove"><a rel="Mi" class="button icon"><span class="hvrHlpCnt "><span class="hvrHlp">Decrease charge of selected atom</span></span>	<span class="text">-1</span></a></li>
+                </ul>
+
+                <h2>Bond manipulation</h2>
+
+				<ul>
+					<li class="action bond"><a rel="n" href="#" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Turn off bond editing</span></span><span class="text">Off</span></a></li>
+					<li class="action bond"><a rel="0" href="#" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Break bond</span></span><span class="text">Break</span></a></li>
+					<li class="action bond"><a rel="1" href="#" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Change Bond type</span></span><span class="text">Single</span></a></li>
+					<li class="action bond"><a rel="2" href="#" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Change Bond type</span></span><span class="text">Double</span></a></li>
+					<li class="action bond"><a rel="3" href="#" class="button"><span class="hvrHlpCnt"><span class="hvrHlp">Change Bond type</span></span><span class="text">Triple</span></a></li>
+				</ul>
+
+            </section>
+
+            <section class="toolset chemdoodle">
+                
+            </section>
+
+            <section class="toolset quantum">
+				<h2>Calculate properties</h2>
+            	<a href="#" class="button highlight">Quantum</a>
+            </section>
+
+
+        </section>
+
+        <section class="mc-content">
+
+            jsmol or and chemdoodle
+
+        </section>
+
+
+    </section>
+
+	<section class="hidden">
+
+	</section>
+
+</body>
+</html>
