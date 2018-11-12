@@ -69,12 +69,20 @@ table {
 	margin: 0;
 }
 
+/* input:not(.urlbar-input):not(.textbox-input):not(.form-control):not([type='checkbox']) { */
+/*     -moz-appearance: none !important; */
+/*     background-color: white; */
+/*     color: black; */
+/*     border: inheirt; */
+/* } */
+
 
 /* Stops Mobile Safari from auto-adjusting font-sizes */
 body,
 select,
 input,
 textarea {
+    -moz-appearance: none !important;
 	-webkit-text-size-adjust: none;
 	-webkit-text-size-adjust: 100%;
 }
@@ -369,12 +377,6 @@ table tr td.center {text-align:center;}
 
     font-weight:bold;
 }
-.mc-editor-searchbar .button.icon {
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-	font-size: 20px;
-}
 
 .button.icon:hover {
     background: white;
@@ -422,16 +424,6 @@ table tr td.center {text-align:center;}
 	height: 18px;
 }
 
-.mc-mobile-navigation {}
-.mc-mobile-navigation .button.icon {
-	/* background: transparent; */
-    border: 0;
-    font-size: 22px;
-    line-height: 40px;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-}
 
 /* loading meter */
 /* https://css-tricks.com/css3-progress-bars/ */
@@ -447,8 +439,8 @@ table tr td.center {text-align:center;}
 .meter > span {
 	display: block;
 	height: 100%;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
 	border-top-left-radius: 20px;
 	border-bottom-left-radius: 20px;
 	position: relative;
@@ -530,16 +522,65 @@ table tr td.center {text-align:center;}
 
 /* */
 
+
+
+/* form */
+input[type=text] {
+    width: 90%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ddd;
+    border-radius: 2px;
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+	height: 40px;
+	line-height: 40px;
+    padding: 0 10px;
+    font: inherit;
+}
+input[type=text]:focus {
+    border-color: rgb(0, 121, 211);
+    /* border-color:  rgb(126, 181, 222); */
+    outline:0;
+}
+
+
+/* popup promp */
+
+.prompt-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+
+	width: 100vw;
+	height: 100vh;
+	max-width:100%;
+	overflow-x:hidden;
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 512px auto;
+ 	grid-template-rows: auto;
+    grid-template-areas:
+        "yy prompt xx";
+
+    background: rgba(255,255,255,0.5);
+    background: rgba(150,150,150,0.2);
+
+}
+
 .prompt-box {
-    width: 450px;
+    grid-area:prompt;
+    align-self: center;
+
+    display: block;
+
     background: #fff;
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255);
     text-align: left;
 
     border: 1px solid #ddd;
     border: 1px solid rgba(0,0,0,0.1);
-
-    /* box-shadow: 1px 1px 0px rgba(0,0,0,.1); */
 
     padding:20px 30px;
 }
@@ -566,31 +607,30 @@ table tr td.center {text-align:center;}
 
 /* prompt loading */
 .prompt-box .meter {
-	width: 90%;
-	display:inline-block;
+	width: 100%;
+	display: block;
+    margin: 0 0 0 -5px;
 }
 
 
-/* form */
-input[type=text] {
-    width: 90%;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #ddd;
-    border-radius: 2px;
-    background-repeat: no-repeat;
-    background-position: 95% 50%;
-	height: 40px;
-	line-height: 40px;
-    padding: 0 10px;
-    font: inherit;
-}
-input[type=text]:focus {
-    border-color: rgb(0, 121, 211);
-    /* border-color:  rgb(126, 181, 222); */
-    outline:0;
-}
+@media only screen and (max-width: 767px) {
 
+    .prompt-container {
+        z-index: 500;
+
+        grid-template-columns: auto;
+        grid-template-areas: "prompt";
+    }
+
+    .prompt-box {
+        width: 100vw;
+        height: 100vh;
+        max-width:100%;
+        overflow-x:hidden;
+        padding: 0px;
+    }
+
+}
 
 
 
@@ -606,7 +646,7 @@ input[type=text]:focus {
     justify-content: center;
     display: grid;
     grid-template-columns: 300px 300px 300px;
- 	grid-template-rows: 10px 50px 10px 41px 10px auto 50px;
+ 	grid-template-rows: 10px 50px 10px 41px 10px auto 70px;
     grid-template-areas:
 		"push push push"
         "header navigation navigation"
@@ -706,12 +746,11 @@ input[type=text]:focus {
     grid-area: footer;
 	line-height: 50px;
 
-    background: 100% 50% url('../img/ucph_log.png') no-repeat;
-    background-position: right 10px bottom 10px;
+    background: url('../img/ucph_log.png') no-repeat right 10px center;
     background-size: 150px;
 }
 .mc-footer p {
-	margin: 0 0 0 10px;
+	margin: 10px 0 0 10px;
 }
 
 
@@ -723,30 +762,76 @@ input[type=text]:focus {
 	grid-area: search;
 
     display: grid;
-    grid-template-columns: auto 42px;
+    grid-template-columns: auto;
  	grid-template-rows: 50px;
     grid-template-areas:
-        "search-bar search-submit";
+        "search-bar";
 
 }
-.mc-editor-searchbar a.button {
-    grid-area: search-submit;
-    float: right;
-    background: #fff;
-    border-left-color: #fff;
-    color: #ddd;
+
+.mc-editor-searchbar .button.icon {
+    height: 42px;
+    width: 42px;
+    line-height: 42px;
+	font-size: 20px;
+
+    background: none;
+    border: none;
+
+    position: absolute;
+    right: 10px;
+    top: 0;
+
+    display: none;
+
 }
 .mc-editor-searchbar a.button:hover {
-    border-color: #ddd;
-    border-left-color: #fff;
-    background: #fff;
+    background: none;
+    border: none;
     color: rgb(0, 121, 211);
 }
 .mc-editor-searchbar input {
     grid-area: search-bar;
-    width: 100%;
+    display: block;
+    width: 98%;
+    padding: 0 1%;
+
+    display: block;
+    background: white;
 }
 
+.mc-editor-searchbar input[type=text].loading {
+
+
+	background-image:
+		-webkit-gradient(linear, 0 0, 100% 100%,
+			color-stop(.25, rgba(255, 255, 255, .2)),
+			color-stop(.25, transparent), color-stop(.5, transparent),
+			color-stop(.5, rgba(255, 255, 255, .2)),
+			color-stop(.75, rgba(255, 255, 255, .2)),
+			color-stop(.75, transparent), to(transparent)
+		);
+	background-image:
+		-moz-linear-gradient(
+			-45deg,
+			rgba(255, 255, 255, .2) 25%,
+			transparent 25%,
+			transparent 50%,
+			rgba(255, 255, 255, .2) 50%,
+			rgba(255, 255, 255, .2) 75%,
+			transparent 75%,
+			transparent
+		);
+	-webkit-background-size: 50px 50px;
+	-moz-background-size: 50px 50px;
+	background-size: 50px 50px;
+	-webkit-animation: move 2s linear infinite;
+	-moz-animation: move 2s linear infinite;
+
+    background-color: rgb(0, 121, 211);
+    color: white;
+
+}
 
 .mc-content {
 	grid-area: view;
@@ -808,11 +893,12 @@ input[type=text]:focus {
 
 	.molcalc {
 		grid-template-columns: 50% 50%;
-		grid-template-rows: 10px 40px auto;
+		grid-template-rows: 10px 40px auto 47px;
 		grid-template-areas:
             "room room"
 			"header header"
-			"view view";
+			"view view"
+            "footer footer";
 	}
 
     .mc-footer{
@@ -821,17 +907,39 @@ input[type=text]:focus {
 
     /* or move to header, expand on touch */
     .mc-editor-searchbar {
-        grid-area: header;
 
+        position: absolute;
+        display: block;
+        margin: 0;
+        padding: 10px;
+
+        visibility: hidden;
+        transition: all .1s ease-in-out;
+        width: calc(100% - 20px);
+
+    }
+    .mc-editor-searchbar:focus,
+    .mc-editor-searchbar.active {
+        visibility: visible;
     }
     .mc-editor-searchbar input {
-        border-radius: 0; /* TODO TODO */
-        /* border-left: 0; */
-        border-right: 0;
-        display: none;
+        border: 0;
+        width: calc(100% - 20px);
+        padding: 0 10px;
 
+
+
+        /* width: 0px; */
+        /* visibility: hidden; */
+        /* opacity: 0; */
+        /*  */
     }
+    .mc-editor-searchbar input.active,
     .mc-editor-searchbar input:focus {
+
+        visibility: visible;
+        opacity: 1;
+
     }
     .mc-editor-searchbar a.button {
         border: transparent;
@@ -839,23 +947,29 @@ input[type=text]:focus {
         color: #222;
     }
 
-    .mc-mobile-navigation {
-        grid-area: header;
+    .btnHeader {
         line-height: 40px;
-        padding: 0 0 0 20px;
-
+        gid-area: header;
+        position: absolute;
+        top: 10px;
     }
-    .mc-mobile-navigation a.open {
-        display: inline-block;
+    .btnHeader.left {
+        left: 10px;
+    }
+    .btnHeader.right {
+        right: 10px;
+    }
+
+    .btnHeader .button.icon {
+        font-size: 22px;
         width: 40px;
         height: 40px;
-        padding:8px 0 0 0;
-        height:32px;
+        line-height: 40px;
 
-        position: absolute;
-        z-index: 100;
-
+        background: transparent;
+        border-color: transparent;
     }
+
 
     .mc-header {
         text-align: center;
@@ -869,12 +983,11 @@ input[type=text]:focus {
         width: 100vw;
         height: 100vh;
 
-        position: fixed;
+        position: absolute;
         top: 0;
         bottom: 0;
         /* left: -300px; */
 
-        transition: all .1s ease-in-out;
 
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -886,14 +999,14 @@ input[type=text]:focus {
         /* background: #aaa; */
         /* box-shadow: 2px 0px 0px #fff; */
 
-        opacity:0;
         visibility: hidden;
+        transition: all .1s ease-in-out;
         transition: visibility 0s, opacity 0.2s ease-in-out;
 
     }
 
     .sidebar > * {
-        padding: 20px 20px 10px 20px;
+        padding: 10px;
     }
 
     .sidebar.active,
@@ -914,6 +1027,60 @@ input[type=text]:focus {
 
         border-bottom: 1px solid #ddd;
         /* border-color: rgb(0, 121, 211); */
+    }
+
+    .sidebar .toolset {
+        padding: 0;
+    }
+
+    .sidebar .toolset .btnCloseSidebar {
+        font-size: 22px;
+        background: transparent;
+        border-color: transparent;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .sidebar .toolset h2 {
+        margin: 0 0 10px 0;
+    }
+
+    .toolset ul.bottombar {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: -20;
+
+        width: 100%;
+        margin: 0;
+        text-align: center;
+
+        background: red;
+        background: #eeeff1;
+    }
+    .toolset ul.bottombar li {
+        padding:10px 5px 10px 5px;
+    }
+    .toolset ul.bottombar li .button {
+        height: 35px;
+        width: 35px;
+        line-height: 35px;
+        font-size: 18px;
+    }
+
+    .sidebar-cover {
+        background: green;
+        background: #eeeff1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -10;
     }
 
 
