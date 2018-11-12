@@ -15,6 +15,146 @@ try {
 
 
 
+// Wait for element to exists
+
+var waitForElement = function(selector, callback) {
+	if (jQuery(selector).length) {
+		callback();
+	} else {
+		setTimeout(function() {
+			waitForElement(selector, callback);
+		}, 100);
+	}
+};
+
+
+function request(url, data, successFunction, failedFunction)
+{
+    var $xhr = $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        timeout: 5000, // TODO JCK is this going to be a problem?
+        error: function(xhr, textStatus, errorThrown)
+        {
+            // Frontend error
+            var promptError= new $.Prompt();
+            promptError.addCancelBtn("Okay");
+
+            if(textStatus==="timeout") {
+                promptError.setMessage("Connection problems. Are you still connected to the internet? Wait a bit and try again");
+                promptError.show();
+            }
+
+            if(xhr.status === 404) {
+                promptError.setMessage("Connection problems. Try refreshing the site.");
+                promptError.show();
+            }
+
+            if (failedFunction === undefined){}
+            else{
+                failedFunction();
+            }
+
+        },
+        success: function(data)
+        {
+
+            if(data['error'])
+            {
+                // Backend error
+                console.log(data["error"]);
+
+                var promptError= new $.Prompt();
+                promptError.setMessage(data["message"]);
+                promptError.addCancelBtn("Okay");
+                promptError.show();
+
+                if (failedFunction === undefined){}
+                else {
+                    failedFunction();
+                }
+            }
+            else
+            {
+                // Success
+                successFunction(data);
+            }
+
+        }
+    });
+
+    return $xhr
+}
+
+
+function requestCactus(from, to, successFunction, failedFunction)
+{
+
+    // for example
+    // https://cactus.nci.nih.gov/chemical/structure/butanol/smiles
+
+    search = from
+    search = search.replace("[", "%5B");
+    search = search.replace("]", "%5D");
+    search = search.replace("@", "%40");
+    search = search.replace("=", "%3D");
+    search = search.replace("#", "%23");
+
+    var url = "https://cactus.nci.nih.gov/chemical/structure/"+ search +"/" + to
+
+    console.log(url);
+    var promptError= new $.Prompt();
+    promptError.addCancelBtn("Okay");
+
+    var $xhr = $.ajax({
+        type: "GET",
+        url: url,
+        timeout: 5000,
+        error: function(xhr, textStatus, errorThrown) {
+
+            // Error
+            var status = xhr.status;
+
+            if(status == 0)
+            {
+                // connection problem
+                promptError.setMessage("Connection problems to cactus.nci.nih.gov. Wait a bit and try again");
+            }
+            else if (status == 404)
+            {
+                // unable to find
+                promptError.setMessage("Unable to find molecule in cactus.nci.nih.gov database");
+            }
+
+            promptError.show();
+
+            failedFunction(status);
+
+            return false;
+
+        },
+        success: function(data, status, jqXHR) {
+
+            // Success, now check that the result is not html
+            if(jqXHR.getResponseHeader('content-type').indexOf('text/plain') < 0 ) {
+                promptError.setMessage("Problems reading answer from cactus.nci.nih.gov.");
+                promptError.show();
+                failedFunction();
+            }else{
+                successFunction(data);
+            }
+
+            return data;
+
+        }
+    });
+}
+
+
+
+// functions
+
 $(function()
 {
 	// Prompt function
@@ -22,20 +162,18 @@ $(function()
 	/*
 
 	USAGE:
-	Create a new prompt for the user like this;
-		var askuser = new $.Prompt();
+    Create a new prompt for the user like following, then add header, message,
+    responses etc like this;
 
-	Then add header, message, responses etc like this;
+		var askuser = new $.Prompt();
 		askuser.setTitle('This is the title');
 		askuser.setMessage('This is the body text');
 		askuser.addResponseBtn('Hello', function() {
-		alert('action');
-		askuser.hide();
+            alert('action');
+            askuser.cancel();
 		});
-
-	Change the look and feel with CSS, like a bawhs.
-	I use CSS3 transition, and don't really care for browsers who
-	don't support this.
+        askuser.addCancelBtn();
+        askuser.show();
 
 	*/
 
@@ -73,19 +211,19 @@ $(function()
         ajaxarea.append(this.parentblock);
 
         // Define some HTML Blocks
-        var background  = $('<div class="prompt-container"></div>');
-        var box         = $('<div class="prompt-box"></div>');
-        var boxHeader   = $('<div class="prompt-header"></div>');
-        var boxMessage  = $('<div class="prompt-message"></div>');
-        var boxFooter   = $('<div class="prompt-respond"></div>');
+        var background = $('<div class="prompt-container"></div>');
+        var box = $('<div class="prompt-box"></div>');
+        var boxHeader = $('<div class="prompt-header"></div>');
+        var boxMessage = $('<div class="prompt-message"></div>');
+        var boxFooter = $('<div class="prompt-respond"></div>');
 
         // Hide Elements by default
         boxHeader.hide();
         boxFooter.hide();
 
         // Define the class variables
-        this.title    = "&nbsp;";
-        this.message  = "&nbsp;";
+        this.title = "&nbsp;";
+        this.message = "&nbsp;";
         this.response = "&nbsp;";
         this.responselist = $('<ul></ul>');
 
@@ -121,10 +259,12 @@ $(function()
 
         this.addCancelBtn = function addCancelBtn(msg)
         {
+            stamp = this.stamp;
             msg = typeof msg !== 'undefined' ? msg : "Cancel";
             this.addResponseBtn(msg, function()
             {
                 hide();
+                $('#'+stamp).remove();
             });
         }
 
@@ -160,11 +300,7 @@ $(function()
             this.parentblock.html(html);
             this.parentblock.show();
 
-            box.center();
-
-            $(window).resize(function() {
-            box.center();
-            });
+            document.activeElement.blur();
 
         }
 
@@ -230,6 +366,22 @@ $sidebarCloseBtns.click(function (){
     $sidebar.removeClass("active");
     return false;
 });
+
+
+// var your_url_request = "/ajax";
+// var value = "500"
+// var value_2 = "hello"
+//
+// $new_xhr = request(your_url_request, {field1:value, field2:value_2}, function (data)
+// {
+//     console.log("yeah, success");
+//     console.log(data);
+// })
+//
+// $new_xhr.abort();
+
+
+
 
 
 ///////////////////////////////////////////////////////////
