@@ -1,0 +1,29 @@
+
+<div class="canvas_jsmol">
+
+
+<script type="text/javascript">
+var myJmol1;
+var myInfo1 = {
+    height: '100%',
+    width: '100%',
+    j2sPath: "assets/jsmol/jsmol/j2s",
+    use: 'HTML5',
+    console: "myJmol1_infodiv",
+    disableInitialConsole: true,
+    allowJavaScript: true,
+    debug: false
+};
+</script>
+
+<script type="text/javascript">
+myJmol1 = Jmol.getApplet("myJmol1", myInfo1);
+Jmol.script(myJmol1, 'load "assets/molecules/methane.sdf";');
+Jmol.script(myJmol1, 'background "#ffffff"');
+Jmol.script(myJmol1, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
+Jmol.script(myJmol1, 'set forcefield "MMFF"')
+Jmol.script(myJmol1, 'minimize')
+</script>
+
+</div>
+
