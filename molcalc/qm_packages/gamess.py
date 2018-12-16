@@ -58,17 +58,15 @@ def prepare_xyz(filename, charge, header):
 
 
 def prepare_mol(filename, header, add_hydrogens=True):
+    """
+    """
 
     atoms = []
     coordinates = []
 
-    # read mol-file
-    # mol = Chem.MolFromMolFile(filename)
-
     with open(filename, 'r') as f:
         molfmt = f.read()
         mol = Chem.MolFromMolBlock(molfmt)
-
 
     # get formal charge
     charge = Chem.GetFormalCharge(mol)
@@ -93,13 +91,40 @@ def prepare_mol(filename, header, add_hydrogens=True):
     return header + lines
 
 
-def prepare_rdkit(robj, header, filename):
+def molobj2gmsinp(mol, header, add_hydrogens=False):
+    """
+    RDKit Mol object to GAMESS input file
+
+    returns:
+        str - GAMESS input file
+    """
+
+    coordinates = []
+    atoms = []
+
+    # get formal charge
+    charge = Chem.GetFormalCharge(mol)
+
+    # Add hydrogens
+    if add_hydrogens:
+        mol = Chem.AddHs(mol)
+        AllChem.EmbedMolecule(mol, AllChem.ETKDG())
+
+    # Get coordinates
+    conf = mol.GetConformer(0)
+    for atom in mol.GetAtoms():
+        pos = conf.GetAtomPosition(atom.GetIdx())
+        xyz = [pos.x, pos.y, pos.z]
+        coordinates.append(xyz)
+        atoms.append(atom.GetSymbol())
+
+    header = header.format(charge)
+    lines = prepare_atoms(atoms, coordinates)
+
+    return header + lines
 
 
-    return gmsinp
-
-
-def calculate(filename, folder):
+def calculate(filename, folder="./"):
     """
     Use GAMESS shell and calculate
     """
@@ -116,7 +141,7 @@ def clean():
 
     # TODO rewrite
 
-    shell.shell("rm ~/scr/test.*", shell=True)
+    shell.shell("rm ~/scr/*", shell=True)
 
     return
 
@@ -138,7 +163,7 @@ def check(filename):
     # grep "resubmit" *.log
     # grep "IMAGINARY FREQUENCY VIBRATION" *.log
 
-    return True
+    return True, ""
 
 
 
@@ -158,6 +183,7 @@ if __name__ == "__main__":
     f.write(gmsinp)
     f.close()
 
-    calculate("test.inp", "./")
-    clean()
+    calculate("test.inp", folder="./")
+    clean() # In production this should be automatic!
+
 
