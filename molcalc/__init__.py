@@ -10,28 +10,29 @@ def generate_config():
 
     config = Configurator()
 
-    # Public assets files
+    # Public static files
     config.add_static_view(name='assets', path='assets')
+    config.add_static_view(name='data', path='data')
 
     # Render jinja2 html templates
     config.include('pyramid_jinja2')
     config.add_jinja2_renderer('.html')
 
-    # Add paths
+    # Paths
 
     # Home
     config.add_route('editor', '/')
 
     # Calculation views
-    config.add_route('calculations_search', '/calculations')
-    config.add_route('calculations_page', '/calculations/{hash}')
+    config.add_route('calculations', '/calculations')
+    config.add_route('calculation', '/calculations/{one}')
 
     # Static pages
     config.add_route('about', '/about')
     config.add_route('help', '/help')
 
     # Ajax paths
-    config.add_route('generate_ajax_data', '/ajax')
+    config.add_route('submitquantum', '/ajax/submitquantum')
     config.add_route('smiles_to_sdf', '/ajax/smiles')
     config.add_route('sdf_to_smiles', '/ajax/sdf')
 

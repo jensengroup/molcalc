@@ -1,19 +1,74 @@
 
-from pyramid.view import view_config, view_defaults
-
-from pyramid.encode import urlencode
-
 import hashlib
+import os
+
+import pyramid.httpexceptions as httpexceptions
+from pyramid.view import notfound_view_config, view_config
+
 import compchem
+from qm_packages import gamess
 
-import urllib.request
 
+# Error Views
 
-@view_config(route_name='editor', renderer='templates/home.html')
-def editor(request):
+@notfound_view_config(renderer='templates/page_404.html')
+def not_found(request):
+    request.response.status = 404
     return {}
 
-@view_config(route_name='about', renderer='templates/about.html')
+
+# Calculation Views
+
+@view_config(route_name='editor', renderer='templates/page_editor.html')
+def editor(request):
+    """
+
+    Standard view for MolCalc. Static HTML.
+
+    """
+    return {}
+
+@view_config(route_name='calculation', renderer='templates/page_calculation.html')
+def view_calculation(request):
+    """
+
+    View for looking up calculations.
+
+    """
+
+    matches = request.matchdict
+    hashkey = matches['one']
+
+    # Get from database
+    print(hashkey)
+
+    data = {}
+
+    data["hashkey"] = hashkey
+    data["smiles"] = "Cc1ccc2cc3ccccc3cc2c1"
+    data["name"] = "2-methylanthracene"
+
+    if hashkey == "404":
+        raise httpexceptions.exception_response(404)
+
+    return data
+
+
+@view_config(route_name='calculations', renderer='templates/page_calculation.html')
+def view_calculations(request):
+    """
+
+    Statistic about current calculations? Iono, maybe not.
+    Kind of destroyed the IO / browser last time
+
+
+    """
+    return {}
+
+
+# Static page view
+
+@view_config(route_name='about', renderer='templates/page_about.html')
 def about(request):
     return {}
 
@@ -24,7 +79,7 @@ def page_help(request):
 @view_config(route_name='sdf_to_smiles', renderer='json')
 def ajax_sdf_to_smiles(request):
 
-    if len(request.POST) == 0:
+    if not request.POST:
         return {'error':'Error 55 - Missing key', 'message': "Error. Missing information."}
 
     try:
@@ -48,10 +103,12 @@ def ajax_sdf_to_smiles(request):
     return msg
 
 
+# Ajax views
+
 @view_config(route_name='smiles_to_sdf', renderer='json')
 def ajax_smiles_to_sdf(request):
 
-    if len(request.POST) == 0:
+    if not request.POST:
         return {'error':'Error 53 - Missing key', 'message': "Error. Missing information."}
 
     try:
@@ -66,68 +123,88 @@ def ajax_smiles_to_sdf(request):
     return msg
 
 
-@view_config(route_name='generate_ajax_data', renderer='json')
-def my_ajax_view(request):
+@view_config(route_name='submitquantum', renderer='json')
+def ajax_submitquantum(request):
 
-    # check if empty
-    if len(request.POST) == 0:
-        return {'error':'Error 55 - Missing key', 'message': "Error. Missing information."}
+    if not request.POST:
+        return {'error':'Error 128 - empty post', 'message': "Error. Empty post."}
 
-    # get input
-    try:
-        molecule = request.POST["mol"].encode('utf-8')
-    except:
-        return {'error':'Error 67 - get error', 'message': "Error. Missing information."}
+    if not request.POST["sdf"]:
+        return {'error':'Error 132 - sdf key error', 'message': "Error. Missing information."}
 
-    # get hash
-    try:
-        m = hashlib.md5()
-        m.update(request.POST["mol"].encode('utf-8'))
-        hashkey = m.hexdigest()
-    except:
-        return {'error':'Error 76 - Hash error', 'message': "Error. Could not understand the molecule input."}
+    sdf = request.POST["sdf"].encode('utf-8')
+    # smiles, status = compchem.sdf_to_smiles(sdf)
 
-    # Get smiles
-    smiles, status = compchem.sdf_to_smiles(molecule)
+    molobj, status = compchem.sdfstr_to_molobj(sdf)
+    smiles = compchem.molobj_to_smiles(molobj)
+
     if smiles is None:
 
         status = status.split("]")
         status = status[-1]
 
-        return {'error':'Error 76 - rdkit error', 'message': status}
+        return {'error':'Error 141 - rdkit error', 'message': status}
+
+
+    hshobj = hashlib.md5(smiles.encode('utf-8'))
+    hashkey = hshobj.hexdigest()
 
     msg = {
-        'message' : hashkey,
-        'smiles' : smiles
+        "smiles" : smiles,
+        "hashkey" : hashkey
     }
 
-    # get iupac name 
-    try:
-        cmd = "https://cactus.nci.nih.gov/chemical/structure/{:}/iupac_name"
+    # TODO Either create "data" or create table in database
 
-        # encode smiles
-        smiles = smiles.replace("[", "%5B")
-        smiles = smiles.replace("]", "%5D")
-        smiles = smiles.replace("@", "%40")
-        smiles = smiles.replace("=", "%3D") #double bond
-        smiles = smiles.replace("#", "%23") #triple bond
+    # check if folder exists
+    here = os.path.abspath(os.path.dirname(__file__)) + "/"
+    datahere = here + "data/"
 
-        # search = urlencode(smiles)
-        url = cmd.format(smiles)
+    if os.path.isdir(datahere + hashkey):
+        # return msg
+        pass
 
-        contents = urllib.request.urlopen(url).read()
+    else:
+        os.mkdir(datahere + hashkey)
 
-        name = contents
-        name = name.decode()
-        name = name.lower()
-        name = name.strip()
+    os.chdir(datahere + hashkey)
 
-        msg['name'] = name
 
-    except urllib.error.HTTPError:
-        msg['message'] = "Unable to find IUPAC name on cactus.nci.nih.gov for " + smiles
-        msg['error'] = "error cactus 404"
+    # Minimize with forcefield first
+    molobj = compchem.molobj_add_hydrogens(molobj)
+    compchem.molobj_optimize(molobj)
+
+    headerfilename = here + "settings/gamess/header_pm3_opt"
+
+    with open(headerfilename) as headerfile:
+        header = headerfile.read()
+
+    # Prepare gamess input
+    inpstr = gamess.molobj2gmsinp(molobj, header)
+
+    # Save and run file
+    with open("optimize.inp", "w") as f:
+        f.write(inpstr)
+        f.close()
+
+    gamess.calculate("optimize.inp")
+    gamess.clean()
+
+    # Check output
+    status, message = gamess.check("optimize.log")
+
+    os.chdir(here)
+
+    if not status:
+        msg["error"] = "error 192: QM Calculation fail"
+        msg["message"] = message
+        return msg
+
+
+    # Success, setup database
+
 
     return msg
+
 
 
