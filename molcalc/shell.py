@@ -3,6 +3,11 @@ import subprocess as sp
 
 def shell(cmd, shell=False):
     """
+
+    Run a sh command.
+
+    return the stdout and stderr
+
     """
 
     if shell:

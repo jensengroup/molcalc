@@ -126,6 +126,9 @@ body {
 	position: absolute;
 
     background: #eeeff1;
+    background: #f5f5f5;
+    background: #efefef;
+    background: #f7f7f7;
     color: #222;
 	cursor: default;
 }
@@ -325,17 +328,15 @@ table tr td.center {text-align:center;}
     padding: 0px 7px;
 
     border: 1px solid #ddd;
+    border-color: #dadada;
     border-radius: 3px;
 
     text-decoration: none;
     color: #222;
     background: #ddd;
+    background: #dadada;
 
-    font-weight:700;
-
-    /* text-transform:uppercase; */
-    /* font-size: 13px; */
-
+    font-weight: 700;
 }
 
 .button:hover {
@@ -371,9 +372,9 @@ table tr td.center {text-align:center;}
 
     font-size: 15px;
 
-    color: #222;
-    background: #ddd; /* alt #e7e6ef */
-    border-color: #ddd;
+    /* color: #222; */
+    /* background: #ddd; /* alt #e7e6ef */ */
+    /* border-color: #ddd; */
 
     font-weight:bold;
 }
@@ -545,6 +546,7 @@ input[type=text]:focus {
 }
 
 
+
 /* popup promp */
 
 .prompt-container {
@@ -583,6 +585,8 @@ input[type=text]:focus {
     border: 1px solid rgba(0,0,0,0.1);
 
     padding:20px 30px;
+
+    border-radius: 3px;
 }
 .prompt-box .prompt-header {
     height: 40px;
@@ -590,7 +594,6 @@ input[type=text]:focus {
     font-size: 17px;
     font-weight: bold;
     padding: 5px 10px 0 10px;
-    text-transform:uppercase;
 }
 .prompt-box .prompt-message {
     padding: 10px 10px 10px 10px;
@@ -637,6 +640,7 @@ input[type=text]:focus {
 
 /* layout **********************************************************/
 
+
 .molcalc {
 	width: 100vw;
 	height: 100vh;
@@ -645,7 +649,26 @@ input[type=text]:focus {
 
     justify-content: center;
     display: grid;
-    grid-template-columns: 300px 300px 300px;
+    grid-template-columns: 350px 350px 350px;
+ 	grid-template-rows: 10px 50px 10px auto 70px;
+    grid-template-areas:
+		"push push push"
+        "header navigation navigation"
+		"line2 line2 line2"
+        "view view view"
+        "footer footer footer";
+}
+
+
+.molcalc.editor {
+	width: 100vw;
+	height: 100vh;
+	max-width:100%;
+	overflow-x:hidden;
+
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 350px 350px 350px;
  	grid-template-rows: 10px 50px 10px 41px 10px auto 70px;
     grid-template-areas:
 		"push push push"
@@ -656,6 +679,7 @@ input[type=text]:focus {
         "editor view view"
         "footer footer footer";
 }
+
 
 .molcalc.loading {
 	
@@ -746,7 +770,9 @@ input[type=text]:focus {
     grid-area: footer;
 	line-height: 50px;
 
-    background: url('../img/ucph_log.png') no-repeat right 10px center;
+    background:
+        url('../img/unicph_logo.png') no-repeat right 10px center;
+        /* url('../img/unibas_logo.jpg') no-repeat right 200px center; */
     background-size: 150px;
 }
 .mc-footer p {
@@ -798,6 +824,10 @@ input[type=text]:focus {
 
     display: block;
     background: white;
+
+    border-radius: 4px;
+    border-color: white;
+    text-align: center;
 }
 
 .mc-editor-searchbar input[type=text].loading {
@@ -840,6 +870,10 @@ input[type=text]:focus {
 	/* max-height: 100px; */
 
 	overflow:hidden;
+
+    z-index: 0;
+
+    border-radius: 4px;
 }
 
 
@@ -851,8 +885,6 @@ input[type=text]:focus {
 }
 .mc-editor-tools .toolset h2 {
 	margin:0 0 20px 0;
-	font-weight: bold;
-	color: #757575;
 }
 .mc-editor-tools .toolset ul {
 	margin: 0 0 20px 0;
@@ -875,13 +907,35 @@ input[type=text]:focus {
     display: none;
 }
 
+#editor-jsmol {
+    width: 100%;
+    height: 100%;
+}
+
+.canvas_jsmol {
+    width: 100%;
+    height: 100%;
+
+    /* TODO Add loader */
+}
+
+
+/* calculations */
+
+.molcalc.calculation .mc-content {
+    background: transparent;
+}
+.mc-content.calculation h1 {
+    font-size: 30px;
+}
+
 
 
 .toggle700 {display: none !important; }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1100px) {
 
-	.molcalc {
+    .molcalc.editor {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
 
@@ -891,7 +945,7 @@ input[type=text]:focus {
 
     .toggle700 {display: block !important;}
 
-	.molcalc {
+	.molcalc.editor {
 		grid-template-columns: 50% 50%;
 		grid-template-rows: 10px 40px auto 47px;
 		grid-template-areas:
@@ -927,12 +981,12 @@ input[type=text]:focus {
         width: calc(100% - 20px);
         padding: 0 10px;
 
-
-
         /* width: 0px; */
         /* visibility: hidden; */
         /* opacity: 0; */
         /*  */
+        text-align: left;
+
     }
     .mc-editor-searchbar input.active,
     .mc-editor-searchbar input:focus {

@@ -51,6 +51,11 @@ function request(url, data, successFunction, failedFunction)
                 promptError.show();
             }
 
+            if(xhr.status === 500) {
+                promptError.setMessage("Internal server error. Please submit issue.");
+                promptError.show();
+            }
+
             if (failedFunction === undefined){}
             else{
                 failedFunction();
@@ -132,7 +137,6 @@ function requestCactus(from, to, successFunction, failedFunction)
             failedFunction(status);
 
             return false;
-
         },
         success: function(data, status, jqXHR) {
 
@@ -146,7 +150,6 @@ function requestCactus(from, to, successFunction, failedFunction)
             }
 
             return data;
-
         }
     });
 }
@@ -325,11 +328,39 @@ $(function()
 });
 
 
+// JSmol ////////////////////////////////////////////////////////
+
+function jsmolGetMol(canvasObj)
+{
+    // returns a JSON object with all the atoms
+    // var atominfo = Jmol.getPropertyAsArray(canvasObj, "atominfo", "all");
+
+    // The extractModel keyword delivers text in the form of a MOL file,
+    // allowing up to 999 atoms and 999 bonds to be "extracted" from the
+    // model as an independent structure.
+    // for example: Jmol.getPropertyAsString(canvasObj, "extractModel", "all");
+    var sdf = Jmol.getPropertyAsString(canvasObj, "extractModel", "not hydrogen");
+
+    return sdf;
+}
+
+function jsmolGetSmiles(canvasObj)
+{
+    // Get the structure JSmol 14.0.2 syntax
+    var smiles = Jmol.evaluateVar(canvasObj, '{*}.find("SMILES/noaromatic")');
+
+    // remove comments
+    smilesList = smiles.split("\n");
+    smilesList.shift();
+
+    return smiles;
+}
+
+
+// Production ///////////////////////////////////////////////////////
 
 $(document).ready(function()
 {
-
-///////////////////////////////////////////////////////////
 
 
 // Check storage compatibility
@@ -341,9 +372,9 @@ if (storage == undefined)
 
     // link:
     // https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
-    console.log(storage);
-    console.log(fail);
-    console.log(uid);
+    // console.log(storage);
+    // console.log(fail);
+    // console.log(uid);
 
 }
 
@@ -366,22 +397,6 @@ $sidebarCloseBtns.click(function (){
     $sidebar.removeClass("active");
     return false;
 });
-
-
-// var your_url_request = "/ajax";
-// var value = "500"
-// var value_2 = "hello"
-//
-// $new_xhr = request(your_url_request, {field1:value, field2:value_2}, function (data)
-// {
-//     console.log("yeah, success");
-//     console.log(data);
-// })
-//
-// $new_xhr.abort();
-
-
-
 
 
 ///////////////////////////////////////////////////////////

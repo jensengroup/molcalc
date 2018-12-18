@@ -33,3 +33,11 @@ docs/_build/
 
 # Misc
 .python-version
+
+# ignore downloaded packages
+molcalc/assets/js/*jquery*
+molcalc/assets/fontawesome
+molcalc/assets/chemdoodleweb
+molcalc/assets/jsmol
+
+

@@ -200,8 +200,8 @@ def ajax_submitquantum(request):
         msg["message"] = message
         return msg
 
-
     # Success, setup database
+
 
 
     return msg

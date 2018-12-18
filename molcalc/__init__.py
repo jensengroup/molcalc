@@ -6,6 +6,8 @@ from pyramid.config import Configurator
 
 from pyramid_jinja2.filters import static_url_filter
 
+from sqlalchemy import engine_from_config
+
 def generate_config():
 
     config = Configurator()
@@ -17,6 +19,10 @@ def generate_config():
     # Render jinja2 html templates
     config.include('pyramid_jinja2')
     config.add_jinja2_renderer('.html')
+
+
+    from models import user
+
 
     # Paths
 
@@ -40,10 +46,22 @@ def generate_config():
 
     # Configure the site
     config.commit()
+
     jinja2_env = config.get_jinja2_environment()
     jinja2_env.filters['static_url'] = static_url_filter
 
     return config
+
+
+def setup_database(global_config, **settings):
+
+    from .models import DBSession, Base
+
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    DBSession.configure(bind=engine)
+    Base.metadata.bind = engine
+
+    return
 
 
 def main(global_config, **settings):
