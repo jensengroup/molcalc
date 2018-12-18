@@ -34,10 +34,13 @@ docs/_build/
 # Misc
 .python-version
 
+# Enviroment
+env*/
+
 # ignore downloaded packages
 molcalc/assets/js/*jquery*
 molcalc/assets/fontawesome
+molcalc/assets/jquery
 molcalc/assets/chemdoodleweb
 molcalc/assets/jsmol
-
 
