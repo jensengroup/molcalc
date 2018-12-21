@@ -22,8 +22,8 @@ tests_require = [
 
 setup(
     name='molcalc',
-    version='0.1',
-    description='MolCalc',
+    version='3.0',
+    description='MolCalc is a web-interface build for fast properity estimation of molecules using quantum chemistry (Education purpose)',
     long_description=README,
     classifiers=[
         'Programming Language :: Python',

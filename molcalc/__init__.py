@@ -1,30 +1,36 @@
 
+import sys
+import os
+
+here = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(here)
+
 from wsgiref.simple_server import make_server
 from waitress import serve
 
+import pyramid
 from pyramid.config import Configurator
 
 from pyramid_jinja2.filters import static_url_filter
 
 from sqlalchemy import engine_from_config
 
-def generate_config():
+def generate_config(settings=None):
 
+    # config = Configurator(settings=settings)
     config = Configurator()
 
     # Public static files
-    config.add_static_view(name='assets', path='assets')
-    config.add_static_view(name='data', path='data')
+    config.add_static_view(name='assets', path='__main__:assets')
+    # config.add_static_view('static', 'static')
+    # config.add_static_view(name='data', path='data')
 
     # Render jinja2 html templates
     config.include('pyramid_jinja2')
     config.add_jinja2_renderer('.html')
 
-
-    from models import user
-
-
-    # Paths
+    # Routes
+    # config.add_route('favicon', '/favicon.ico')
 
     # Home
     config.add_route('editor', '/')
@@ -65,10 +71,11 @@ def setup_database(global_config, **settings):
 
 
 def main(global_config, **settings):
-    config = Configurator(settings=settings)
-    blog_title = settings['blog.title']
+    # config = Configurator(settings=settings)
+    config = generate_config(settings=settings)
+    # blog_title = settings['blog.title']
     # you can also access you settings via config
-    comments_enabled = config.registry.settings['blog.comments_enabled']
+    # comments_enabled = config.registry.settings['blog.comments_enabled']
     return config.make_wsgi_app()
 
 

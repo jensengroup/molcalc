@@ -1,12 +1,20 @@
-
 import hashlib
 import os
 
 import pyramid.httpexceptions as httpexceptions
 from pyramid.view import notfound_view_config, view_config
+from pyramid.response import FileResponse
 
 import compchem
 from qm_packages import gamess
+
+# Favicon view
+
+# @view_config(route_name='favicon')
+# def favicon_view(request):
+#     here = os.path.dirname(__file__)
+#     icon = os.path.join(here, 'assets', 'favicon.ico')
+#     return FileResponse(icon, request=request)
 
 
 # Error Views

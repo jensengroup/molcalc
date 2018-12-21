@@ -36,6 +36,7 @@ docs/_build/
 
 # Enviroment
 env*/
+logs/
 
 # ignore downloaded packages
 molcalc/assets/js/*jquery*
