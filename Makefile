@@ -3,15 +3,12 @@ PYTHON=anaconda
 CONDA=anaconda-conda
 
 serve_development:
-	env/bin/pserve settings/development.ini --reload
+	env/bin/pserve development.ini --reload
 
-all:
-	# check assets paths
-	# check python modules
-
+serve: serve_development
 
 test:
-	# run python test
+	env/bin/pytest
 	# run backend tests
 	# run javascript tests
 

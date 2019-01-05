@@ -1,23 +1,5 @@
-
 name: molcalc
-
 dependencies:
-  - python=3.4
+  - python=3.6.5
   - rdkit::rdkit
   - pip
-  - pip:
-    - plaster_pastedeploy
-    - pyramid
-    - pyramid_jinja2
-    - pyramid_debugtoolbar
-    - waitress
-    - alembic
-    - pyramid_retry
-    - pyramid_tm
-    - SQLAlchemy
-    - transaction
-    - zope.sqlalchemy
-    - numpy
-    - scipy
-    - rmsd
-
