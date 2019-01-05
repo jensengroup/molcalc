@@ -7,8 +7,6 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 with open(os.path.join(here, 'readme.rst')) as f:
     README = f.read()
-with open(os.path.join(here, 'changes.txt')) as f:
-    CHANGES = f.read()
 with open(os.path.join(here, 'requirements.txt')) as f:
     requirements = f.read()
     requirements = requirements.split("\n")
