@@ -128,7 +128,7 @@ function setCurrentSDF(sdf)
     }
     else
     {
-        mol = jsmolSetMol(myJmol1, sdf);
+        jsmolSetMol(myJmol1, sdf);
     }
     return false;
 }
@@ -228,7 +228,6 @@ function onWindowResize()
     $(window).on('resize', function()
     {
         chemdoodleResize(sketcher);
-        // console.log("resize");
     });
 }
 
@@ -269,15 +268,53 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
         $('#editor-chemdoodle').show();
         $('.toolset.chemdoodle').show();
     }
-    else {
-        console.log("wwaaat");
-    }
 
     swithBtns.removeClass("active");
     $that.addClass("active");
 
     return false;
 
+});
+
+// Load molecules
+$('.toolset .load_methane').click(function () {
+
+    var filename = "static/molecules/methane.sdf";
+
+    request(filename, {}, function(data) {
+        var sdf = data;
+        setCurrentSDF(sdf);
+    }, function(data) {
+        // TODO alert
+    });
+
+    return false;
+});
+$('.toolset .load_benzene').click(function () {
+
+    var filename = "static/molecules/benzene.sdf";
+
+    request(filename, {}, function(data) {
+        var sdf = data;
+        setCurrentSDF(sdf);
+    }, function(data) {
+        // TODO alert
+    });
+
+    return false;
+});
+$('.toolset .load_water').click(function () {
+
+    var filename = "static/molecules/dioxidane.sdf";
+
+    request(filename, {}, function(data) {
+        var sdf = data;
+        setCurrentSDF(sdf);
+    }, function(data) {
+        // TODO alert
+    });
+
+    return false;
 });
 
 
@@ -291,6 +328,7 @@ $('.button.quantum').click(function () {
         var $loading = $('<div class="meter"><span style="width: 100%"></span></div>');
         var promptCalculation = new $.Prompt();
         promptCalculation.setMessage($loading);
+        promptCalculation.setType("transparent");
         promptCalculation.show();
 
         var mol = getCurrentSDF();
@@ -299,6 +337,8 @@ $('.button.quantum').click(function () {
             url = window.location.href.replace('editor', '');
             url = url + 'calculations/' + data["hashkey"];
             window.location = url;
+            promptCalculation.cancel();
+        }, function() {
             promptCalculation.cancel();
         });
         promptQuantum.cancel();
@@ -335,6 +375,7 @@ $('.button.getName').click(function () {
 
             // contact cactus
             promptCalculation.setMessage($loading);
+            promptCalculation.setType("transparent");
 
             // prepare smiles
             search = data["smiles"];
@@ -441,21 +482,11 @@ $searchFrm.submit(function(event) {
 
         data = {"smiles": data};
 
-        request("/ajax/smiles", data, function (rtnData)
+        request("/ajax/smiles", data, function(rtnData)
         {
             var sdfstr = rtnData["sdf"][0];
 
-            var view = getView();
-
-            if (view == "2d")
-            {
-                chemdoodleSetMol(sketcher, sdfstr);
-            }
-            else
-            {
-                jsmolSetMol(myJmol1, sdfstr);
-            }
-
+            setCurrentSDF(sdfstr);
 
             promptSearch.cancel();
             onWindowResize();

@@ -34,7 +34,7 @@ function request(url, data, successFunction, failedFunction)
         type: "POST",
         url: url,
         data: data,
-        timeout: 5000, // TODO JCK is this going to be a problem?
+        timeout: 6000,
         error: function(xhr, textStatus, errorThrown)
         {
             // Frontend error
@@ -248,6 +248,7 @@ $(function()
         {
             // Set the type of message, ask-prompt or tell-prompt.
             // Default should be ask.
+            box.addClass(type);
         }
 
         this.addResponseBtn = function addResponseBtn(msg, action)
@@ -385,6 +386,7 @@ var $sidebarBtns = $('.btnSidebar');
 var $sidebarCloseBtns = $('.btnCloseSidebar');
 
 $sidebarBtns.click(function (){
+    $('.sidebar').removeClass("active");
 	var link = $(this).attr('href');
     $sidebar = $(link);
     $sidebar.addClass("active");

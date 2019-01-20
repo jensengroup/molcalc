@@ -133,6 +133,17 @@ body {
 	cursor: default;
 }
 
+@media only screen and (max-width: 767px) {
+
+    body {
+        background: #fff;
+    }
+
+}
+
+
+
+
 .hidden {display: none;}
 
 p {
@@ -567,7 +578,8 @@ input[type=text]:focus {
         "yy prompt xx";
 
     background: rgba(255,255,255,0.5);
-    background: rgba(150,150,150,0.2);
+    background: rgba(247,247,247,0.8);
+    /* background: rgba(150,150,150,0.2); */
 
 }
 
@@ -581,12 +593,15 @@ input[type=text]:focus {
     background: rgba(255,255,255);
     text-align: left;
 
-    border: 1px solid #ddd;
-    border: 1px solid rgba(0,0,0,0.1);
+    /* border: 1px solid #ddd; */
+    /* border: 1px solid rgba(0,0,0,0.1); */
 
     padding:20px 30px;
 
     border-radius: 3px;
+}
+.prompt-box.transparent {
+    background: transparent;
 }
 .prompt-box .prompt-header {
     height: 40px;
@@ -623,12 +638,14 @@ input[type=text]:focus {
 
         grid-template-columns: auto;
         grid-template-areas: "prompt";
+
+        /* TODO just set the background completly white? */
+        background: #fff;
     }
 
     .prompt-box {
-        width: 100vw;
-        height: 100vh;
-        max-width:100%;
+        margin: 0 20px;
+        padding: 0 5px;
         overflow-x:hidden;
         padding: 0px;
     }
@@ -657,6 +674,9 @@ input[type=text]:focus {
 		"line2 line2 line2"
         "view view view"
         "footer footer footer";
+
+    /* TODO */
+    position: relative;
 }
 
 
@@ -886,6 +906,10 @@ input[type=text]:focus {
 .mc-editor-tools .toolset h2 {
 	margin:0 0 20px 0;
 }
+.mc-editor-tools .toolset h3 {
+	margin:0 0 20px 0;
+    font-weight: bold;
+}
 .mc-editor-tools .toolset ul {
 	margin: 0 0 20px 0;
 }
@@ -929,6 +953,36 @@ input[type=text]:focus {
     font-size: 30px;
 }
 
+/* page */
+.molcalc.page .mc-content {
+    background: transparent;
+    padding: 60px 0 60px 0;
+    overflow: visible;
+}
+.molcalc.page .mc-content h1 {
+    font-size: 30px;
+    margin: 0 0 20px 0;
+}
+.molcalc.page .mc-content h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 30px 0 20px 0;
+}
+.molcalc.page .mc-content p {
+    line-height: 35px;
+    margin: 10px 0 0 0;
+}
+.molcalc.page .mc-content ul {
+    display: block;
+    list-style-type: disc;
+    margin-top: 1em;
+    margin-bottom: 1 em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 40px;
+}
+.molcalc.page .mc-content ul li {
+}
 
 
 .toggle700 {display: none !important; }
@@ -937,6 +991,14 @@ input[type=text]:focus {
 
     .molcalc.editor {
 		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+    .molcalc.calculation {
+		grid-template-columns: 1fr;
+	}
+
+    .molcalc.page {
+		grid-template-columns: 1fr;
 	}
 
 }
@@ -1034,10 +1096,13 @@ input[type=text]:focus {
 
     .sidebar {
 
+        /* from grid-area */
+        grid-area: none;
+
         width: 100vw;
         height: 100vh;
 
-        position: absolute;
+        position: fixed;
         top: 0;
         bottom: 0;
         /* left: -300px; */
@@ -1050,18 +1115,22 @@ input[type=text]:focus {
 
         background: rgba(255,255,255,0.5);
         background: #eeeff1;
-        /* background: #aaa; */
-        /* box-shadow: 2px 0px 0px #fff; */
 
         visibility: hidden;
         transition: all .1s ease-in-out;
         transition: visibility 0s, opacity 0.2s ease-in-out;
 
+        width: 90%;
+
     }
 
-    .sidebar > * {
-        padding: 10px;
+    .mc-navigation.sidebar {
+        z-index: 15;
     }
+
+    /* .sidebar > * { */
+    /*     padding: 10px; */
+    /* } */
 
     .sidebar.active,
     #nav:target {
@@ -1083,10 +1152,17 @@ input[type=text]:focus {
         /* border-color: rgb(0, 121, 211); */
     }
 
-    .sidebar .toolset {
+    .sidebar .toolset,
+    .sidebar .section {
+        padding: 10px;
+        margin: 10px;
+    }
+    .section.toggle700,
+    .toolset.toggle700 {
         padding: 0;
     }
 
+    .sidebar .section .btnCloseSidebar,
     .sidebar .toolset .btnCloseSidebar {
         font-size: 22px;
         background: transparent;
@@ -1094,6 +1170,11 @@ input[type=text]:focus {
         width: 40px;
         height: 40px;
         line-height: 40px;
+    }
+
+    .sidebar .btnSidebar.menu {
+        margin:5px 0 0 15px;
+        position: absolute;
     }
 
     .sidebar .toolset h2 {
@@ -1113,8 +1194,8 @@ input[type=text]:focus {
         margin: 0;
         text-align: center;
 
-        background: red;
-        background: #eeeff1;
+        background: #f7f7f7;
+        background: #fff;
     }
     .toolset ul.bottombar li {
         padding:10px 5px 10px 5px;
@@ -1127,16 +1208,41 @@ input[type=text]:focus {
     }
 
     .sidebar-cover {
-        background: green;
-        background: #eeeff1;
+        background: #f7f7f7;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: -10;
+
+        width: 90%;
     }
 
+    .sidebar-background {
+        background: rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -12;
+    }
+
+
+
+    /* */
+    .toolset.tool-choice {
+        padding: 0;
+        position: absolute;
+        top: -5px;
+        right: 0;
+    }
+
+    .toolset.chemdoodle,
+    .toolset.jsmol {
+        padding-top: 35px;
+    }
 
 
 }
