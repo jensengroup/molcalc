@@ -1,7 +1,13 @@
 
+import sys
+import os
+
+here = os.path.dirname(__file__)
+sys.path.append(here)
+
+import cheminfo
 import shell
 import rmsd
-import compchem
 
 import rdkit
 import rdkit.Chem as Chem
@@ -33,7 +39,7 @@ def prepare_atoms(atoms, coordinates):
     line = "{:2s}    {:2.1f}    {:f}     {:f}    {:f}"
 
     for atom, coord in zip(atoms, coordinates):
-        idx = compchem.get_atom(atom)
+        idx = cheminfo.get_atom(atom)
         lines.append(line.format(atom, idx, *coord))
 
     lines = [" $data", "Title", "C1"] + lines + [" $end"]
