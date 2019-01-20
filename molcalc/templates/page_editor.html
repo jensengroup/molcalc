@@ -10,17 +10,17 @@
 	<meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <script type="text/javascript" src="{{ request.static_url('__main__:assets/js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/jquery-3.3.1.min.js') }}"></script>
 
     {% include 'chemtools_head.html' %}
     {% include 'jsmol_head.html' %}
 
-    <script type="text/javascript" src="{{ request.static_url('__main__:assets/js/app.js') }}"></script>
-    <script type="text/javascript" src="{{ request.static_url('__main__:assets/js/editor.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/editor.js') }}"></script>
 
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800" /> -->
-    <link rel="stylesheet" href="{{ request.static_url('__main__:assets/css/app.css') }}" />
-    <link rel="stylesheet" href="{{ request.static_url('__main__:assets/fontawesome/css/all.css') }}" />
+    <link rel="stylesheet" href="{{ request.static_url('molcalc:static/css/app.css') }}" />
+    <link rel="stylesheet" href="{{ request.static_url('molcalc:static/fontawesome/css/all.css') }}" />
 
 </head>
 <body>
@@ -76,20 +76,14 @@
                 </a>
             </section>
 
-
-            <section class="sidebar-cover">
-            </section>
+            <section class="sidebar-cover"></section>
+            <section class="sidebar-background btnCloseSidebar" href="#sidebarEditor"></section>
 
             <section class="toolset tool-choice">
                 <h2></h2>
                 <ul>
-                    <li>
-
-                        <li><a href="#" rel="3d" class="button icon 3d">3D</a></li>
-                        <li><a href="#" rel="2d" class="button icon 3d active">2D</a></li>
-
-                    </li>
-
+                    <li><a href="#" rel="3d" class="button icon 3d">3D</a></li>
+                    <li><a href="#" rel="2d" class="button icon 3d active">2D</a></li>
                 </ul>
             </section>
 
@@ -136,4 +130,3 @@
 
 </body>
 </html>
-

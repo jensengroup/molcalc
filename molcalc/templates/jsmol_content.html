@@ -7,7 +7,7 @@ var myJmol1;
 var myInfo1 = {
     height: '100%',
     width: '100%',
-    j2sPath: "assets/jsmol/jsmol/j2s",
+    j2sPath: "static/jsmol/jsmol/j2s",
     use: 'HTML5',
     console: "myJmol1_infodiv",
     disableInitialConsole: true,
@@ -18,7 +18,7 @@ var myInfo1 = {
 
 <script type="text/javascript">
 myJmol1 = Jmol.getApplet("myJmol1", myInfo1);
-Jmol.script(myJmol1, 'load "assets/molecules/methane.sdf";');
+Jmol.script(myJmol1, 'load "static/molecules/methane.sdf";');
 Jmol.script(myJmol1, 'background "#ffffff"');
 Jmol.script(myJmol1, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
 Jmol.script(myJmol1, 'set forcefield "MMFF"')
