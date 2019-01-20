@@ -2,37 +2,31 @@
 import sys
 import os
 
-here = os.path.abspath(os.path.dirname(__file__))
+here = os.path.dirname(__file__)
 sys.path.append(here)
 
-from wsgiref.simple_server import make_server
-from waitress import serve
 
-import pyramid
 from pyramid.config import Configurator
+from wsgiref.simple_server import make_server
 
 from pyramid_jinja2.filters import static_url_filter
 
-from sqlalchemy import engine_from_config
+def get_config(config=None):
+    """ This function defines the configuration of the site
+    """
 
-def generate_config(settings=None):
+    if config is None:
+        config = Configurator()
 
-    # config = Configurator(settings=settings)
-    config = Configurator()
-
-    # Public static files
-    config.add_static_view(name='assets', path='__main__:assets')
-    # config.add_static_view('static', 'static')
-    # config.add_static_view(name='data', path='data')
-
-    # Render jinja2 html templates
+    # Setup jinja templating
     config.include('pyramid_jinja2')
     config.add_jinja2_renderer('.html')
 
-    # Routes
-    # config.add_route('favicon', '/favicon.ico')
+    # Static files
+    config.add_static_view('static', 'static')
+    config.add_static_view('assets', 'assets')
 
-    # Home
+    # Home page is the editor
     config.add_route('editor', '/')
 
     # Calculation views
@@ -48,49 +42,36 @@ def generate_config(settings=None):
     config.add_route('smiles_to_sdf', '/ajax/smiles')
     config.add_route('sdf_to_smiles', '/ajax/sdf')
 
-    config.scan('views')
+    # Scan a Python package and any of its subpackages for objects marked with
+    # configuration decoration
+    config.scan()
 
-    # Configure the site
+
+    # Commit any pending configuration actions.
     config.commit()
 
+    # Setup jinja enviroment
     jinja2_env = config.get_jinja2_environment()
     jinja2_env.filters['static_url'] = static_url_filter
 
     return config
 
 
-def setup_database(global_config, **settings):
-
-    from .models import DBSession, Base
-
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
-    Base.metadata.bind = engine
-
-    return
-
-
-def main(global_config, **settings):
-    # config = Configurator(settings=settings)
-    config = generate_config(settings=settings)
-    # blog_title = settings['blog.title']
-    # you can also access you settings via config
-    # comments_enabled = config.registry.settings['blog.comments_enabled']
+def main(global_settings, **settings):
+    """ This function returns a Pyramid WSGI application.
+    """
+    config = get_config(config=Configurator(settings=settings))
     return config.make_wsgi_app()
 
 
-def serve_molcalc(host='0.0.0.0', port=6543):
+if __name__ == "__main__":
 
-    config = generate_config()
+    config = get_config()
     app = config.make_wsgi_app()
 
-    # serve(app, host='0.0.0.0', port=6543)
-    server = make_server(host, port, app)
-    server.serve_forever()
+    HOST = '0.0.0.0'
+    PORT = 6540
 
-    return
-
-
-if __name__ == '__main__':
-    serve_molcalc()
+    SERVER = make_server(HOST, PORT, app)
+    SERVER.serve_forever()
 
