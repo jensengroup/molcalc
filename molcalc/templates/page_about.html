@@ -31,100 +31,96 @@
 
             <h1>What is MolCalc?</h1>
 
-Cite as: J. H. Jensen and J. C. Kromann,
-The Molecule Calculator: A Web Application for Fast Quantum Mechanics-Based Estimation of Molecular Properties,
-J. Chem. Educ., 2013, 90 (8), pp 1093–1095. DOI: 10.1021/ed400164n
+            <p>MolCalc is a web interface that allows chemist to build
+            small molecules and estimate molecular properties such as</p>
+
+            <ul>
+                <li>molecular structure</li>
+                <li>heats of formation and other thermodynamic properties</li>
+                <li>vibrational frequencies and vibrational modes</li>
+                <li>molecular orbitals and orbital energies</li>
+                <li>dipole moment and solvation surface</li>
+            </ul>
+
+            <p>in a matter of seconds or minutes - depending on the size.</p>
+
+            <p>
+            Disclaimer: MolCalc is designed for teaching as opposed to research -
+            specifically for assignments in which students build their own
+            molecules and estimate their own molecular properties.
+            It is designed to run fast and therefore estimated molecular
+            properties will not match experimental values exactly, and in some
+            cases be quite different.
+            </p>
+
+            <p>
+            The idea is to have students develop a "chemical intuition" about
+            how molecular structure affects molecular properties, without
+            performing the underlying calculations by hand (which would be near
+            impossible for all but the simplest chemical systems).
+            </p>
+
+            <h2>How do I cite MolCalc?</h2>
+
+            <p>J. H. Jensen and J. C. Kromann,<br />
+            The Molecule Calculator: A Web Application for Fast Quantum Mechanics-Based Estimation of Molecular Properties,<br />
+            J. Chem. Educ., 2013, 90 (8), pp 1093–1095. DOI: 10.1021/ed400164n<br />
+            </p>
+
+            <h2>How does MolCalc work?</h2>
+
+
+            <p>MolCalc uses the following technologies</p>
+
+            <p>Other than standard HTML and CSS3 we use the following technologies and packages.</p>
+
+
+            <p>Frontend uses</p>
+
+            <ul>
+                <li>JavaScript (jQuery)</li>
+                <li>JSmol</li>
+                <li>Chemdoodle</li>
+            </ul>
+
+            <p>Backend uses</p>
+
+            <ul>
+                <li>Python (Pyramid, SQLAlchemy)</li>
+                <li>JavaScript (jQuery)</li>
+                <li>GAMESS</li>
+            </ul>
+
+
+            <h2>Can I host my own version MolCalc?</h2>
+
+            <p>Yes, MolCalc is distributed through GitHub under the GPL license.
+            Download and the source from <a href="https://github.com/jensengroup/molcalc">github.com/jensengroup/molcalc</a>.</p>
+
+            <p>
+                For the quantum chemistry calculations you must obtain a copy of the GAMESS code separately from
+                <a href="https://www.msg.ameslab.gov/gamess/download.html">www.msg.ameslab.gov/gamess/download.html</a>.
+            </p>
 
 
 
-MolCalc uses the following technologies
+            <h2>Installation and dependencies</h2>
 
-2D editor
-
-3D editor
-
-GAMESS
+            <p>Check out <a href="https://github.com/jensengroup/molcalc">github.com/jensengroup/molcalc</a> for installation guide.</p>
 
 
+            <h2>I found a bug or I have a feature request</h2>
 
-
-Who made this?
-
-
-
-
-Teacher
-How can I use MolCalc in teaching?
-Just like a pocket calculator or a symbolic math program (such as Mathematica or MAPLE), MolCalc allows one to assign "higher level" chemical problems, that are not practically possible to solve previously.
-
-For example, one might now ask students to compute the effect of a substituent on a particular vibration, and then rationalize it using molecular orbitals. Or one might ask more open ended questions such as "build a molecule with an unusually long C-C single bond".
-
-For more further examples and information read these blog posts, the paper or supplementary information.
-
-Jan H. Jensen and Jimmy C. Kromann,
-The Molecule Calculator: A Web Application for Fast Quantum Mechanics-Based Estimation of Molecular Properties,
-Journal of Chemical Education, 2013, DOI: 10.1021/ed400164n
-
-What is MolCalc?
-MolCalc is a web interface that allows anyone to build 
-small molecules  and estimate molecular properties such as
-
-molecular structure
-heats of formation and other thermodynamic properties
-vibrational frequencies and vibrational modes
-molecular orbitals and orbital energies
-dipole moment and solvation surface
-in a matter of seconds or minutes - depending on the size.
-
-MolCalc is designed for teaching as opposed to research - specifically for assignments in which students build their own molecules and estimate their own molecular properties.
-
-It is designed to run fast and therefore estimated molecular properties will not match experimental values exactly, and in some cases be quite different.
-
-The idea is to have students develop a "chemical intuition" about how molecular structure affects molecular properties, without performing the underlying calculations by hand (which would be near impossible for all but the simplest chemical systems).
-
-
-
-
-
-
-Developer
-How does MolCalc work?
-Simply, using JSmol and the editor you create a molecule. The structure is then send via AJAX to the server and optimized using GAMESS.
-
-After the optimization the user is then told (again AJAX) the ID of the molecule and send to the calculation page. Here it is possible to do all the calculations based on whatever procedure is setup for the specific calculation.
-
-The calculation procedures are easily extended and changed. See the folder 'methods' on GitHub.
-
-Can I modify and/or install MolCalc on my own server?
-Yes, MolCalc is distributed through GitHub under the GPL license
-
-github.com/jensengroup/molcalc.
-
-You must obtain a copy of the GAMESS code separately from www.msg.ameslab.gov/gamess/download.html
-
-The interface code uses PHP, jQuery, HTML, CSS3 and Bash. However the code is very modular and it therefore quite easy to add new capabilities to MolCalc, including new calculation types or changing existing.
-
-Installation and Dependencies
-See installation guide on the github page.
-
-Who is involved with MolCalc?
-MolCalc developed by Jimmy Charnley Kromann and Maher Channir, based on an idea by Jan Jensen. The development of MolCalc is supported by the University of Copenhagen through the Education at its Best initiative (Den Gode Uddannelse).
-
-Feedback and bugs
-Bug reports and feature requests can be given here: github.com/jensengroup/molcalc/issues
-
-want to contribute?
-Want to extend the functionality of molcalc?
-
+            <p>
+            want to contribute?
+            Want to extend the functionality of molcalc?
+            Great. Please report it at
+            <a href="https://github.com/jensengroup/molcalc/issues">github.com/jensengroup/molcalc/issues</a>.
+            </p>
 
         </section>
 
-
     </section>
-
-	<section class="hidden">
-
-	</section>
 
 </body>
 </html>

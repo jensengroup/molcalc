@@ -37,14 +37,7 @@
             </a>
         </section>
 
-        <section class="mc-navigation sidebar" id="nav">
-            <ul>
-                <li><a class="" href="/">New molecule</a></li>
-                <li><a class="" href="/help">Help</a></li>
-                <li><a class="" href="/about">About</a></li>
-                <li><a class="" href="https://github.com/jensengroup/molcalc">GitHub</a></li>
-            </ul>
-        </section>
+        {% include 'section_menu.html' %}
 
         <section class="mc-footer">
             <p>Problems? Submit issues to <a href="https://github.com/jensengroup/molcalc">github.com/jensengroup/molcalc</a></p>
@@ -74,6 +67,7 @@
                 <a class="button icon btnCloseSidebar" href="#sidebarEditor">
                     <i class="fas fa-angle-left"></i>
                 </a>
+                <a class="button btnSidebar menu" href="#nav">Menu</a>
             </section>
 
             <section class="sidebar-cover"></section>
