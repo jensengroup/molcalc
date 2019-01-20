@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 
+molcalc/data
+
 # Distribution / packaging
 build/
 dist/
@@ -39,9 +41,9 @@ env*/
 logs/
 
 # ignore downloaded packages
-molcalc/assets/js/*jquery*
-molcalc/assets/fontawesome
-molcalc/assets/jquery
-molcalc/assets/chemdoodleweb
-molcalc/assets/jsmol
+molcalc/static/js/*jquery*
+molcalc/static/fontawesome
+molcalc/static/jquery
+molcalc/static/chemdoodleweb
+molcalc/static/jsmol
 
