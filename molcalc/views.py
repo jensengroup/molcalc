@@ -1,20 +1,13 @@
-import hashlib
-import os
 
-import pyramid.httpexceptions as httpexceptions
+from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
 from pyramid.response import FileResponse
 
-import compchem
-from qm_packages import gamess
 
-# Favicon view
+import hashlib
+import os
 
-# @view_config(route_name='favicon')
-# def favicon_view(request):
-#     here = os.path.dirname(__file__)
-#     icon = os.path.join(here, 'assets', 'favicon.ico')
-#     return FileResponse(icon, request=request)
+from quantum_chemistry import cheminfo, gamess
 
 
 # Error Views
@@ -96,7 +89,7 @@ def ajax_sdf_to_smiles(request):
         return {'error':'Error 60 - get error', 'message': "Error. Missing information."}
 
     # Get smiles
-    smiles, status = compchem.sdf_to_smiles(sdf)
+    smiles, status = cheminfo.sdf_to_smiles(sdf)
     if smiles is None:
 
         status = status.split("]")
@@ -124,8 +117,7 @@ def ajax_smiles_to_sdf(request):
     except:
         return {'error':'Error 58 - get error', 'message': "Error. Missing information."}
 
-    sdfstr = compchem.smiles_to_sdfstr(smiles)
-
+    sdfstr = cheminfo.smiles_to_sdfstr(smiles)
     msg = {"sdf" : sdfstr}
 
     return msg
@@ -143,16 +135,16 @@ def ajax_submitquantum(request):
     sdf = request.POST["sdf"].encode('utf-8')
     # smiles, status = compchem.sdf_to_smiles(sdf)
 
-    molobj, status = compchem.sdfstr_to_molobj(sdf)
-    smiles = compchem.molobj_to_smiles(molobj)
+    molobj, status = cheminfo.sdfstr_to_molobj(sdf)
 
-    if smiles is None:
+    if molobj is None:
 
         status = status.split("]")
         status = status[-1]
 
         return {'error':'Error 141 - rdkit error', 'message': status}
 
+    smiles = cheminfo.molobj_to_smiles(molobj)
 
     hshobj = hashlib.md5(smiles.encode('utf-8'))
     hashkey = hshobj.hexdigest()
@@ -179,13 +171,13 @@ def ajax_submitquantum(request):
 
 
     # Minimize with forcefield first
-    molobj = compchem.molobj_add_hydrogens(molobj)
-    compchem.molobj_optimize(molobj)
+    molobj = cheminfo.molobj_add_hydrogens(molobj)
+    cheminfo.molobj_optimize(molobj)
 
-    headerfilename = here + "settings/gamess/header_pm3_opt"
-
-    with open(headerfilename) as headerfile:
-        header = headerfile.read()
+    header = """$basis gbasis=pm3 $end
+ $contrl scftyp=rhf runtyp=optimize icharg=0 $end
+ $statpt opttol=0.0001 nstep=20 $end
+"""
 
     # Prepare gamess input
     inpstr = gamess.molobj2gmsinp(molobj, header)
