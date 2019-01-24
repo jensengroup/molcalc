@@ -61,10 +61,11 @@ class Calculation(Base):
     name = Column(String)
     smiles = Column(String)
     sdf = Column(String)
+    svg = Column(String)
 
     def __repr__(self):
-        fmt = "<Calculation {:}>"
-        return fmt.format(self.smiles)
+        fmt = "<Calculation {:} {:} >"
+        return fmt.format(self.smiles, self.hashkey)
 
 
 class Counter(Base):
@@ -73,7 +74,7 @@ class Counter(Base):
     count = Column(Integer)
 
     def __repr__(self):
-        fmt = "<Molecule {:} {:}>"
+        fmt = "<Molecule {:} {:} >"
         return fmt.format(self.smiles, self.count)
 
 
