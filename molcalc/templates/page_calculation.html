@@ -4,7 +4,12 @@
 
     <title>MolCalc</title>
 
+
+
     {% include 'section_header.html' %}
+
+
+    {% include 'jsmol_head.html' %}
 
 </head>
 <body>
@@ -38,14 +43,47 @@
                 Vibrational Frequencies
                 Polarity and Solvation
             -->
-            <p>
-            <br />
-            <br />
-            </p>
+
+            <section class="calc calc-sdf">
+
+<svg width="400px" height="400px">
+{{svg|safe}}
+</svg>
 
 <pre>
-{{sdf}}
-</pre>
+{{sdf}}</pre>
+            </section>
+
+
+            <section class="calc calc-default">
+
+                <div class="viewer-jsmol">
+<script type="text/javascript">
+
+var sdf = `{{sdf}}`;
+
+var myJmol1;
+var myInfo1 = {
+    height: '100%',
+    width: '100%',
+    j2sPath: "/static/jsmol/jsmol/j2s",
+    use: 'HTML5',
+    console: "myJmol1_infodiv",
+    disableInitialConsole: true,
+    allowJavaScript: true,
+    debug: false
+};
+
+myJmol1 = Jmol.getApplet("myJmol1", myInfo1);
+Jmol.script(myJmol1, 'load "static/molecules/methane.sdf";');
+Jmol.script(myJmol1, 'background "#ffffff"');
+Jmol.script(myJmol1, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
+</script>
+
+                </div>
+
+            </section>
+
 
             <section class="calc calc-preview">
                 
