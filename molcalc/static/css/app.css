@@ -54,27 +54,11 @@ table {
 /* default **********************************************************/
 
 
-/* ::-webkit-scrollbar { */
-/*     width: 1px;  /* remove scrollbar space */ */
-/*     /* background: transparent;  /* optional: just make scrollbar invisible */ */ */
-/* } */
-
-/* ::-webkit-scrollbar-thumb { */
-/*     background: #000; */
-/* } */
-
 * {
 	/* box-sizing: border-box; */
 	padding: 0;
 	margin: 0;
 }
-
-/* input:not(.urlbar-input):not(.textbox-input):not(.form-control):not([type='checkbox']) { */
-/*     -moz-appearance: none !important; */
-/*     background-color: white; */
-/*     color: black; */
-/*     border: inheirt; */
-/* } */
 
 
 /* Stops Mobile Safari from auto-adjusting font-sizes */
@@ -141,13 +125,9 @@ body {
 
 }
 
-
-
-
 .hidden {display: none;}
 
-p {
-}
+p {}
 
 p strong {
     font-weight:bold;
@@ -965,10 +945,15 @@ input[type=text]:focus {
     overflow-x: auto;
     tab-width: 4;
 
-    background: #333;
-    color: #fff;
+    border: #333;
+    background: #fff;
     padding: 20px;
 
+}
+.molcalc.calculation .mc-content .calc {
+    margin: 30px 0 0 0;
+    background: white;
+    min-height: 100px;
 }
 
 /* page */
