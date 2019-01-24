@@ -47,15 +47,10 @@ def molobj_add_hydrogens(molobj):
 
 def molobj_optimize(molobj):
 
-    print(Chem.MolToMolBlock(molobj))
+    status = AllChem.EmbedMolecule(molobj)
+    status = AllChem.UFFOptimizeMolecule(molobj)
 
-    AllChem.EmbedMolecule(molobj)
-    AllChem.MMFFOptimizeMolecule(molobj)
-
-    print()
-    print(Chem.MolToMolBlock(molobj))
-
-    return
+    return status
 
 
 def molobj_to_sdfstr(mol):
@@ -88,12 +83,16 @@ def molobj_to_smiles(mol):
 
 def molobj_to_svgstr(molobj,
                      highlights=None,
-                     pretty=False):
+                     pretty=False,
+                     removeHs=False):
     """
 
     Returns SVG in string format
 
     """
+
+    if removeHs:
+        molobj = Chem.RemoveHs(molobj)
 
     svg = Draw.MolsToGridImage(
         [molobj],

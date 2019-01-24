@@ -141,6 +141,15 @@ def calculate(filename, folder="./"):
     return True
 
 
+def gmslog2molobj(logfile):
+
+    
+
+
+
+    return
+
+
 def clean():
     """
     """
