@@ -1,4 +1,4 @@
-
+import datetime
 import hashlib
 import os
 
@@ -37,51 +37,38 @@ def view_calculation(request):
 
     """
 
-    smiles = request.dbsession.query(models.Counter)\
-            .filter_by(smiles="CC").first()
-
-
-    if smiles is None:
-        counter = models.Counter()
-        counter.smiles = "CC"
-        counter.count = 1
-        request.dbsession.add(counter)
-    else:
-        smiles.count += 1
-
-
-    print(smiles)
-
-    # query = request.dbsession.query(models.MyModel)
-
-    # calculation = models.MyModel()
-    # calculation.name = "Jimmy"
-    # request.dbsession.add(calculation)
-
-    # 
-
+    # Get the key
     matches = request.matchdict
     hashkey = matches['one']
 
+    # Look up the key
+    calculation = request.dbsession.query(models.Calculation) \
+        .filter_by(hashkey=hashkey).first()
+
+    if calculation is None:
+        raise httpexceptions.exception_response(404)
+
     # Get from database
-    workpath = 'molcalc/data/'+hashkey + '/'
+    # workpath = 'molcalc/data/'+hashkey + '/'
 
     # Check if calculation exists
-    if not os.path.exists(workpath):
-        raise httpexceptions.exception_response(404)
+    # if not os.path.exists(workpath):
+    #     raise httpexceptions.exception_response(404)
 
     data = {}
 
-    with open(workpath + "start.sdf", 'r') as sdffile:
-        sdfstr = sdffile.read()
-        data['sdf'] = sdfstr
+    # with open(workpath + "start.sdf", 'r') as sdffile:
+    #     sdfstr = sdffile.read()
+    #     data['sdf'] = sdfstr
+    #
+    # molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
+    # smiles = cheminfo.molobj_to_smiles(molobj)
 
-    molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
-    smiles = cheminfo.molobj_to_smiles(molobj)
-
-    data["hashkey"] = hashkey
-    data["smiles"] = smiles
-    data["name"] = "2-methylanthracene"
+    data["hashkey"] = calculation.hashkey
+    data["smiles"] = calculation.smiles
+    data["sdf"] = calculation.sdf
+    data["svg"] = calculation.svg
+    data["name"] = ""
 
     if hashkey == "404":
         raise httpexceptions.exception_response(404)
@@ -191,29 +178,39 @@ def ajax_submitquantum(request):
     if not request.POST["sdf"]:
         return {'error':'Error 132 - sdf key error', 'message': "Error. Missing information."}
 
-    sdf = request.POST["sdf"].encode('utf-8')
-    # smiles, status = compchem.sdf_to_smiles(sdf)
+    # Get coordinates from request
+    sdfstr = request.POST["sdf"].encode('utf-8')
 
-    molobj, status = cheminfo.sdfstr_to_molobj(sdf)
+    # Get rdkit
+    molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
 
     if molobj is None:
-
         status = status.split("]")
         status = status[-1]
-
         return {'error':'Error 141 - rdkit error', 'message': status}
 
+    # Get that smile on your face
     smiles = cheminfo.molobj_to_smiles(molobj)
 
-    hshobj = hashlib.md5(smiles.encode('utf-8'))
+    # hash on sdf (conformer)
+    hshobj = hashlib.md5(sdfstr)
     hashkey = hshobj.hexdigest()
 
+    # Start respond message
     msg = {
         "smiles" : smiles,
         "hashkey" : hashkey
     }
 
-    # TODO Either create "data" or create table in database
+
+    calculation = request.dbsession.query(models.Calculation) \
+        .filter_by(hashkey=hashkey).first()
+
+    if calculation is not None:
+        calculation.created = datetime.datetime.now()
+        return msg
+    else:
+        pass
 
     # check if folder exists
     here = os.path.abspath(os.path.dirname(__file__)) + "/"
@@ -228,14 +225,13 @@ def ajax_submitquantum(request):
 
     os.chdir(datahere + hashkey)
 
-
     # Minimize with forcefield first
     molobj = cheminfo.molobj_add_hydrogens(molobj)
     cheminfo.molobj_optimize(molobj)
 
     header = """ $basis gbasis=pm3 $end
- $contrl scftyp=rhf runtyp=optimize icharg=0 $end
- $statpt opttol=0.0001 nstep=20 $end
+ $contrl runtyp=optimize icharg=0 $end
+ $statpt opttol=0.0005 nstep=200 projct=.F. $end
 """
 
     # Prepare gamess input
@@ -245,8 +241,8 @@ def ajax_submitquantum(request):
     with open("optimize.inp", "w") as f:
         f.write(inpstr)
 
-    # gamess.calculate("optimize.inp")
-    # gamess.clean()
+    gamess.calculate("optimize.inp")
+    gamess.clean()
 
     with open("start.sdf", 'w') as f:
         f.write(cheminfo.molobj_to_sdfstr(molobj))
@@ -261,14 +257,46 @@ def ajax_submitquantum(request):
         msg["message"] = message
         return msg
 
-    # Success, setup database
+    # Reset title
+    # molobj.SetProp("_MolFileComments", "")
+    # molobj.SetProp("_MolFileInfo", "")
 
+    sdfstr = cheminfo.molobj_to_sdfstr(molobj)
+    sdfstr = str(sdfstr)
+
+    # print(list(molobj.GetPropNames(includePrivate=True, includeComputed=True)))
+
+    # print(molobj.GetProp("_MolFileComments"))
+    # print(molobj.GetProp("_MolFileInfo"))
+
+    # Get a 2D Picture
+    svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)
+
+
+    # Success, setup database
     calculation = models.Calculation()
     calculation.smiles = smiles
+    calculation.hashkey = hashkey
+    calculation.sdf = sdfstr
+    calculation.svg = svgstr
+    calculation.created = datetime.datetime.now()
+
+    # Add calculation to the database
     request.dbsession.add(calculation)
 
+
     # Add smiles to counter
-    # query = request.dbsession.query(models.Counter).filter_by()
+    countobj = request.dbsession.query(models.Counter) \
+        .filter_by(smiles=smiles).first()
+
+    if countobj is None:
+        counter = models.Counter()
+        counter.smiles = smiles
+        counter.count = 1
+        request.dbsession.add(counter)
+        print(counter)
+    else:
+        countobj.count += 1
 
 
     return msg
