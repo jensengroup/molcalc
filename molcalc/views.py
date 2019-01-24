@@ -1,14 +1,13 @@
 
-from pyramid import httpexceptions
-from pyramid.view import notfound_view_config, view_config
-from pyramid.response import FileResponse
-
-
 import hashlib
 import os
 
+from pyramid import httpexceptions
+from pyramid.view import notfound_view_config, view_config
+
 from quantum_chemistry import cheminfo, gamess
 
+import models
 
 # Error Views
 
@@ -29,6 +28,7 @@ def editor(request):
     """
     return {}
 
+
 @view_config(route_name='calculation', renderer='templates/page_calculation.html')
 def view_calculation(request):
     """
@@ -37,16 +37,50 @@ def view_calculation(request):
 
     """
 
+    smiles = request.dbsession.query(models.Counter)\
+            .filter_by(smiles="CC").first()
+
+
+    if smiles is None:
+        counter = models.Counter()
+        counter.smiles = "CC"
+        counter.count = 1
+        request.dbsession.add(counter)
+    else:
+        smiles.count += 1
+
+
+    print(smiles)
+
+    # query = request.dbsession.query(models.MyModel)
+
+    # calculation = models.MyModel()
+    # calculation.name = "Jimmy"
+    # request.dbsession.add(calculation)
+
+    # 
+
     matches = request.matchdict
     hashkey = matches['one']
 
     # Get from database
-    print(hashkey)
+    workpath = 'molcalc/data/'+hashkey + '/'
+
+    # Check if calculation exists
+    if not os.path.exists(workpath):
+        raise httpexceptions.exception_response(404)
 
     data = {}
 
+    with open(workpath + "start.sdf", 'r') as sdffile:
+        sdfstr = sdffile.read()
+        data['sdf'] = sdfstr
+
+    molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
+    smiles = cheminfo.molobj_to_smiles(molobj)
+
     data["hashkey"] = hashkey
-    data["smiles"] = "Cc1ccc2cc3ccccc3cc2c1"
+    data["smiles"] = smiles
     data["name"] = "2-methylanthracene"
 
     if hashkey == "404":
@@ -71,14 +105,29 @@ def view_calculations(request):
 
 @view_config(route_name='about', renderer='templates/page_about.html')
 def about(request):
+    """
+
+    static about page
+
+    """
     return {}
 
 @view_config(route_name='help', renderer='templates/page_help.html')
 def page_help(request):
+    """
+
+    static help page
+
+    """
     return {}
 
 @view_config(route_name='sdf_to_smiles', renderer='json')
 def ajax_sdf_to_smiles(request):
+    """
+
+    sdf to smiles convertion
+
+    """
 
     if not request.POST:
         return {'error':'Error 55 - Missing key', 'message': "Error. Missing information."}
@@ -108,6 +157,11 @@ def ajax_sdf_to_smiles(request):
 
 @view_config(route_name='smiles_to_sdf', renderer='json')
 def ajax_smiles_to_sdf(request):
+    """
+
+    convert SMILES to SDF format
+
+    """
 
     if not request.POST:
         return {'error':'Error 53 - Missing key', 'message': "Error. Missing information."}
@@ -125,6 +179,11 @@ def ajax_smiles_to_sdf(request):
 
 @view_config(route_name='submitquantum', renderer='json')
 def ajax_submitquantum(request):
+    """
+
+    Setup quantum calculation
+
+    """
 
     if not request.POST:
         return {'error':'Error 128 - empty post', 'message': "Error. Empty post."}
@@ -174,7 +233,7 @@ def ajax_submitquantum(request):
     molobj = cheminfo.molobj_add_hydrogens(molobj)
     cheminfo.molobj_optimize(molobj)
 
-    header = """$basis gbasis=pm3 $end
+    header = """ $basis gbasis=pm3 $end
  $contrl scftyp=rhf runtyp=optimize icharg=0 $end
  $statpt opttol=0.0001 nstep=20 $end
 """
@@ -185,10 +244,12 @@ def ajax_submitquantum(request):
     # Save and run file
     with open("optimize.inp", "w") as f:
         f.write(inpstr)
-        f.close()
 
-    gamess.calculate("optimize.inp")
-    gamess.clean()
+    # gamess.calculate("optimize.inp")
+    # gamess.clean()
+
+    with open("start.sdf", 'w') as f:
+        f.write(cheminfo.molobj_to_sdfstr(molobj))
 
     # Check output
     status, message = gamess.check("optimize.log")
@@ -202,9 +263,12 @@ def ajax_submitquantum(request):
 
     # Success, setup database
 
+    calculation = models.Calculation()
+    calculation.smiles = smiles
+    request.dbsession.add(calculation)
+
+    # Add smiles to counter
+    # query = request.dbsession.query(models.Counter).filter_by()
 
 
     return msg
-
-
-
