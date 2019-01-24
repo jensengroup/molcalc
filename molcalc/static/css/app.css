@@ -948,9 +948,27 @@ input[type=text]:focus {
 
 .molcalc.calculation .mc-content {
     background: transparent;
+    overflow: visible;
 }
 .mc-content.calculation h1 {
     font-size: 30px;
+}
+.molcalc.calculation .mc-content pre {
+
+    font-family: mononoki, Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",
+    "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",
+    "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+
+    font-size: 15px;
+    line-height: 20px;
+
+    overflow-x: auto;
+    tab-width: 4;
+
+    background: #333;
+    color: #fff;
+    padding: 20px;
+
 }
 
 /* page */
