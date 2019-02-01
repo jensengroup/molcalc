@@ -331,7 +331,7 @@ $(function()
 
 // JSmol ////////////////////////////////////////////////////////
 
-function jsmolGetMol(canvasObj)
+function jsmolGetMol(canvasObj, include_hydrogen=false)
 {
     // returns a JSON object with all the atoms
     // var atominfo = Jmol.getPropertyAsArray(canvasObj, "atominfo", "all");
@@ -339,8 +339,14 @@ function jsmolGetMol(canvasObj)
     // The extractModel keyword delivers text in the form of a MOL file,
     // allowing up to 999 atoms and 999 bonds to be "extracted" from the
     // model as an independent structure.
-    // for example: Jmol.getPropertyAsString(canvasObj, "extractModel", "all");
-    var sdf = Jmol.getPropertyAsString(canvasObj, "extractModel", "not hydrogen");
+    var sdf;
+    if(include_hydrogen)
+    {
+        sdf = Jmol.getPropertyAsString(canvasObj, "extractModel", "all");
+    }
+    else {
+        sdf = Jmol.getPropertyAsString(canvasObj, "extractModel", "not hydrogen");
+    }
 
     return sdf;
 }
