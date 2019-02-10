@@ -15,7 +15,9 @@ Installation
 ------------
 
 Simply clone the repo and install dependencies.
-Easiest is to use [Anaconda](https://www.anaconda.com/download), because we use RDKit in the background (sorry).
+Easiest is to use Anaconda_, because we use RDKit in the background (sorry).
+
+.. _Anaconda: https://www.anaconda.com/download
 
 - Clone the repository
 
