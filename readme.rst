@@ -2,7 +2,8 @@
 MolCalc - The Molecule Calculator
 =================================
 
-Note: Currently version 2.0 is under construction. Version 1.3 is still hosted at molcalc.org_.
+Note: Currently version 2.0 is under construction. Version 1.3 is still hosted
+at molcalc.org_ and source is avaliable at github.com/jensengroup/molcalc-1.3_.
 
 The molcule calculator is a small web-based interface for doing small-scale
 quantum chemistry calculation with the intent of giving chemical intution to
@@ -10,6 +11,8 @@ students, from high-school to university.
 Hosted at molcalc.org_.
 
 .. _molcalc.org: http://molcalc.org
+
+.. _github.com/jensengroup/molcalc-1.3: https://github.com/jensengroup/molcalc-1.3
 
 Installation
 ------------
