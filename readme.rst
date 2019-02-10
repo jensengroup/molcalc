@@ -27,6 +27,7 @@ Easiest is to use Anaconda_, because we use RDKit in the background (sorry).
 The following steps are included in the ``Makefile`` for convienced, so
 
 .. code-block:: bash
+
     git clone https://github.com/jensengroup/molcalc
     cd molcalc
     make
