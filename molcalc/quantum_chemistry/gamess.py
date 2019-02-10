@@ -1,4 +1,5 @@
 
+import re
 import sys
 import os
 
@@ -23,6 +24,50 @@ global __scr__
 __rungms__ = "/home/charnley/opt/gamess/gamess-github/rungms"
 __scr__ = "/home/charnley/scr/"
 __tmp__ = "/home/charnley/scr/"
+
+
+re_coordinates = re.compile('COORDINATES OF ALL ATOMS ARE (.*?)------------\n(.*?)\n\n', re.DOTALL)
+re_error = re.compile('^( \*\*\*|Error:)')
+
+def calculate_optimize(molobj):
+    """
+    Optimize, get coordinates
+
+
+    """
+
+
+
+    return dict()
+
+
+def calculate_thermodynamics(molobj):
+
+    header = """
+
+"""
+
+
+    return dict()
+
+
+def calculate_orbitals(molobj):
+
+
+    return dict()
+
+
+def calculate_vibrations():
+
+
+    return dict()
+
+
+def calculate_solvation():
+
+
+    return dict()
+
 
 
 def setup(rungms, tmp, scr):
@@ -130,15 +175,20 @@ def molobj2gmsinp(mol, header, add_hydrogens=False):
     return header + lines
 
 
-def calculate(filename, folder="./"):
+def calculate(filename, folder="./", store_output=True):
     """
     Use GAMESS shell and calculate
     """
 
     logfile = filename.replace(".inp", ".log")
-    stdout, stderr = shell.shell(__rungms__ + " " + filename + " > " + folder + logfile, shell=True)
 
-    return True
+    cmd = __rungms__ + " " + filename
+    if store_output:
+        cmd += " > " + folder + logfile
+
+    stdout, stderr = shell.shell(cmd, shell=True)
+
+    return stdout, stderr
 
 
 def gmslog2molobj(logfile):
@@ -161,10 +211,8 @@ def clean():
     return
 
 
-def check(filename):
-    """
-    Check that the GAMESS calculation is not crashed
-    """
+def check_output(output):
+
     # TODO ELECTRONS, WITH CHARGE ICHARG=
 
     # TODO redo in Python. Real categories of fail. Better output
@@ -177,6 +225,15 @@ def check(filename):
     # grep  "SCF IS UNCONVERGED" *.log
     # grep "resubmit" *.log
     # grep "IMAGINARY FREQUENCY VIBRATION" *.log
+
+
+    return True, ""
+
+
+def check_filename(filename):
+    """
+    Check that the GAMESS calculation is not crashed
+    """
 
     return True, ""
 
