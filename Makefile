@@ -67,3 +67,10 @@ dev_download_font:
 	setup
 
 
+backup:
+	# Make backup of database
+
+clean:
+	# Remove database
+
+
