@@ -37,11 +37,15 @@ Easiest is to use Anaconda_, because we use RDKit in the background (sorry).
     conda env create -f environment.yml -p env
     env/bin/python setup.py develop
 
-- Download the JavaScript libaries, using the scripts
+- Download the JavaScript and frontend libaries, using the scripts
 
 .. code-block:: bash
 
-    # TODO install scripts
+    bash scripts/setup_datadir.sh
+    bash scripts/setup_chemdoodle.sh
+    bash scripts/setup_jsmol.sh
+    bash scripts/setup_fontawesome.sh
+    bash scripts/setup_jquery.sh
 
 - Deploy
 
