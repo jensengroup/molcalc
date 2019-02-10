@@ -24,7 +24,7 @@ env:
 
 setup_assets: molcalc/static/chemdoodle molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery
 
-molcalc/static/chemdoodle: scripts/setup_chemdoodle.sh
+molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
 
 molcalc/static/jsmol: scripts/setup_jsmol.sh
@@ -33,7 +33,7 @@ molcalc/static/jsmol: scripts/setup_jsmol.sh
 molcalc/static/fontawesome: scripts/setup_fontawesome.sh
 	bash scripts/setup_fontawesome.sh
 
-molcalc/static/jquery: scripts/setup_jquery.sh
+molcalc/static/js: scripts/setup_jquery.sh
 	bash scripts/setup_jquery.sh
 
 
