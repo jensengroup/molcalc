@@ -2,7 +2,7 @@
 PYTHON=anaconda
 CONDA=anaconda-conda
 
-all: env setup_assets
+all: env setup_assets molcalc/data
 
 serve_development:
 	env/bin/pserve development.ini --reload
@@ -21,6 +21,9 @@ env:
 	${CONDA} env create -f environment.yml -p env
 	env/bin/python setup.py develop
 
+
+molcalc/data: scripy/setup_datadir.sh
+	bash scripts/setup_datadir.sh
 
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/js
 
