@@ -1,20 +1,53 @@
 
-# MolCalc - Molecule Calculator
+MolCalc - The Molecule Calculator
+=================================
 
-A Pyramid/ Python based server for doing fast quantum chemistry, primarily for educational purposes.
-Live at [molcalc.org](http://molcalc.org).
+Note: Currently version 2.0 is under construction. Version 1.3 is still hosted at molcalc.org_.
 
+The molcule calculator is a small web-based interface for doing small-scale
+quantum chemistry calculation with the intent of giving chemical intution to
+students, from high-school to university.
+Hosted at molcalc.org_.
 
-## Installation
+.. _molcalc.org: http://molcalc.org
+
+Installation
+------------
 
 Simply clone the repo and install dependencies.
 Easiest is to use [Anaconda](https://www.anaconda.com/download), because we use RDKit in the background (sorry).
 
-    git clone <repo>
-    conda install rdkit
+- Clone the repository
+
+.. code-block:: bash
+
+    git clone https://github.com/jensengroup/molcalc
+
+- Create the Python enviroment using Conda and Pip
+
+.. code-block:: bash
+
+    conda env create -f environment.yml -p env
+    env/bin/python setup.py develop
+
+- Download the JavaScript libaries, using the scripts
+
+.. code-block:: bash
+
+    # TODO install scripts
+
+- Deploy
+
+.. code-block:: bash
+
+    env/bin/pserve development.ini --reload
 
 
-### Dependencies
+And molcalc should now be avaliable on ``localhost:6543``, based on the settings of development.ini.
+
+
+Dependencies
+------------
 
 conda
 
@@ -42,75 +75,25 @@ note on GAMESS setup
 
 
 
-### Setup
-
-apache
-
-
-## Test
+Setup on Apache server
+----------------------
 
 
-## Usage
+Test
+----
+
+TODO. should add tests to ``molcalc/tests.py``
 
 
-## TODO
-
-
-
-# mobile nav
-https://dvc.org/doc/get-started/compare-experiments
-    - color change
-    - transistion
-    - fixed
-
-# Important
+TODO
+----
 
     Failed to load resource: net::ERR_INTERNET_DISCONNECTED
     ichemlabs.cloud.chemdoodle.com/icl_cdc_v070001/WebHQ
 
-# UI
 
-    # toggle / light and dark css scheme?
-
-    specific calculation
-        show orbitals first
-        back button for other calculation type
-        for a more "full screen view"
-
-    search bar
-        => like the google calendar bar
-        => find systematic names, then put into search bar
-
-        => when pressing "ctrl+v", then paste in searchbar and search!
-
-
-# TODO
-
-    Big search field. A mobile search first apporach
-        For easier SMILES interpertation
-        mobile: searchbar in top (extend over logo)
-        auto-complete? how?
-
-    Better structure to name analysation
-
-    Use RDKit for SMILES and Cactus for names
-        => show the user what service ajax is using / load the structure right away
-
-    database based? instead of files
-        => only look at cactus for new names
-        => cache with cloudflare
-
-    seo
-        molecule viewer 3d web
-
-    2d editor
-
-    3dmol
-        javascript based editor for 3dmoljs
-            => MMFF in javascript
-            => molecule information
-
-# TODO computation
+TODO computation
+----------------
 
     spectrum
         H/C-NMR
@@ -119,7 +102,9 @@ https://dvc.org/doc/get-started/compare-experiments
 
     open shell systems
 
-# Better texts
+
+TODO Better texts
+-----------------
 
     Tutorials and assignment examples (with answers)
 
