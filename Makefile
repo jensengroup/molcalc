@@ -5,6 +5,9 @@ CONDA=anaconda-conda
 serve_development:
 	env/bin/pserve development.ini --reload
 
+serve_production:
+	env/bin/pserve production.ini
+
 serve: serve_development
 
 test:
