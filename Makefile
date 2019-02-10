@@ -2,6 +2,8 @@
 PYTHON=anaconda
 CONDA=anaconda-conda
 
+all: env setup_assets
+
 serve_development:
 	env/bin/pserve development.ini --reload
 
