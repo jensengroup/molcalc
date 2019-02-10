@@ -13,5 +13,6 @@ cd ..
 
 mv jmol-14.29.31/jsmol jsmol
 
+rm -r jmol-14.29.31
 rm Jmol-14.29.31-binary.zip
 
