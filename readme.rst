@@ -24,20 +24,29 @@ Easiest is to use Anaconda_, because we use RDKit in the background (sorry).
 
 .. _Anaconda: https://www.anaconda.com/download
 
-- Clone the repository
+The following steps are included in the ``Makefile`` for convienced, so
+
+.. code-block:: bash
+    git clone https://github.com/jensengroup/molcalc
+    cd molcalc
+    make
+
+will execute the following points.
+
+1. Clone the repository
 
 .. code-block:: bash
 
     git clone https://github.com/jensengroup/molcalc
 
-- Create the Python enviroment using Conda and Pip
+2. Create the Python enviroment using Conda and Pip
 
 .. code-block:: bash
 
     conda env create -f environment.yml -p env
     env/bin/python setup.py develop
 
-- Download the JavaScript and frontend libaries, using the scripts
+3. Download the JavaScript and frontend libaries, using the scripts
 
 .. code-block:: bash
 
@@ -47,7 +56,11 @@ Easiest is to use Anaconda_, because we use RDKit in the background (sorry).
     bash scripts/setup_fontawesome.sh
     bash scripts/setup_jquery.sh
 
-- Deploy
+
+Deploy
+------
+
+Deploy using either development or production ``ini`` files.
 
 .. code-block:: bash
 
