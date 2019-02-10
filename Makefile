@@ -22,7 +22,7 @@ env:
 	env/bin/python setup.py develop
 
 
-molcalc/data: scripy/setup_datadir.sh
+molcalc/data: scripts/setup_datadir.sh
 	bash scripts/setup_datadir.sh
 
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/js
