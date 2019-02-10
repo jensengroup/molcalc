@@ -29,6 +29,7 @@ coverage/
 *.pid
 *.db
 *.sqlite
+*.zip
 
 # Sphinx documentation
 docs/_build/
