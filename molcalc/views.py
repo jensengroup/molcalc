@@ -241,14 +241,13 @@ def ajax_submitquantum(request):
     with open("optimize.inp", "w") as f:
         f.write(inpstr)
 
-    gamess.calculate("optimize.inp")
-    gamess.clean()
+    stdout, stderr = gamess.calculate(hashkey+".inp", store_output=False)
 
     with open("start.sdf", 'w') as f:
         f.write(cheminfo.molobj_to_sdfstr(molobj))
 
     # Check output
-    status, message = gamess.check("optimize.log")
+    status, message = gamess.check_output(stdout)
 
     os.chdir(here)
 
@@ -257,21 +256,16 @@ def ajax_submitquantum(request):
         msg["message"] = message
         return msg
 
-    # Reset title
-    # molobj.SetProp("_MolFileComments", "")
-    # molobj.SetProp("_MolFileInfo", "")
-
+    # Saveable sdf and reset title
     sdfstr = cheminfo.molobj_to_sdfstr(molobj)
     sdfstr = str(sdfstr)
-
-    # print(list(molobj.GetPropNames(includePrivate=True, includeComputed=True)))
-
-    # print(molobj.GetProp("_MolFileComments"))
-    # print(molobj.GetProp("_MolFileInfo"))
+    for _ in range(2):
+        i = sdfstr.index('\n')
+        sdfstr = sdfstr[i+1:]
+    sdfstr = "\n\n\n" + sdfstr
 
     # Get a 2D Picture
     svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)
-
 
     # Success, setup database
     calculation = models.Calculation()
@@ -283,7 +277,6 @@ def ajax_submitquantum(request):
 
     # Add calculation to the database
     request.dbsession.add(calculation)
-
 
     # Add smiles to counter
     countobj = request.dbsession.query(models.Counter) \
