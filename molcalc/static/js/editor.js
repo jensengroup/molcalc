@@ -162,10 +162,6 @@ $('.toolset.chemdoodle a.button.chemdoodle').click(function () {
 });
 
 waitForElement("#sketcherSingle", function() {
-    // Init chemdoodle
-    // var molTest = 'Molecule Name\n  CHEMDOOD01011121543D 0   0.00000     0.00000     0\n[Insert Comment Here]\n  6  6  0  0  0  0  0  0  0  0  1 V2000\n    0.0000    1.0000    0.0000   N 0  0  0  0  0  0  0  0  0  0  0  0\n   -0.8660    0.5000    0.0000   C 0  0  0  0  0  0  0  0  0  0  0  0\n   -0.8660   -0.5000    0.0000   C 0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000   -1.0000    0.0000   C 0  0  0  0  0  0  0  0  0  0  0  0\n    0.8660   -0.5000    0.0000   C 0  0  0  0  0  0  0  0  0  0  0  0\n    0.8660    0.5000    0.0000   C 0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  2  0  0  0  0\n  2  3  1  0  0  0  0\n  3  4  2  0  0  0  0\n  4  5  1  0  0  0  0\n  5  6  2  0  0  0  0\n  6  1  1  0  0  0  0\nM  END'
-    // chemdoodleSetMol(sketcher, molTest); // Load start molecule
-
     setTimeout(function() {
         chemdoodleResize(sketcher); // Resize
     }, 100);
@@ -173,6 +169,20 @@ waitForElement("#sketcherSingle", function() {
 
 
 // Jsmol
+var $jsmolMinimizeBtn = $('.action.minimize .button');
+$jsmolMinimizeBtn.click(function()
+{
+    jsmolCmd(myJmol1, 'minimize');
+    return false;
+});
+
+var $jsmolMinimizeBtn = $('.action.undo .button');
+$jsmolMinimizeBtn.click(function()
+{
+    jsmolCmd(myJmol1, 'undo');
+    return false;
+});
+
 var $jsmolAtomBtns = $('.action.atom .button');
 $jsmolAtomBtns.click(function ()
 {
@@ -200,7 +210,6 @@ $jsmolAtomBtns.click(function ()
 
     return false;
 });
-
 
 $jsmolBondBtns = $('.toolset.jsmol .action.bond .button')
 $jsmolBondBtns.click(function()
@@ -279,6 +288,7 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
 // Load molecules
 $('.toolset .load_methane').click(function () {
 
+    // TODO Load in javascript file
     var filename = "static/molecules/methane.sdf";
 
     request(filename, {}, function(data) {
@@ -292,6 +302,7 @@ $('.toolset .load_methane').click(function () {
 });
 $('.toolset .load_benzene').click(function () {
 
+    // TODO Load in javascript file
     var filename = "static/molecules/benzene.sdf";
 
     request(filename, {}, function(data) {
@@ -305,6 +316,7 @@ $('.toolset .load_benzene').click(function () {
 });
 $('.toolset .load_water').click(function () {
 
+    // TODO Load in javascript file
     var filename = "static/molecules/dioxidane.sdf";
 
     request(filename, {}, function(data) {
@@ -322,7 +334,7 @@ $('.toolset .load_water').click(function () {
 $('.button.quantum').click(function () {
 
     var promptQuantum = new $.Prompt();
-    promptQuantum.setMessage('See quantum properties for the molecule?');
+    promptQuantum.setMessage('Ready to calculate <strong>quantum properties</strong> for the molecule?');
     promptQuantum.addResponseBtn('Indeed', function()
     {
         var $loading = $('<div class="meter"><span style="width: 100%"></span></div>');
@@ -330,6 +342,7 @@ $('.button.quantum').click(function () {
         promptCalculation.setMessage($loading);
         promptCalculation.setType("transparent");
         promptCalculation.show();
+        promptQuantum.cancel();
 
         var mol = getCurrentSDF();
         request("/ajax/submitquantum", {sdf:mol}, function (data)
@@ -341,7 +354,6 @@ $('.button.quantum').click(function () {
         }, function() {
             promptCalculation.cancel();
         });
-        promptQuantum.cancel();
     });
     promptQuantum.addCancelBtn("Not yet");
     promptQuantum.show();
@@ -418,6 +430,7 @@ var $searchFrm = $(".mc-editor-searchbar form");
 var $searchBar = $(".mc-editor-searchbar");
 var $searchBtn = $(".mc-editor-searchbar a");
 var $searchInp = $(".mc-editor-searchbar input");
+var $searchBarCloseBtn = $(".mc-editor-searchbar .searchbar-close");
 var $searchBarBtn = $(".mc-mobile-search a");
 
 
@@ -457,6 +470,11 @@ $searchBarBtn.click(function () {
 
     return false;
 
+});
+
+$searchBarCloseBtn.click(function() {
+    $('.mc-header').focus();
+    return false;
 });
 
 $searchFrm.submit(function(event) {

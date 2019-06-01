@@ -98,9 +98,14 @@ input[type=submit]:focus {
 
 
 body {
+/* 
+    https://fonts.google.com/specimen/Nunito
+    https://fonts.google.com/specimen/Montserrat
+*/
+
     /* font-family: "Fira Sans", sans-serif; */
     /*  "Varela Round", "century gothic", verdana; */
-    font-family: Montserrat, sans-serif;
+    font-family: Nunito, Montserrat, sans-serif;
     font-size: 14px;
     line-height: 30px;
 
@@ -333,6 +338,9 @@ table tr td.center {text-align:center;}
 .button:hover {
     background: #fff;
     border-color: #fff;
+    color:#fff;
+    background: rgb(0, 121, 211);
+    border-color: rgb(0, 121, 211);
 }
 .button:focus:hover,
 .button:focus,
@@ -374,6 +382,9 @@ table tr td.center {text-align:center;}
     background: white;
     border-color: white;
     color: #222;
+    color:#fff;
+    background: rgb(0, 121, 211);
+    border-color: rgb(0, 121, 211);
 }
 
 .button.icon:focus {
@@ -383,14 +394,14 @@ table tr td.center {text-align:center;}
 }
 
 .button.highlight {
-    background: rgb(0, 121, 211);
-    border-color: rgb(0, 121, 211);
-    color: #fff;
+    color:#fff;
+    background: #222;
+    border-color: #222;
 }
 .button.highlight:hover {
-    color:#222;
-    background: #fff;
-    border-color: #fff;
+    color:#fff;
+    background: rgb(0, 121, 211);
+    border-color: rgb(0, 121, 211);
 }
 
 .button.disabled {
@@ -415,7 +426,11 @@ table tr td.center {text-align:center;}
 	width: 18px;
 	height: 18px;
 }
-
+.button.icon.active img,
+.button.icon:focus img,
+.button.icon:hover img {
+    filter: invert(100%);
+}
 
 /* loading meter */
 /* https://css-tricks.com/css3-progress-bars/ */
@@ -532,10 +547,15 @@ input[type=text] {
 }
 input[type=text]:focus {
     border-color: rgb(0, 121, 211);
-    /* border-color:  rgb(126, 181, 222); */
     outline:0;
 }
 
+input[type=text].error {
+    border-color: #ef5476;
+}
+input[type=text].accept {
+    border-color: #2da776;
+}
 
 
 /* popup promp */
@@ -559,6 +579,7 @@ input[type=text]:focus {
 
     background: rgba(255,255,255,0.5);
     background: rgba(247,247,247,0.8);
+    /* background: rgba(0,0,0,0.05); */
     /* background: rgba(150,150,150,0.2); */
 
 }
@@ -578,7 +599,7 @@ input[type=text]:focus {
 
     padding:20px 30px;
 
-    border-radius: 3px;
+    border-radius: 5px;
 }
 .prompt-box.transparent {
     background: transparent;
@@ -589,18 +610,22 @@ input[type=text]:focus {
     font-size: 17px;
     font-weight: bold;
     padding: 5px 10px 0 10px;
+    text-align: center;
 }
 .prompt-box .prompt-message {
     padding: 10px 10px 10px 10px;
+    text-align: center;
 }
+.prompt-box .prompt-message strong {font-weight:bold;}
 .prompt-box .prompt-respond {
+    text-align: center;
 }
 
 .prompt-box .prompt-respond ul {
 }
 .prompt-box .prompt-respond ul li {
     display: inline-block;
-    margin: 10px 0 15px 10px;
+    margin: 10px 5px 10px 5px;
 }
 
 /* prompt loading */
@@ -814,7 +839,7 @@ input[type=text]:focus {
 .mc-editor-searchbar a.button:hover {
     background: none;
     border: none;
-    color: rgb(0, 121, 211);
+    /* color: rgb(0, 121, 211); */
 }
 .mc-editor-searchbar input {
     grid-area: search-bar;
@@ -824,9 +849,11 @@ input[type=text]:focus {
 
     display: block;
     background: white;
+    border-color: white;
+    border-color: #e0e0e0;
 
     border-radius: 4px;
-    border-color: white;
+    border-width: 2px;
     text-align: center;
 }
 
@@ -989,6 +1016,7 @@ input[type=text]:focus {
 
 
 .toggle700 {display: none !important; }
+.toggle-desktop {}
 
 @media only screen and (max-width: 1100px) {
 
@@ -1007,6 +1035,8 @@ input[type=text]:focus {
 }
 
 @media only screen and (max-width: 767px) {
+
+    .toggle-desktop {display: none !important;}
 
     .toggle700 {display: block !important;}
 
@@ -1066,6 +1096,11 @@ input[type=text]:focus {
         color: #222;
     }
 
+
+    .mc-editor-searchbar .button.searchbar-close {
+        top: 10px;
+    }
+
     .btnHeader {
         line-height: 40px;
         gid-area: header;
@@ -1087,6 +1122,9 @@ input[type=text]:focus {
 
         background: transparent;
         border-color: transparent;
+    }
+    .btnHeader .button.icon:hover {
+        color: rgb(0, 121, 211);
     }
 
 
@@ -1197,17 +1235,37 @@ input[type=text]:focus {
         margin: 0;
         text-align: center;
 
-        background: #f7f7f7;
-        background: #fff;
+        /* background: #f7f7f7; */
+        /* background: #fff; */
     }
     .toolset ul.bottombar li {
-        padding:10px 5px 10px 5px;
+        /* padding:10px 5px 10px 5px; */
     }
     .toolset ul.bottombar li .button {
-        height: 35px;
-        width: 35px;
+        /* height: 35px; */
+        /* width: 35px; */
         line-height: 35px;
-        font-size: 18px;
+        /* font-size: 18px; */
+    }
+
+    .toolset ul.rightbar {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        position: fixed;
+        bottom: 60px;
+        right: 0;
+
+        top: 50%;
+        transform: translateY(-50%);
+
+        z-index: -20;
+
+        width: 57px;
+        margin: 0;
+        text-align: center;
+
+        background: transparent;
     }
 
     .sidebar-cover {
