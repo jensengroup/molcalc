@@ -2,10 +2,13 @@
 
 cd molcalc/static
 
-wget https://use.fontawesome.com/releases/v5.7.1/fontawesome-free-5.7.1-web.zip
+VERSION=5.8.2
 
-unzip fontawesome-free-5.7.1-web.zip
+wget https://use.fontawesome.com/releases/v$VERSION/fontawesome-free-$VERSION-web.zip
 
-mv fontawesome-free-5.7.1-web fontawesome
+unzip fontawesome-free-$VERSION-web.zip
+
+rm -r fontawesome
+mv fontawesome-free-$VERSION-web fontawesome
 
 
