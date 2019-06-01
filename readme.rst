@@ -2,7 +2,9 @@
 MolCalc - The Molecule Calculator
 =================================
 
-Note: Currently version 2.0 is under construction. Version 1.3 is still hosted
+|screenshot|
+
+Important! Currently version 2.0 is *under construction*. Version 1.3 is still hosted
 at molcalc.org_ and source is avaliable at `github.com/jensengroup/molcalc-1.3`__.
 
 The molcule calculator is a small web-based interface for doing small-scale
@@ -15,6 +17,8 @@ Hosted at molcalc.org_.
 .. _github_molcalc13: https://github.com/jensengroup/molcalc-1.3
 
 __ github_molcalc13_
+
+.. |screenshot| image:: https://raw.githubusercontent.com/jensengroup/molcalc/master/screenshot.jpg
 
 Installation
 ------------
