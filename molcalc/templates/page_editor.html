@@ -4,23 +4,12 @@
 
     <title>MolCalc</title>
 
-    <meta name="theme-color" content="#ffffff" />
-
-    <meta name="google" content="notranslate" />
-	<meta name="mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-    <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/jquery-3.3.1.min.js') }}"></script>
+    {% include 'section_header.html' %}
 
     {% include 'chemtools_head.html' %}
     {% include 'jsmol_head.html' %}
 
-    <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/app.js') }}"></script>
     <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/editor.js') }}"></script>
-
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800" /> -->
-    <link rel="stylesheet" href="{{ request.static_url('molcalc:static/css/app.css') }}" />
-    <link rel="stylesheet" href="{{ request.static_url('molcalc:static/fontawesome/css/all.css') }}" />
 
 </head>
 <body>
@@ -33,7 +22,8 @@
 
         <section class="mc-mobile-navigation toggle700 btnHeader left">
             <a class="button icon btnSidebar" href="#sidebarEditor">
-				<i class="fas fa-angle-right"></i>
+				<!-- <i class="fas fa&#45;angle&#45;right"></i> -->
+				<i class="fas fa-bars"></i>
             </a>
         </section>
 
@@ -53,10 +43,13 @@
 
         <section class="mc-editor-searchbar">
             <form>
-            <input type="text" placeholder="Search" id="searchbar" />
+            <input type="text" placeholder="Search" autocomplete="off" id="searchbar" />
             <a class="button icon">
                 <i class="fas fa-search"></i>
             </a>
+            <span class="toggle700 searchbar-close button icon">
+                <i class="fas fa-times"></i>
+            </span>
             </form>
         </section>
 
@@ -90,8 +83,8 @@
             </section>
 
             <section class="toolset quantum">
-				<h2>Calculate properties</h2>
-                <ul>
+				<h2 class="toggle-desktop">Calculate properties</h2>
+                <ul class="bottombar">
 
                     <li><a href="#" class="button quantum highlight">Quantum</a></li>
                     <li><a href="#" class="button getName">Get name</a></li>
