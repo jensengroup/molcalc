@@ -1,8 +1,15 @@
 #!/bin/bash
 
-wget https://code.jquery.com/jquery-3.3.1.min.js
+VERSION=3.3.1
 
-mv jquery-3.3.1.min.js js
+cd molcalc/static/
+mkdir -p jquery
+
+wget https://code.jquery.com/jquery-$VERSION.min.js
+
+mv jquery-$VERSION.min.js jquery/jquery.min.js
+touch jquery/jquery.min.js
+
 
 
 

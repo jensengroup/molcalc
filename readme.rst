@@ -51,7 +51,7 @@ will execute the following points.
     conda env create -f environment.yml -p env
     env/bin/python setup.py develop
 
-3. Download the JavaScript and frontend libaries, using the scripts
+3. Download the JavaScript and frontend libaries, using the scripts. You need `unzip` and `wget` installed.
 
 .. code-block:: bash
 

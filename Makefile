@@ -1,10 +1,12 @@
 
-PYTHON=anaconda
-CONDA=anaconda-conda
+PYTHON=env/bin/python
+PSERVE=env/bin/pserve
+CONDA=conda
 
 all: env setup_assets molcalc/data
 
 serve_development:
+	ip a | grep inet
 	env/bin/pserve development.ini --reload
 
 serve_production:
@@ -25,7 +27,7 @@ env:
 molcalc/data: scripts/setup_datadir.sh
 	bash scripts/setup_datadir.sh
 
-setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/js
+setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
@@ -36,7 +38,7 @@ molcalc/static/jsmol: scripts/setup_jsmol.sh
 molcalc/static/fontawesome: scripts/setup_fontawesome.sh
 	bash scripts/setup_fontawesome.sh
 
-molcalc/static/js: scripts/setup_jquery.sh
+molcalc/static/jquery/jquery.min.js: scripts/setup_jquery.sh
 	bash scripts/setup_jquery.sh
 
 
