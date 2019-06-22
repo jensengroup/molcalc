@@ -44,8 +44,12 @@ molcalc/static/jquery/jquery.min.js: scripts/setup_jquery.sh
 
 backup:
 	# Make backup of database
+	cp database.sqlite database-`date +%m-%d-%Y`.sqlite
 
 clean:
 	# Remove database
+	rm database.sqlite
 
+super-clean:
+	rm -r molcalc/static/jquery/jquery.min.js molcalc/static/fontawesome molcalc/static/jsmol molcalc/static/chemdoodleweb
 
