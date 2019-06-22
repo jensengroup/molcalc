@@ -262,7 +262,7 @@ def ajax_submitquantum(request):
     for _ in range(2):
         i = sdfstr.index('\n')
         sdfstr = sdfstr[i+1:]
-    sdfstr = "\n\n\n" + sdfstr
+    sdfstr = "\n\n" + sdfstr
 
     # Get a 2D Picture
     svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)

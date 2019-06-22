@@ -10,107 +10,6 @@ function getEditorDimensions()
     return [width, height];
 }
 
-
-// Chemdoodle functions
-function chemdoodleResize(canvas)
-{
-    var dim = getEditorDimensions();
-    var width = dim[0];
-    var height = dim[1];
-    canvas.resize(width, height);
-    setTimeout(function() {
-        chemdoodleClick('#sketcherSingle_button_scale_plus');
-    }, 50);
-}
-
-function chemdoodleClick(btnId)
-{
-    var $btn;
-
-    if (btnId.includes("#"))
-    {
-        $btn = $(btnId)[0];
-    }
-    else
-    {
-        $btn = $('#'+btnId)[0];
-    }
-
-    $btn.click();
-    return 1;
-}
-
-function chemdoodleEditorBtn($btn)
-{
-    var btnId = $btn.attr("href");
-    chemdoodleClick(btnId);
-    return false;
-}
-
-function chemdoodleGetMol(canvas)
-{
-    var mol = canvas.getMolecule();
-    var molFile = ChemDoodle.writeMOL(mol);
-    return molFile;
-}
-
-function chemdoodleSetMol(canvas, mol)
-{
-    molcd = ChemDoodle.readMOL(mol)
-    canvas.loadMolecule(molcd);
-    chemdoodleResize(canvas);
-    return false;
-}
-
-
-// JSmol functions
-function jsmolSetMol(canvasObj, molStr)
-{
-    // http://wiki.jmol.org/index.php/File_formats/Chemical_Structure
-
-    jsmolCmd(canvasObj, "load inline '"+molStr+"'");
-    jsmolCmd(canvasObj, "minimize addHydrogens");
-
-    return false;
-}
-
-function jsmolSetSmiles(canvasObj, smilesStr)
-{
-    // TODO
-
-    //load $smilesString
-
-    // You can load SMILES strings, and Jmol will turn them into 3D models
-    // using the NIH Cactus server. As for reading files from any source
-    // outside your domain, you will have to use the signed applet or Jmol
-    // application to do this. These files can be saved as MOL files using
-    // write xxx.mol or load $xxxx AS "myfile.mol", and if the conformation
-    // is not to your liking, switching to set modelkitMode or using set
-    // picking dragMinimize you can quickly adjust the model to the desired
-    // conformation. Quotation marks should be used for names that include
-    // the space character: load "$ethyl acetate".
-
-    return false;
-}
-
-function jsmolResize(canvasObj)
-{
-    var dim = getEditorDimensions();
-    var width = dim[0];
-    var height = dim[1];
-
-    // canvas.resize(width, height);
-    // chemdoodleClick('#sketcherSingle_button_scale_plus'); // Zoom
-
-    return false;
-}
-
-function jsmolCmd(jmolObj, cmd)
-{
-    Jmol.script(jmolObj, cmd);
-    return false;
-}
-
 // View checking
 
 function getView()
@@ -163,7 +62,7 @@ $('.toolset.chemdoodle a.button.chemdoodle').click(function () {
 
 waitForElement("#sketcherSingle", function() {
     setTimeout(function() {
-        chemdoodleResize(sketcher); // Resize
+        chemdoodleResize(sketcher, getEditorDimensions()); // Resize
     }, 100);
 });
 
@@ -236,7 +135,7 @@ function onWindowResize()
 {
     $(window).on('resize', function()
     {
-        chemdoodleResize(sketcher);
+        chemdoodleResize(sketcher, getEditorDimensions());
     });
 }
 
@@ -262,7 +161,9 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
     if(cont == "3d")
     {
         var sdf = chemdoodleGetMol(sketcher);
+
         jsmolSetMol(myJmol1, sdf);
+
         $('#editor-chemdoodle').hide();
         $('.toolset.chemdoodle').hide();
         $('#editor-jsmol').show();
@@ -271,7 +172,10 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
     else if (cont == "2d")
     {
         var sdf = jsmolGetMol(myJmol1);
+
         chemdoodleSetMol(sketcher, sdf);
+        chemdoodleResize(sketcher, getEditorDimensions());
+
         $('#editor-jsmol').hide();
         $('.toolset.jsmol').hide();
         $('#editor-chemdoodle').show();
@@ -288,15 +192,9 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
 // Load molecules
 $('.toolset .load_methane').click(function () {
 
-    // TODO Load in javascript file
-    var filename = "static/molecules/methane.sdf";
+    // Structure defined in html template
 
-    request(filename, {}, function(data) {
-        var sdf = data;
-        setCurrentSDF(sdf);
-    }, function(data) {
-        // TODO alert
-    });
+    setCurrentSDF(sdfMethane);
 
     return false;
 });
@@ -347,7 +245,10 @@ $('.button.quantum').click(function () {
         var mol = getCurrentSDF();
         request("/ajax/submitquantum", {sdf:mol}, function (data)
         {
-            url = window.location.href.replace('editor', '');
+            url = window.location.href;
+            url = url.split("#");
+            url = url[0]
+            url = url.replace('editor', '');
             url = url + 'calculations/' + data["hashkey"];
             window.location = url;
             promptCalculation.cancel();

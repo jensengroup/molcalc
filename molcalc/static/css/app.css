@@ -763,6 +763,10 @@ input[type=text].accept {
     letter-spacing: 0px;
 
 }
+.mc-header h1 a {
+    text-decoration: none;
+    color: #333;
+}
 
 .mc-navigation {
 	grid-area: navigation;

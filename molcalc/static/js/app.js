@@ -28,6 +28,8 @@ var waitForElement = function(selector, callback) {
 };
 
 
+// AJAX wrapper
+
 function request(url, data, successFunction, failedFunction)
 {
     var $xhr = $.ajax({
@@ -326,7 +328,7 @@ $(function()
 
     } // end Prompt
 
-});
+}); // end functions
 
 
 // JSmol ////////////////////////////////////////////////////////
@@ -362,6 +364,109 @@ function jsmolGetSmiles(canvasObj)
 
     return smiles;
 }
+
+
+// JSmol functions
+function jsmolSetMol(canvasObj, molStr)
+{
+    // http://wiki.jmol.org/index.php/File_formats/Chemical_Structure
+
+    jsmolCmd(canvasObj, "load inline '"+molStr+"'");
+    jsmolCmd(canvasObj, "minimize addHydrogens");
+
+    return false;
+}
+
+
+function jsmolSetSmiles(canvasObj, smilesStr)
+{
+    // TODO
+
+    //load $smilesString
+
+    // You can load SMILES strings, and Jmol will turn them into 3D models
+    // using the NIH Cactus server. As for reading files from any source
+    // outside your domain, you will have to use the signed applet or Jmol
+    // application to do this. These files can be saved as MOL files using
+    // write xxx.mol or load $xxxx AS "myfile.mol", and if the conformation
+    // is not to your liking, switching to set modelkitMode or using set
+    // picking dragMinimize you can quickly adjust the model to the desired
+    // conformation. Quotation marks should be used for names that include
+    // the space character: load "$ethyl acetate".
+
+    return false;
+}
+
+
+function jsmolResize(canvasObj)
+{
+    var dim = getEditorDimensions();
+    var width = dim[0];
+    var height = dim[1];
+
+    // canvas.resize(width, height);
+    // chemdoodleClick('#sketcherSingle_button_scale_plus'); // Zoom
+
+    return false;
+}
+
+
+function jsmolCmd(jmolObj, cmd)
+{
+    Jmol.script(jmolObj, cmd);
+    return false;
+}
+
+// ChemDoodle
+
+function chemdoodleResize(canvas, dim)
+{
+    var width = dim[0];
+    var height = dim[1];
+    canvas.resize(width, height);
+    setTimeout(function() {
+        chemdoodleClick('#sketcherSingle_button_scale_plus');
+    }, 50);
+}
+
+function chemdoodleClick(btnId)
+{
+    var $btn;
+
+    if (btnId.includes("#"))
+    {
+        $btn = $(btnId)[0];
+    }
+    else
+    {
+        $btn = $('#'+btnId)[0];
+    }
+
+    $btn.click();
+    return 1;
+}
+
+function chemdoodleEditorBtn($btn)
+{
+    var btnId = $btn.attr("href");
+    chemdoodleClick(btnId);
+    return false;
+}
+
+function chemdoodleGetMol(canvas)
+{
+    var mol = canvas.getMolecule();
+    var molFile = ChemDoodle.writeMOL(mol);
+    return molFile;
+}
+
+function chemdoodleSetMol(canvas, mol)
+{
+    molcd = ChemDoodle.readMOL(mol);
+    canvas.loadMolecule(molcd);
+    return false;
+}
+
 
 
 // Production ///////////////////////////////////////////////////////
@@ -410,3 +515,4 @@ $sidebarCloseBtns.click(function (){
 ///////////////////////////////////////////////////////////
 
 });
+
