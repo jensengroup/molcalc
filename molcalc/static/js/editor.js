@@ -193,37 +193,17 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
 $('.toolset .load_methane').click(function () {
 
     // Structure defined in html template
-
     setCurrentSDF(sdfMethane);
-
     return false;
 });
 $('.toolset .load_benzene').click(function () {
 
-    // TODO Load in javascript file
-    var filename = "static/molecules/benzene.sdf";
-
-    request(filename, {}, function(data) {
-        var sdf = data;
-        setCurrentSDF(sdf);
-    }, function(data) {
-        // TODO alert
-    });
-
+    setCurrentSDF(sdfBenzene);
     return false;
 });
 $('.toolset .load_water').click(function () {
 
-    // TODO Load in javascript file
-    var filename = "static/molecules/dioxidane.sdf";
-
-    request(filename, {}, function(data) {
-        var sdf = data;
-        setCurrentSDF(sdf);
-    }, function(data) {
-        // TODO alert
-    });
-
+    setCurrentSDF(sdfWaterdimer);
     return false;
 });
 
