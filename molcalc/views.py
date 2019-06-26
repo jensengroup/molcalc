@@ -184,10 +184,21 @@ def ajax_submitquantum(request):
     # Get rdkit
     molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
 
+    # TODO Set conformation and not embed molecule (will fail for some graphs)
+
     if molobj is None:
         status = status.split("]")
         status = status[-1]
         return {'error':'Error 141 - rdkit error', 'message': status}
+
+    try:
+        molobj_h = cheminfo.molobj_add_hydrogens(molobj)
+        conf = molobj_h.GetConformer()
+
+    except ValueError:
+        # Error
+        return {'error':'Error 141 - rdkit error', 'message': "Error. Server was unable to generate conformations for this molecule"}
+
 
     # Get that smile on your face
     smiles = cheminfo.molobj_to_smiles(molobj)
@@ -227,6 +238,8 @@ def ajax_submitquantum(request):
 
     # Minimize with forcefield first
     molobj = cheminfo.molobj_add_hydrogens(molobj)
+
+
     cheminfo.molobj_optimize(molobj)
 
     header = """ $basis gbasis=pm3 $end
@@ -265,6 +278,7 @@ def ajax_submitquantum(request):
     sdfstr = "\n\n" + sdfstr
 
     # Get a 2D Picture
+    # TODO Compute 2D coordinates
     svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)
 
     # Success, setup database
