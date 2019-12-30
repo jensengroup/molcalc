@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+
 // Editor specific wrapper functions
 
 function getEditorDimensions()
@@ -243,7 +244,6 @@ $('.button.quantum').click(function () {
 });
 
 
-
 // Get name
 $('.button.getName').click(function () {
 
@@ -251,54 +251,78 @@ $('.button.getName').click(function () {
     var $loading = $('<div class="meter"><span style="width: 100%"></span></div>');
     var promptWait = new $.Prompt();
     promptWait.setMessage($loading);
+    promptWait.setType("transparent");
     promptWait.show();
 
+    // prepare smiles
     var mol = getCurrentSDF();
+    var search = sdfToSmiles(mol);
 
-    request("/ajax/sdf", {"sdf": mol}, function (data)
+    requestCactus(search, 'iupac_name', function(data)
+    {
+        name = data;
+        name = name.toLowerCase();
+
+        var promptCactus = new $.Prompt();
+        promptCactus.setMessage(name);
+        promptCactus.addCancelBtn("Thanks");
+        promptCactus.show();
+
+        promptWait.cancel();
+
+    }, function(status)
     {
         promptWait.cancel();
-        var promptCalculation = new $.Prompt();
-
-        if(data["error"]) {
-
-            promptCalculation.setMessage(data["message"]);
-
-        } else {
-
-            // contact cactus
-            promptCalculation.setMessage($loading);
-            promptCalculation.setType("transparent");
-
-            // prepare smiles
-            search = data["smiles"];
-
-            requestCactus(search, 'iupac_name', function(data)
-            {
-
-                name = data;
-                name = name.toLowerCase();
-
-                var promptCactus = new $.Prompt();
-                promptCactus.setMessage(name);
-                promptCactus.addCancelBtn("Thanks");
-                promptCactus.show();
-
-                promptCalculation.cancel();
-
-
-            }, function(status)
-            {
-                promptCalculation.cancel();
-            });
-
-        } // data
-
-        promptCalculation.show();
-
-    }, function() {
-        promptWait.cancel();
     });
+
+    // var promptWait = new $.Prompt();
+    // promptWait.setMessage($loading);
+    // promptWait.show();
+    //
+    // request("/ajax/sdf", {"sdf": mol}, function (data)
+    // {
+    //     promptWait.cancel();
+    //     var promptCalculation = new $.Prompt();
+    //
+    //     if(data["error"]) {
+    //
+    //         promptCalculation.setMessage(data["message"]);
+    //
+    //     } else {
+    //
+    //         // contact cactus
+    //         promptCalculation.setMessage($loading);
+    //         promptCalculation.setType("transparent");
+    //
+    //         // prepare smiles
+    //         search = data["smiles"];
+    //
+    //         requestCactus(search, 'iupac_name', function(data)
+    //         {
+    //
+    //             name = data;
+    //             name = name.toLowerCase();
+    //
+    //             var promptCactus = new $.Prompt();
+    //             promptCactus.setMessage(name);
+    //             promptCactus.addCancelBtn("Thanks");
+    //             promptCactus.show();
+    //
+    //             promptCalculation.cancel();
+    //
+    //
+    //         }, function(status)
+    //         {
+    //             promptCalculation.cancel();
+    //         });
+    //
+    //     } // data
+    //
+    //     promptCalculation.show();
+    //
+    // }, function() {
+    //     promptWait.cancel();
+    // });
 
     return false;
 });
@@ -379,17 +403,21 @@ $searchFrm.submit(function(event) {
         promptSearch.setMessage("Converting " + data);
         promptSearch.show();
 
-        data = {"smiles": data};
+        // Convert to sdf
+        var sdfstr = smilesToSdf(data);
+        setCurrentSDF(sdfstr);
 
-        request("/ajax/smiles", data, function(rtnData)
-        {
-            var sdfstr = rtnData["sdf"][0];
+        promptSearch.cancel();
+        onWindowResize();
 
-            setCurrentSDF(sdfstr);
-
-            promptSearch.cancel();
-            onWindowResize();
-        });
+        // data = {"smiles": data};
+        // request("/ajax/smiles", data, function(rtnData)
+        // {
+        //     var sdfstr = rtnData["sdf"][0];
+        //     setCurrentSDF(sdfstr);
+        //     promptSearch.cancel();
+        //     onWindowResize();
+        // });
 
         // reset search on success
         $searchInp.focus();

@@ -62,8 +62,8 @@ will execute the following points.
     bash scripts/setup_jquery.sh
 
 
-Deploy
-------
+Deploy locally
+--------------
 
 Deploy using either development or production ``ini`` files.
 
@@ -73,6 +73,12 @@ Deploy using either development or production ``ini`` files.
 
 
 And molcalc should now be avaliable on ``localhost:6543``, based on the settings of development.ini.
+
+
+Deploy cloud
+------------
+
+# TODO add guide to deploy on AWS
 
 
 Dependencies
@@ -139,3 +145,15 @@ TODO Better texts
 
     Better FAQ interface
 
+
+Problems
+--------
+
+if rdkit has problems finding libxrender.so then you need to install some of the following
+
+    apt install -y libxrender-dev
+
+or
+
+    ./env/bin/conda install nox
+    ./env/bin/conda install cairo

@@ -9,12 +9,13 @@
     {% include 'chemtools_head.html' %}
     {% include 'jsmol_head.html' %}
 
+    <script type="text/javascript" src="{{ request.static_url('molcalc:static/rdkit/rdkit.js') }}"></script>
 
 <script type="text/javascript">
 
-var sdfMethane = `CH4
-APtclcactv01171713213D 0   0.00000     0.00000
- 
+var sdfMethane = `
+
+
   5  4  0  0  0  0  0  0  0  0999 V2000
     0.0000   -0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
     0.0000   -0.8900   -0.6293 H   0  0  0  0  0  0  0  0  0  0  0  0
@@ -29,7 +30,7 @@ M  END
 $$$$
 `;
 
-var sdfBenzene = `Benzene
+var sdfBenzene = `
 
 
   6  6  0  0  0  0            999 V2000
@@ -50,7 +51,7 @@ $$$$
 `;
 
 
-var sdfWaterdimer = `di h2o
+var sdfWaterdimer = `
 
 
   6  4  0  0  0  0  0  0  0  0999 V2000

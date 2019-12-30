@@ -110,7 +110,6 @@ function requestCactus(from, to, successFunction, failedFunction)
 
     var url = "https://cactus.nci.nih.gov/chemical/structure/"+ search +"/" + to
 
-    console.log(url);
     var promptError= new $.Prompt();
     promptError.addCancelBtn("Okay");
 
@@ -329,6 +328,39 @@ $(function()
     } // end Prompt
 
 }); // end functions
+
+// RDKit ////////////////////////////////////////////////////////
+
+
+function smilesToSdf(smi)
+{
+
+    var mol = RDKit.Molecule.fromSmiles( smi );
+
+	mol.addHs();
+	mol.Embedmolecule3D();
+	mol.removeHs();
+	mol3d = mol.sdwrite();
+
+	return mol3d;
+}
+
+function sdfToSmiles(sdf)
+{
+    /*
+
+        NOTE Seems like removeHs is added automatically
+
+    */
+    var mol = RDKit.Molecule.MolBlockToMol(sdf);
+
+    var smi = mol.smilewrite();
+    var arr = smi.split(" ");
+    var first = arr.shift();
+    smi = first
+
+    return smi;
+}
 
 
 // JSmol ////////////////////////////////////////////////////////

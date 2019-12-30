@@ -27,7 +27,7 @@ env:
 molcalc/data: scripts/setup_datadir.sh
 	bash scripts/setup_datadir.sh
 
-setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js
+setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js molcalc/static/rdkit/rdkit.js
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
@@ -40,6 +40,9 @@ molcalc/static/fontawesome: scripts/setup_fontawesome.sh
 
 molcalc/static/jquery/jquery.min.js: scripts/setup_jquery.sh
 	bash scripts/setup_jquery.sh
+
+molcalc/static/rdkit/rdkit.js: scripts/setup_rdkit.sh
+	bash scripts/setup_rdkit.sh
 
 
 backup:
