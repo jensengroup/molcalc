@@ -1,0 +1,824 @@
+
+----- GAMESS execution script 'rungms' -----
+This job is running on host laptop
+under operating system Linux at Tue Dec 31 21:54:43 CET 2019
+Available scratch disk space (Kbyte units) at beginning of the job is
+Filesystem     1K-blocks      Used Available Use% Mounted on
+/dev/nvme0n1p2 228311460 209804764   6839448  97% /
+GAMESS temporary binary files will be written to /home/charnley/scr
+GAMESS supplementary output files will be written to /home/charnley/scr
+Copying input file gamess_methane_sol.inp to your run's scratch directory...
+cp gamess_methane_sol.inp /home/charnley/scr/gamess_methane_sol.F05
+unset echo
+/home/charnley/opt/gamess/gamess-github/ddikick.x /home/charnley/opt/gamess/gamess-github/gamess.00.x gamess_methane_sol -ddi 1 1 laptop -scr /home/charnley/scr
+
+ Distributed Data Interface kickoff program.
+ Initiating 1 compute processes on 1 nodes to run the following command:
+ /home/charnley/opt/gamess/gamess-github/gamess.00.x gamess_methane_sol 
+
+          ******************************************************
+          *         GAMESS VERSION = 30 SEP 2018 (R3)         *
+          *             FROM IOWA STATE UNIVERSITY             *
+          * M.W.SCHMIDT, K.K.BALDRIDGE, J.A.BOATZ, S.T.ELBERT, *
+          *   M.S.GORDON, J.H.JENSEN, S.KOSEKI, N.MATSUNAGA,   *
+          *          K.A.NGUYEN, S.J.SU, T.L.WINDUS,           *
+          *       TOGETHER WITH M.DUPUIS, J.A.MONTGOMERY       *
+          *         J.COMPUT.CHEM.  14, 1347-1363(1993)        *
+          **************** 64 BIT LINUX VERSION ****************
+
+  SINCE 1993, STUDENTS AND POSTDOCS WORKING AT IOWA STATE UNIVERSITY
+  AND ALSO IN THEIR VARIOUS JOBS AFTER LEAVING ISU HAVE MADE IMPORTANT
+  CONTRIBUTIONS TO THE CODE:
+     IVANA ADAMOVIC, CHRISTINE AIKENS, YURI ALEXEEV, POOJA ARORA,
+     ANDREY ASADCHEV, ROB BELL, PRADIPTA BANDYOPADHYAY, JONATHAN BENTZ,
+     BRETT BODE, KURT BRORSEN, CALEB CARLIN, GALINA CHABAN, WEI CHEN,
+     CHEOL HO CHOI, PAUL DAY, ALBERT DEFUSCO, NUWAN DESILVA, TIM DUDLEY,
+     DMITRI FEDOROV, ALEX FINDLATER, GRAHAM FLETCHER, MARK FREITAG,
+     KURT GLAESEMANN, ANASTASIA GUNINA,
+     DAN KEMP, GRANT MERRILL, NORIYUKI MINEZAWA, JONATHAN MULLIN,
+     TAKESHI NAGATA, SEAN NEDD, HEATHER NETZLOFF, BOSILJKA NJEGIC, RYAN OLSON,
+     MIKE PAK, BUU PHAM,
+     SPENCER PRUITT, LUKE ROSKOP, JIM SHOEMAKER, LYUDMILA SLIPCHENKO,
+     TONY SMITH, SAROM SOK LEANG, JIE SONG, TETSUYA TAKETSUGU, SIMON WEBB,
+     PENG XU, SOOHAENG YOO, FEDERICO ZAHARIEV
+
+  ADDITIONAL CODE HAS BEEN PROVIDED BY COLLABORATORS IN OTHER GROUPS:
+     IOWA STATE UNIVERSITY:
+          JOE IVANIC, AARON WEST, LAIMUTIS BYTAUTAS, KLAUS RUEDENBERG
+     UNIVERSITY OF TOKYO: KIMIHIKO HIRAO, TAKAHITO NAKAJIMA,
+          TAKAO TSUNEDA, MUNEAKI KAMIYA, SUSUMU YANAGISAWA,
+          KIYOSHI YAGI, MAHITO CHIBA, SEIKEN TOKURA, NAOAKI KAWAKAMI
+     UNIVERSITY OF AARHUS: FRANK JENSEN
+     UNIVERSITY OF IOWA: VISVALDAS KAIRYS, HUI LI
+     NATIONAL INST. OF STANDARDS AND TECHNOLOGY: WALT STEVENS, DAVID GARMER
+     UNIVERSITY OF PISA: BENEDETTA MENNUCCI, JACOPO TOMASI
+     UNIVERSITY OF MEMPHIS: HENRY KURTZ, PRAKASHAN KORAMBATH
+     UNIVERSITY OF ALBERTA: TOBY ZENG, MARIUSZ KLOBUKOWSKI
+     UNIVERSITY OF NEW ENGLAND: MARK SPACKMAN
+     MIE UNIVERSITY: HIROAKI UMEDA
+     NAT. INST. OF ADVANCED INDUSTRIAL SCIENCE AND TECHNOLOGY: KAZUO KITAURA
+     MICHIGAN STATE UNIVERSITY:
+          KAROL KOWALSKI, MARTA WLOCH, JEFFREY GOUR, JESSE LUTZ,
+          WEI LI, JUN SHEN, J. EMILIANO DEUSTUA, PIOTR PIECUCH
+     UNIVERSITY OF MINNESOTA:
+          YINAN SHU
+     UNIVERSITY OF SILESIA: MONIKA MUSIAL, STANISLAW KUCHARSKI
+     FACULTES UNIVERSITAIRES NOTRE-DAME DE LA PAIX:
+          OLIVIER QUINET, BENOIT CHAMPAGNE
+     UNIVERSITY OF CALIFORNIA - SANTA BARBARA: BERNARD KIRTMAN
+     INSTITUTE FOR MOLECULAR SCIENCE:
+          KAZUYA ISHIMURA, MICHIO KATOUDA, AND SHIGERU NAGASE
+     UNIVERSITY OF NOTRE DAME: ANNA POMOGAEVA, DAN CHIPMAN
+     KYUSHU UNIVERSITY:
+          HARUYUKI NAKANO,
+          FENG LONG GU, JACEK KORCHOWIEC, MARCIN MAKOWSKI, AND YURIKO AOKI,
+          HIROTOSHI MORI AND EISAKU MIYOSHI
+     PENNSYLVANIA STATE UNIVERSITY:
+          TZVETELIN IORDANOV, CHET SWALINA, JONATHAN SKONE,
+          SHARON HAMMES-SCHIFFER
+     WASEDA UNIVERSITY:
+          MASATO KOBAYASHI, TOMOKO AKAMA, TSUGUKI TOUMA,
+          TAKESHI YOSHIKAWA, YASUHIRO IKABATA, JUNJI SEINO,
+          YUYA NAKAJIMA, HIROMI NAKAI
+     NANJING UNIVERSITY: SHUHUA LI
+     UNIVERSITY OF NEBRASKA:
+          PEIFENG SU, DEJUN SI, NANDUN THELLAMUREGE, YALI WANG, HUI LI
+     UNIVERSITY OF ZURICH: ROBERTO PEVERATI, KIM BALDRIDGE
+     N. COPERNICUS UNIVERSITY AND JACKSON STATE UNIVERSITY:
+          MARIA BARYSZ
+     UNIVERSITY OF COPENHAGEN: Jimmy Kromann, CASPER STEINMANN
+     TOKYO INSTITUTE OF TECHNOLOGY: HIROYA NAKATA
+     NAGOYA UNIVERSITY: YOSHIO NISHIMOTO, STEPHAN IRLE
+     MOSCOW STATE UNIVERSITY: VLADIMIR MIRONOV
+
+ EXECUTION OF GAMESS BEGUN Tue Dec 31 21:54:43 2019
+
+            ECHO OF THE FIRST FEW INPUT CARDS -
+ INPUT CARD> $system                                                                        
+ INPUT CARD>    mwords=125                                                                  
+ INPUT CARD> $end                                                                           
+ INPUT CARD> $basis                                                                         
+ INPUT CARD>    gbasis=PM3                                                                  
+ INPUT CARD> $end                                                                           
+ INPUT CARD> $contrl                                                                        
+ INPUT CARD>    scftyp=RHF                                                                  
+ INPUT CARD>    runtyp=energy                                                               
+ INPUT CARD>    icharg=0                                                                    
+ INPUT CARD> $end                                                                           
+ INPUT CARD> $pcm                                                                           
+ INPUT CARD>    solvnt=water                                                                
+ INPUT CARD>    mxts=15000                                                                  
+ INPUT CARD>    icav=1                                                                      
+ INPUT CARD>    idisp=1                                                                     
+ INPUT CARD> $end                                                                           
+ INPUT CARD> $tescav                                                                        
+ INPUT CARD>    mthall=4                                                                    
+ INPUT CARD>    ntsall=60                                                                   
+ INPUT CARD> $end                                                                           
+ INPUT CARD>                                                                                
+ INPUT CARD> $data                                                                          
+ INPUT CARD>Title                                                                           
+ INPUT CARD>C1                                                                              
+ INPUT CARD>C     6.0    0.000000     -0.000000    0.000000                                 
+ INPUT CARD>H     1.0    0.000000     -0.890000    -0.629300                                
+ INPUT CARD>H     1.0    0.000000     0.890000    -0.629300                                 
+ INPUT CARD>H     1.0    -0.890000     -0.000000    0.629300                                
+ INPUT CARD>H     1.0    0.890000     -0.000000    0.629300                                 
+ INPUT CARD> $end                                                                           
+  125000000 WORDS OF MEMORY AVAILABLE
+
+     BASIS OPTIONS
+     -------------
+     GBASIS=PM3          IGAUSS=       0      POLAR=NONE    
+     NDFUNC=       0     NFFUNC=       0     DIFFSP=       F
+     NPFUNC=       0      DIFFS=       F     BASNAM=        
+
+
+     RUN TITLE
+     ---------
+ Title                                                                           
+
+ THE POINT GROUP OF THE MOLECULE IS C1      
+ THE ORDER OF THE PRINCIPAL AXIS IS     0
+
+ ATOM      ATOMIC                      COORDINATES (BOHR)
+           CHARGE         X                   Y                   Z
+ C           6.0     0.0000000000       -0.0000000000        0.0000000000
+ H           1.0     0.0000000000       -1.6818561291       -1.1892045641
+ H           1.0     0.0000000000        1.6818561291       -1.1892045641
+ H           1.0    -1.6818561291       -0.0000000000        1.1892045641
+ H           1.0     1.6818561291       -0.0000000000        1.1892045641
+
+          INTERNUCLEAR DISTANCES (ANGS.)
+          ------------------------------
+
+                1 C          2 H          3 H          4 H          5 H     
+
+   1 C       0.0000000    1.0900085 *  1.0900085 *  1.0900085 *  1.0900085 *
+   2 H       1.0900085 *  0.0000000    1.7800000 *  1.7799646 *  1.7799646 *
+   3 H       1.0900085 *  1.7800000 *  0.0000000    1.7799646 *  1.7799646 *
+   4 H       1.0900085 *  1.7799646 *  1.7799646 *  0.0000000    1.7800000 *
+   5 H       1.0900085 *  1.7799646 *  1.7799646 *  1.7800000 *  0.0000000  
+
+  * ... LESS THAN  3.000
+
+
+ TOTAL NUMBER OF BASIS SET SHELLS             =    5
+ NUMBER OF CARTESIAN GAUSSIAN BASIS FUNCTIONS =    8
+ NUMBER OF ELECTRONS                          =    8
+ CHARGE OF MOLECULE                           =    0
+ SPIN MULTIPLICITY                            =    1
+ NUMBER OF OCCUPIED ORBITALS (ALPHA)          =    4
+ NUMBER OF OCCUPIED ORBITALS (BETA )          =    4
+ TOTAL NUMBER OF ATOMS                        =    5
+ THE NUCLEAR REPULSION ENERGY IS       13.4352856837
+
+ THE PARAMETERS USED IN THIS CALCULATION ARE DESCRIBED IN:
+
+  H: (PM3): J. J. P. STEWART, J. COMP. CHEM.     10, 209 (1989).                
+  C: (PM3): J. J. P. STEWART, J. COMP. CHEM.     10, 209 (1989).                
+
+ THERE ARE    1 HEAVY AND    4 LIGHT ATOMS,
+ YIELDING A TOTAL OF        46 MOPAC 2E- INTEGRALS.
+
+     $CONTRL OPTIONS
+     ---------------
+ SCFTYP=RHF          RUNTYP=ENERGY       EXETYP=RUN     
+ MPLEVL=       0     CITYP =NONE         CCTYP =NONE         VBTYP =NONE    
+ DFTTYP=NONE         TDDFT =NONE    
+ MULT  =       1     ICHARG=       0     NZVAR =       0     COORD =UNIQUE  
+ PP    =NONE         RELWFN=NONE         LOCAL =NONE         NUMGRD=       F
+ ISPHER=      -1     NOSYM =       0     MAXIT =      30     UNITS =ANGS    
+ PLTORB=       F     MOLPLT=       F     AIMPAC=       F     FRIEND=        
+ NPRINT=       7     IREST =       0     GEOM  =INPUT   
+ NORMF =       0     NORMP =       0     ITOL  =      20     ICUT  =       9
+ INTTYP=BEST         GRDTYP=BEST         QMTTOL= 1.0E-06
+
+     $SYSTEM OPTIONS
+     ---------------
+  REPLICATED MEMORY=   125000000 WORDS (ON EVERY NODE).
+ DISTRIBUTED MEMDDI=           0 MILLION WORDS IN AGGREGATE,
+ MEMDDI DISTRIBUTED OVER   1 PROCESSORS IS           0 WORDS/PROCESSOR.
+ TOTAL MEMORY REQUESTED ON EACH PROCESSOR=   125000000 WORDS.
+ TIMLIM=      525600.00 MINUTES, OR     365.0 DAYS.
+ PARALL= F  BALTYP=  DLB     KDIAG=    0  COREFL= F
+ MXSEQ2=     300 MXSEQ3=     150  mem10=         0
+
+ ** LOOKING UP INTERNALLY STORED DATA FOR SOLVENT=WATER    **
+ OPTICAL AND PHYSICAL CONSTANTS:
+ EPS= 78.390; EPSINF=  1.776; RSOLV=  1.385 A; VMOL=  18.070 ML/MOL;
+ TCE= .25700E-03 1/K; STEN= 71.810 DYN/CM;  DSTEN=  0.6500; CMF=  1.2770
+
+
+     -----------------------------------
+     INPUT FOR PCM SOLVATION CALCULATION 
+     -----------------------------------
+     IEF   =     -10
+     ICOMP =       0     IFIELD=       0     ICAV  =       1
+     IDISP =       1     IREP  =       0     IDP   =       0
+
+     SOLVNT=WATER        EPS   = 78.3900     EPSINF=  1.7760
+     VMOL  = 18.0700     TCE   =  0.00025700 STEN  = 71.8100
+     DSTEN =  0.6500     CMF   =  1.2770     RSOLV =  1.3850
+
+     NESFP =       0
+     OMEGA = 40.0000     RET   =100.0000     FRO   =  0.7000
+
+     TABS  =298.0000     IPRINT=       0
+
+     --------------------------------
+     INPUT FOR ITERATIVE C-PCM METHOD 
+     --------------------------------
+     IPCMIT  =         1     MXDIIS  =        50
+     MXITR1  =        50     MXITR2  =        50
+     THRES   = 0.100E-09     IMUL    =         3
+     RCUT(1) =   15.0000     RCUT(2) =   30.0000
+
+     IDIRCT  =         1
+     IMGABI  =         0     RABI    =    4.0000
+     IMGASC  =         0     RASC    =   20.0000
+     THRSLS  = 0.500E-03     DENSLS  =    0.0100
+     IEFPOL  =         1     REFPOL  =    0.0000
+
+     INPUT FOR ISOTROPIC DIELECTRICS
+     -------------------------------
+     EPS=    78.39
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+     ----------------------------
+     INPUT FOR TESSERA DEFINITION
+     ----------------------------
+     NTSALL  =        60     MTHALL  =         4
+     MTHAUT  =         0     AUTFRE  =    2.0000
+     NTSFRZ  =        60     KEEPSM  =         0
+     AREAKP  =   10.0000     BONDRY  =    1.0000
+     AREATL  =    0.0100
+
+     SPHERE     INITS       METHOD
+          1        60       FIXPVA
+          2        60       FIXPVA
+          3        60       FIXPVA
+          4        60       FIXPVA
+          5        60       FIXPVA
+
+     ------------------------------
+      FIXPVA TESSELLATION FOR PCM
+         PEIFENG SU AND HUI LI
+     UNIVERSITY OF NEBRASKA-LINCOLN
+     ------------------------------
+
+
+ PCM DIMENSIONS: MXSP=  2000, MXTS=     15000, MEMORY=        352003
+
+          ----------------
+          PROPERTIES INPUT
+          ----------------
+
+     MOMENTS            FIELD           POTENTIAL          DENSITY
+ IEMOM =       1   IEFLD =       0   IEPOT =       0   IEDEN =       0
+ WHERE =COMASS     WHERE =NUCLEI     WHERE =NUCLEI     WHERE =NUCLEI  
+ OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH       OUTPUT=BOTH    
+ IEMINT=       0   IEFINT=       0                     IEDINT=       0
+                                                       MORB  =       0
+          EXTRAPOLATION IN EFFECT
+ ORBITAL PRINTING OPTION: NPREO=     1     8     2     1
+
+     -------------------------------
+     INTEGRAL TRANSFORMATION OPTIONS
+     -------------------------------
+     NWORD  =            0
+     CUTOFF = 1.0E-09     MPTRAN =       0
+     DIRTRF =       F     AOINTS =DUP     
+
+          ----------------------
+          INTEGRAL INPUT OPTIONS
+          ----------------------
+ NOPK  =       1 NORDER=       0 SCHWRZ=       F
+
+     ------------------------------------------
+     THE POINT GROUP IS C1 , NAXIS= 1, ORDER= 1
+     ------------------------------------------
+
+     DIMENSIONS OF THE SYMMETRY SUBSPACES ARE
+ A   =    8
+
+ ..... DONE SETTING UP THE RUN .....
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS     0.00%
+
+          ********************
+          1 ELECTRON INTEGRALS
+          ********************
+
+          **************************
+          1 AND 2 ELECTRON INTEGRALS
+          **************************
+
+ MOPAC ONE- AND TWO-ELECTRON INTEGRALS REQUIRE       118 WORDS.
+ ...... END OF ONE- AND TWO-ELECTRON INTEGRALS......
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS     0.00%
+ ...... END OF ONE-ELECTRON INTEGRALS ......
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS     0.00%
+
+          -------------
+          GUESS OPTIONS
+          -------------
+          GUESS =HUCKEL            NORB  =       0          NORDER=       0
+          MIX   =       F          PRTMO =       F          PUNMO =       F
+          TOLZ  = 1.0E-08          TOLE  = 1.0E-05
+          SYMDEN=       F          PURIFY=       F
+
+ INITIAL GUESS ORBITALS GENERATED BY HUCKEL   ROUTINE.
+
+ SYMMETRIES FOR INITIAL GUESS ORBITALS FOLLOW.   BOTH SET(S).
+     4 ORBITALS ARE OCCUPIED (    0 CORE ORBITALS).
+     1=A        2=A        3=A        4=A        5=A        6=A        7=A   
+     8=A   
+ ...... END OF INITIAL ORBITAL SELECTION ......
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS     0.00%
+  
+ DONE CAVITATION ENERGY
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS     0.00%
+  
+ DONE DISPERSION-REPULSION ENERGY
+ STEP CPU TIME =     0.01 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS   100.00%
+
+          --------------------------
+               R-PM3 SCF CALCULATION
+          --------------------------
+
+     NUCLEAR ENERGY =         7.4953707400
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=F
+     DENSITY MATRIX CONV=  1.00E-05
+     MEMORY REQUIRED FOR RHF ITERS=       686 WORDS.
+
+ ITER EX DEM     TOTAL ENERGY        E CHANGE  DENSITY CHANGE    DIIS ERROR
+   1  0  0       -6.5439863632    -6.5439863632   0.279015235   0.000000000
+   2  1  0       -6.6250160928    -0.0810297296   0.056848333   0.000000000
+   3  2  0       -6.6323342799    -0.0073181871   0.029846819   0.000000000
+   4  3  0       -6.6337808306    -0.0014465507   0.016722071   0.000000000
+   5  0  0       -6.6342239838    -0.0004431532   0.023226384   0.000000000
+   6  1  0       -6.6344530961    -0.0002291123   0.000008355   0.000000000
+   7  2  0       -6.6344530962    -0.0000000001   0.000004773   0.000000000
+   8  3  0       -6.6344530963    -0.0000000000   0.000002772   0.000000000
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS=       0.0 SECONDS (       0.0 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS=       0.0 SECONDS (       0.0 SEC/ITER)
+
+ FINAL R-PM3 ENERGY IS       -6.6344530963 AFTER   8 ITERATIONS
+
+ HEAT OF FORMATION IS       -12.99795 KCAL/MOL
+
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+                      1          2          3          4          5
+                   -1.0961    -0.5009    -0.5009    -0.5009     0.1553
+                     A          A          A          A          A   
+    1  C  1  S    0.745771  -0.000000   0.000000   0.000000   0.666203
+    2  C  1  X    0.000000  -0.062086   0.704240  -0.000000   0.000000
+    3  C  1  Y    0.000000   0.704240   0.062086   0.000000   0.000000
+    4  C  1  Z   -0.000000  -0.000000   0.000000   0.706975  -0.000000
+    5  H  2  S    0.333101  -0.498163  -0.043918  -0.353619  -0.372885
+    6  H  3  S    0.333101   0.498163   0.043918  -0.353619  -0.372885
+    7  H  4  S    0.333101   0.043918  -0.498163   0.353619  -0.372885
+    8  H  5  S    0.333101  -0.043918   0.498163   0.353619  -0.372885
+
+                      6          7          8
+                    0.1684     0.1684     0.1684
+                     A          A          A   
+    1  C  1  S    0.000000  -0.000000  -0.000000
+    2  C  1  X    0.000000  -0.073080   0.703456
+    3  C  1  Y    0.000000   0.703456   0.073080
+    4  C  1  Z    0.707238  -0.000000  -0.000000
+    5  H  2  S    0.353488   0.497228   0.051656
+    6  H  3  S    0.353488  -0.497228  -0.051656
+    7  H  4  S   -0.353488  -0.051656   0.497228
+    8  H  5  S   -0.353488   0.051656  -0.497228
+ ...... END OF RHF CALCULATION ......
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS   100.00%
+
+     ----------------------------------------------------------------
+     PROPERTY VALUES FOR THE RHF   SELF-CONSISTENT FIELD WAVEFUNCTION
+     ----------------------------------------------------------------
+
+                    -------------
+                    MOPAC CHARGES
+                    -------------
+         ATOM NO.   TYPE          CHARGE        ATOM  ELECTRON DENSITY
+           1         C             -0.1112          4.1112
+           2         H              0.0278          0.9722
+           3         H              0.0278          0.9722
+           4         H              0.0278          0.9722
+           5         H              0.0278          0.9722
+
+          ---------------------
+          ELECTROSTATIC MOMENTS
+          ---------------------
+
+ POINT   1           X           Y           Z (ANGS)      CHARGE
+                 0.000000    0.000000    0.000000        0.00 (A.U.)
+         DX          DY          DZ         /D/  (DEBYE)
+    -0.000000   -0.000000    0.000000    0.000000
+ ...... END OF PROPERTY EVALUATION ......
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    50.00%
+
+          -------------------------------------
+          ---- POLARISABLE CONTINUUM MODEL ----
+          ----      UNIVERSITY OF PISA     ----
+          -------------------------------------
+
+     ----------------------------
+     INPUT FOR TESSERA DEFINITION
+     ----------------------------
+     NTSALL  =        60     MTHALL  =         4
+     MTHAUT  =         0     AUTFRE  =    2.0000
+     NTSFRZ  =        60     KEEPSM  =         0
+     AREAKP  =   10.0000     BONDRY  =    1.0000
+     AREATL  =    0.0100
+
+     SPHERE     INITS       METHOD
+          1        60       FIXPVA
+          2        60       FIXPVA
+          3        60       FIXPVA
+          4        60       FIXPVA
+          5        60       FIXPVA
+
+     ------------------------------
+      FIXPVA TESSELLATION FOR PCM
+         PEIFENG SU AND HUI LI
+     UNIVERSITY OF NEBRASKA-LINCOLN
+     ------------------------------
+
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+ MEMORY USED TO GENERATE CAVITY=   2296042
+
+
+ TOTAL NUMBER OF SPHERES=     5
+ SPHERE           CENTER  (X,Y,Z) (A)               RADIUS (A)      AREA(A*A)
+     1   0.000000000  -0.000000000   0.000000000   2.040000000  16.797577401
+     2   0.000000000  -0.890000000  -0.629300000   1.440000000   7.386105969
+     3   0.000000000   0.890000000  -0.629300000   1.440000000   7.386105969
+     4  -0.890000000  -0.000000000   0.629300000   1.440000000   6.830760996
+     5   0.890000000  -0.000000000   0.629300000   1.440000000   7.672604084
+
+ TOTAL NUMBER OF TESSERAE=     114
+ SURFACE AREA=    46.07315442(A**2)    CAVITY VOLUME=     33.09926424 (A**3)
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    50.00%
+
+          THE SOLUTE IS ENCLOSED IN ONE CAVITY
+ DONE CHECKING SEPARATION.
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    50.00%
+
+ ..... DONE GENERATING CAVITY .....
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    50.00%
+
+          --------------------------
+               R-PM3 SCF CALCULATION
+          --------------------------
+
+     NUCLEAR ENERGY =         7.4953707400
+     MAXIT =   30     NPUNCH=    2
+     EXTRAP=T  DAMP=F  SHIFT=F  RSTRCT=F  DIIS=F  DEM=F  SOSCF=F
+     DENSITY MATRIX CONV=  1.00E-05
+     MEMORY REQUIRED FOR RHF ITERS=     65286 WORDS.
+
+ ITER EX DEM     TOTAL ENERGY        E CHANGE  DENSITY CHANGE    DIIS ERROR
+   1  0  0       -6.6324769350    -6.6324769350   0.000595550   0.000000000
+   2  1  0       -6.6324774527    -0.0000005178   0.000349897   0.000000000
+   3  2  0       -6.6324776320    -0.0000001793   0.000205798   0.000000000
+   4  3  0       -6.6324776954    -0.0000000634   0.000121397   0.000000000
+   5  4  0       -6.6324777180    -0.0000000225   0.000071809   0.000000000
+   6  5  0       -6.6324777260    -0.0000000080   0.000042570   0.000000000
+   7  6  0       -6.6324777288    -0.0000000028   0.000025276   0.000000000
+   8  7  0       -6.6324777298    -0.0000000010   0.000015025   0.000000000
+   9  8  0       -6.6324777302    -0.0000000004   0.000008938   0.000000000
+  10  9  0       -6.6324777303    -0.0000000001   0.000005320   0.000000000
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+     TIME TO FORM FOCK OPERATORS=       0.0 SECONDS (       0.0 SEC/ITER)
+     TIME TO SOLVE SCF EQUATIONS=       0.0 SECONDS (       0.0 SEC/ITER)
+
+ FINAL R-PM3 ENERGY IS       -6.6324777303 AFTER  10 ITERATIONS
+
+ HEAT OF FORMATION IS       -11.75835 KCAL/MOL
+
+  
+   PCM ASC=      0.0088737135
+   GCAVP  =      0.0112185944
+   GDISP  =     -0.0113022164
+   GREP   =      0.0021054265
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+                      1          2          3          4          5
+                   -1.0987    -0.5035    -0.5035    -0.5035     0.1528
+                     A          A          A          A          A   
+    1  C  1  S    0.745938  -0.000065   0.000000  -0.000039   0.666011
+    2  C  1  X    0.000014   0.648443   0.000000  -0.282736   0.001072
+    3  C  1  Y    0.000000  -0.000000   0.707481   0.000000   0.000000
+    4  C  1  Z    0.000044   0.282716  -0.000000   0.648491   0.002144
+    5  H  2  S    0.332984  -0.141247  -0.499735  -0.323948  -0.371908
+    6  H  3  S    0.332984  -0.141247   0.499735  -0.323948  -0.371908
+    7  H  4  S    0.333011  -0.316907  -0.000000   0.523653  -0.373300
+    8  H  5  S    0.333052   0.599385  -0.000000   0.124187  -0.374753
+
+                      6          7          8
+                    0.1657     0.1658     0.1658
+                     A          A          A   
+    1  C  1  S    0.001863  -0.001230  -0.000000
+    2  C  1  X   -0.609104  -0.358571  -0.000000
+    3  C  1  Y    0.000000  -0.000000   0.706732
+    4  C  1  Z   -0.358582   0.609053   0.000000
+    5  H  2  S   -0.180493   0.305509   0.500265
+    6  H  3  S   -0.180493   0.305509  -0.500265
+    7  H  4  S   -0.252657  -0.557918  -0.000000
+    8  H  5  S    0.609440  -0.050352  -0.000000
+ ...... END OF RHF CALCULATION ......
+ STEP CPU TIME =     0.01 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+     ----------------------------------------------------------------
+     PROPERTY VALUES FOR THE RHF   SELF-CONSISTENT FIELD WAVEFUNCTION
+     ----------------------------------------------------------------
+
+                    -------------
+                    MOPAC CHARGES
+                    -------------
+         ATOM NO.   TYPE          CHARGE        ATOM  ELECTRON DENSITY
+           1         C             -0.1157          4.1157
+           2         H              0.0290          0.9710
+           3         H              0.0290          0.9710
+           4         H              0.0289          0.9711
+           5         H              0.0288          0.9712
+
+          ---------------------
+          ELECTROSTATIC MOMENTS
+          ---------------------
+
+ POINT   1           X           Y           Z (ANGS)      CHARGE
+                 0.000000    0.000000    0.000000       -0.00 (A.U.)
+         DX          DY          DZ         /D/  (DEBYE)
+    -0.000414   -0.000000   -0.000723    0.000833
+ ...... END OF PROPERTY EVALUATION ......
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+ CREATION OF A NEW CAVITY WITH THE ORIGINAL SPHERE
+ SIZES FOR THE COMPUTATION OF THE CAVITATION ENERGY.
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+ MEMORY USED TO GENERATE CAVITY=   2296042
+
+
+ TOTAL NUMBER OF SPHERES=     5
+ SPHERE           CENTER  (X,Y,Z) (A)               RADIUS (A)      AREA(A*A)
+     1   0.000000000  -0.000000000   0.000000000   1.700000000  16.952227187
+     2   0.000000000  -0.890000000  -0.629300000   1.200000000   8.452664866
+     3   0.000000000   0.890000000  -0.629300000   1.200000000   8.452664863
+     4  -0.890000000  -0.000000000   0.629300000   1.200000000   8.470015657
+     5   0.890000000  -0.000000000   0.629300000   1.200000000   8.085503944
+
+ TOTAL NUMBER OF TESSERAE=     166
+ SURFACE AREA=    50.41307652(A**2)    CAVITY VOLUME=     29.53490823 (A**3)
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+          THE SOLUTE IS ENCLOSED IN ONE CAVITY
+ DONE CHECKING SEPARATION.
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+  ************************************
+         CAVITATION FREE ENERGY
+  ************************************
+
+ PIEROTTI (SINGLE SPHERE, RADIUS FROM TOTAL  VOLUME):    5.50661 KCAL/MOL
+ CAVITATION ENERGY (ENTHALPY) =    0.87984 KCAL/MOL
+ THERMAL EXPANSION COEF. =      0.000257
+ NUMERAL DENSITY =              0.033330
+ SOLVENT MOLECULE DIAMETER =    2.770000 ANG.
+ CAVITY DIAMETER =              3.835120 ANG.
+
+ PIEROTTI (SINGLE SPHERE, RADIUS FROM TOTAL SURFACE):    5.91546 KCAL/MOL
+ CAVITATION ENERGY (ENTHALPY) =    0.94929 KCAL/MOL
+ THERMAL EXPANSION COEF. =      0.000257
+ NUMERAL DENSITY =              0.033330
+ SOLVENT MOLECULE DIAMETER =    2.770000 ANG.
+ CAVITY DIAMETER =              4.005868 ANG.
+
+ CLAVERIE-PIEROTTI (SPHERE BY SPHERE, SURFACE):    7.03978  KCAL/MOL
+ CAVITATION ENERGY (ENTHALPY) =    2.32362 KCAL/MOL
+ THERMAL EXPANSION COEF. =      0.000257
+ NUMERAL DENSITY =              0.033330
+ SOLVENT MOLECULE DIAMETER =    2.770000 ANG.
+
+ SINANOGLU (SINGLE SPHERE, RADIUS FROM TOTAL SURFACE):    5.89898 KCAL/MOL
+ CAVITATION ENERGY (ENTHALPY) =      9.43213 KCAL/MOL
+ MICROSCOPIC CAVITY FACTOR =    1.277000
+ SURFACE TENSION =             71.810000
+ SURFACE TENSION DERIVATIVE =   0.650000
+ ABSOLUTE TEMPERATURE =       298.000000
+ CAVITY DIAMETER =              4.005868 ANG.
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+DISPERSION-REPULSION FREE ENERGY:  ATOM-ATOM INTERACTION.
+
+
+CAVITY REFERRED TO SOLVENT ATOM OF TYPE  1
+
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+ MEMORY USED TO GENERATE CAVITY=   2296042
+
+
+ TOTAL NUMBER OF SPHERES=     5
+ SPHERE           CENTER  (X,Y,Z) (A)               RADIUS (A)      AREA(A*A)
+     1   0.000000000  -0.000000000   0.000000000   2.900000000  26.478711231
+     2   0.000000000  -0.890000000  -0.629300000   2.400000000  27.453605046
+     3   0.000000000   0.890000000  -0.629300000   2.400000000  27.453605081
+     4  -0.890000000  -0.000000000   0.629300000   2.400000000  28.403887567
+     5   0.890000000  -0.000000000   0.629300000   2.400000000  27.188050005
+
+ TOTAL NUMBER OF TESSERAE=     121
+ SURFACE AREA=   136.97785893(A**2)    CAVITY VOLUME=    138.73942057 (A**3)
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+          THE SOLUTE IS ENCLOSED IN ONE CAVITY
+ DONE CHECKING SEPARATION.
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+CAVITY REFERRED TO SOLVENT ATOM OF TYPE  2
+
+
+     INPUT FOR CAVITY DEFINITION 
+     ---------------------------
+   ATOM               COORDINATES                RADIUS       EPS
+      1      0.0000     -0.0000      0.0000      1.7000     78.3900
+      2      0.0000     -0.8900     -0.6293      1.2000     78.3900
+      3      0.0000      0.8900     -0.6293      1.2000     78.3900
+      4     -0.8900     -0.0000      0.6293      1.2000     78.3900
+      5      0.8900     -0.0000      0.6293      1.2000     78.3900
+
+ MEMORY USED TO GENERATE CAVITY=   2296042
+
+
+ TOTAL NUMBER OF SPHERES=     5
+ SPHERE           CENTER  (X,Y,Z) (A)               RADIUS (A)      AREA(A*A)
+     1   0.000000000  -0.000000000   0.000000000   3.200000000  29.252683024
+     2   0.000000000  -0.890000000  -0.629300000   2.700000000  33.145304337
+     3   0.000000000   0.890000000  -0.629300000   2.700000000  33.145304395
+     4  -0.890000000  -0.000000000   0.629300000   2.700000000  34.709202738
+     5   0.890000000  -0.000000000   0.629300000   2.700000000  33.855176895
+
+ TOTAL NUMBER OF TESSERAE=     119
+ SURFACE AREA=   164.10767139(A**2)    CAVITY VOLUME=    183.42734703 (A**3)
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+          THE SOLUTE IS ENCLOSED IN ONE CAVITY
+ DONE CHECKING SEPARATION.
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+
+   GDISP =       -7.09224863   KCAL/MOL
+   GREP  =        1.32117519   KCAL/MOL
+ ..... DONE COMPUTING DISPERSION-REPULSION .....
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+
+             ----------------------------------------------
+             -------   RESULTS OF PCM CALCULATION   -------
+             ----------------------------------------------
+
+ FREE ENERGY IN SOLVENT = <PSI| H(0)+V/2 |PSI>       =       -6.6344995348 A.U.
+ INTERNAL ENERGY IN SOLVENT = <PSI| H(0) |PSI>       =       -6.6344522929 A.U.
+ DELTA INTERNAL ENERGY =  <D-PSI| H(0) |D-PSI>       =        0.0000000000 A.U.
+ ELECTROSTATIC INTERACTION                           =       -0.0000472418 A.U.
+ PIEROTTI CAVITATION ENERGY                          =        0.0112185944 A.U.
+ DISPERSION FREE ENERGY                              =       -0.0113022164 A.U.
+ REPULSION FREE ENERGY                               =        0.0021054265 A.U.
+ TOTAL INTERACTION (DELTA + ES + CAV + DISP + REP)   =        0.0019745626 A.U.
+ TOTAL FREE ENERGY IN SOLVENT                        =       -6.6324777303 A.U.
+
+ FREE ENERGY IN SOLVENT       =       -4163.21 KCAL/MOL
+ INTERNAL ENERGY IN SOLVENT   =       -4163.18 KCAL/MOL
+ DELTA INTERNAL ENERGY        =           0.00 KCAL/MOL
+ ELECTROSTATIC INTERACTION    =          -0.03 KCAL/MOL
+ PIEROTTI CAVITATION ENERGY   =           7.04 KCAL/MOL
+ DISPERSION FREE ENERGY       =          -7.09 KCAL/MOL
+ REPULSION FREE ENERGY        =           1.32 KCAL/MOL
+ TOTAL INTERACTION            =           1.24 KCAL/MOL
+ TOTAL FREE ENERGY IN SOLVENT =       -4161.94 KCAL/MOL
+
+           -----  ENERGY CHANGE FROM GAS PHASE TO SOLVENT  -----
+              ELEC          ELEC+CAV    ELEC+CAV+DIS+REP
+            -0.029             7.011               1.240 KCAL/MOL
+
+ -INTERNAL ENERGY IN SOLVENT-
+    OMITS ES,CAV,DISP,REP (USES SOLVATED ORBITALS IN THE GAS PHASE HAMILTONIAN)
+ -FREE ENERGY IN SOLVENT-
+    INCLUDES ES+DISP+REP WHICH ARE IN THE SELF-CONSISTENT WAVEFUNCTION.
+ -TOTAL FREE ENERGY IN SOLVENT-
+    INCLUDES ES+DISP+REP+CAV, MEANING CAVITATION IS NOT IN THE SCF ENERGY.
+
+ .... DONE PRINTING PCM SOLVENT SUMMARY ....
+ STEP CPU TIME =     0.00 TOTAL CPU TIME =          0.0 (      0.0 MIN)
+ TOTAL WALL CLOCK TIME=          0.0 SECONDS, CPU UTILIZATION IS    66.67%
+              2720235  WORDS OF DYNAMIC MEMORY USED
+ EXECUTION OF GAMESS TERMINATED NORMALLY Tue Dec 31 21:54:43 2019
+ DDI: 263640 bytes (0.3 MB / 0 MWords) used by master data server.
+
+ ----------------------------------------
+ CPU timing information for all processes
+ ========================================
+ 0: 0.28 + 0.04 = 0.32
+ ----------------------------------------
+ ddikick.x: exited gracefully.
+unset echo
+----- accounting info -----
+Files used on the master node laptop were:
+-rw-r--r-- 1 charnley charnley    3314 Dec 31 21:54 /home/charnley/scr/gamess_methane_sol.dat
+-rw-r--r-- 1 charnley charnley     494 Dec 31 21:54 /home/charnley/scr/gamess_methane_sol.F05
+-rw-r--r-- 1 charnley charnley       0 Dec 31 21:54 /home/charnley/scr/gamess_methane_sol.F08
+-rw-r--r-- 1 charnley charnley 1341520 Dec 31 21:54 /home/charnley/scr/gamess_methane_sol.F10
+-rw-r--r-- 1 charnley charnley       8 Dec 31 21:54 /home/charnley/scr/gamess_methane_sol.F26
+-rw-r--r-- 1 charnley charnley       0 Dec 31 21:54 /home/charnley/scr/gamess_methane_sol.F27
+ls: No match.
+ls: No match.
+ls: No match.
+Tue Dec 31 21:54:46 CET 2019
+0.0u 0.0s 0:03.17 2.5% 0+0k 0+8io 0pf+0w

@@ -1,0 +1,17 @@
+ $contrl
+ coord=cart
+ units=angs
+ scftyp=rhf
+ icharg=0
+ maxit=60
+ $end
+ $basis gbasis=sto ngauss=3 $end
+ $data
+Title
+C1
+C     6.0    0.000000     -0.000000    0.000000
+H     1.0    0.000000     -0.890000    -0.629300
+H     1.0    0.000000     0.890000    -0.629300
+H     1.0    -0.890000     -0.000000    0.629300
+H     1.0    0.890000     -0.000000    0.629300
+ $end

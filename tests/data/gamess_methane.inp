@@ -1,0 +1,12 @@
+ $basis gbasis=pm3 $end
+ $contrl runtyp=optimize icharg=0 $end
+ $statpt opttol=0.0005 nstep=200 projct=.F. $end
+ $data
+Title
+C1
+C     6.0    0.000000     -0.000000    0.000000
+H     1.0    0.000000     -0.890000    -0.629300
+H     1.0    0.000000     0.890000    -0.629300
+H     1.0    -0.890000     -0.000000    0.629300
+H     1.0    0.890000     -0.000000    0.629300
+ $end

@@ -1,0 +1,31 @@
+ $system
+    mwords=125
+ $end
+ $basis
+    gbasis=PM3
+ $end
+ $contrl
+    scftyp=RHF
+    runtyp=energy
+    icharg=0
+ $end
+ $pcm
+    solvnt=water
+    mxts=15000
+    icav=1
+    idisp=1
+ $end
+ $tescav
+    mthall=4
+    ntsall=60
+ $end
+
+ $data
+Title
+C1
+C     6.0    0.000000     -0.000000    0.000000
+H     1.0    0.000000     -0.890000    -0.629300
+H     1.0    0.000000     0.890000    -0.629300
+H     1.0    -0.890000     -0.000000    0.629300
+H     1.0    0.890000     -0.000000    0.629300
+ $end
