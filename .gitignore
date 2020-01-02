@@ -45,6 +45,8 @@ docs/_build/
 env*/
 logs/
 
+molcalc/chemhelp
+
 # ignore downloaded packages
 molcalc/static/js/*jquery*
 molcalc/static/fontawesome
