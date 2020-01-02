@@ -12,3 +12,4 @@ zope.sqlalchemy
 numpy
 scipy
 rmsd
+networkx
