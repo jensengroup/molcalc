@@ -8,6 +8,8 @@
 
     {% include 'jsmol_head.html' %}
 
+    <script type="text/javascript" src="{{ request.static_url('molcalc:static/js/page_calculation.js') }}"></script>
+
 </head>
 <body>
 
@@ -29,23 +31,33 @@
 
         <section class="mc-content calculation">
 
-            <h1>{{smiles}}</h1>
+            <h1>{{name}}</h1>
 
             <!--
-                Molecule
                 Thermodynamics
                 Molecular Orbitals
                 Vibrational Frequencies
                 Polarity and Solvation
             -->
 
-            <section class="calc calc-svg">
+            <section class="calc-menu">
+                <ul>
+                    <li><a href="#/energies"  class="energies active">Free Energies</a></li>
+                    <li><a href="#/vibrations" class="vibrations">Vibrational Frequencies</a></li>
+                    <li><a href="#/orbitals" class="orbitals">Molecular Orbitals</a></li>
+                    <li><a href="#/solvation" class="solvation">Polarity and Solvation</a></li>
+                </ul>
+            </section>
 
-<svg width="400px" height="400px">
-{{svg|safe}}
-</svg>
+            <section class="calc calc-energies active tab-energies">
+
+                <h2>Thermodynamics</h2>
+                <h3>at 298.15 K and standard pressure</h3>
+
+{% include 'section_calcview_thermo.html' %}
 
             </section>
+
             <section class="calc calc-sdf">
 
 <pre>{{sdf}}</pre>
@@ -53,62 +65,33 @@
             </section>
 
 
-            <section class="calc calc-default">
+            <section class="calc calc-vibration tab-vibrations">
 
-                <div class="viewer-jsmol">
+                <h2>Vibrational Frequencies</h2>
 
-<script type="text/javascript">
-
-// TODO move j2sPath to a BasePath-based url
-var myJmol1;
-var myInfo1 = {
-    height: '100%',
-    width: '100%',
-    j2sPath: "/static/jsmol/j2s",
-    use: 'HTML5',
-    console: "myJmol1_infodiv",
-    disableInitialConsole: true,
-    allowJavaScript: true,
-    debug: false
-};
-
-var sdf = `{{sdf}}`;
-
-waitForElement('#myJmol1_appletdiv', function() {
-    jsmolSetMol(myJmol1, sdf);
-});
-
-</script>
-
-<div class="" style="width:400px; height:400px;">
-
-<script type="text/javascript">
-myJmol1 = Jmol.getApplet("myJmol1", myInfo1);
-Jmol.script(myJmol1, 'background "#ffffff"');
-Jmol.script(myJmol1, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
-</script>
-
-</div>
-
-
-
-                </div>
+{% include 'section_calcview_vibrations.html' %}
 
             </section>
 
 
-            <section class="calc calc-preview">
-                
+            <section class="calc calc-orbitals tab-orbitals">
+
+                <h2>Molecular Orbitals</h2>
+
+{% include 'section_calcview_orbitals.html' %}
+
             </section>
 
-            <section class="calc calc-thermodynamics">
-                
+
+            <section class="calc calc-orbitals tab-solvation">
+
+                <h2>Solvations</h2>
+
+{% include 'section_calcview_solvation.html' %}
+
             </section>
-
-
 
         </section>
-
 
 
         <!-- end content -->

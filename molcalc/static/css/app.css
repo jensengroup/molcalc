@@ -663,7 +663,137 @@ input[type=text].accept {
 
 }
 
+/* forms ***********************************************************/
 
+
+/* Checkbox */
+/* Based on http://proto.io/freebies/onoff/ */
+.checkbox {
+    position: relative;
+    width:25px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+}
+.checkbox .checkbox-input {
+    display: none;
+}
+
+.checkbox .checkbox-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+}
+.checkbox-inner:before,
+.checkbox-inner:after {
+    float: left; width: 100%; height: 25px; padding: 0; line-height: 25px;
+    font-size: 12px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    text-align:center;
+    position:absolute;
+
+    border-width:1px;
+    border-style:solid;
+    border-color:#fff;
+
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,0.1);
+}
+.checkbox-inner:before {
+    content: "\2713";
+    background-color: #0373BB;;
+    color: #FFFFFF;
+    font-size:15px;
+}
+.checkbox-inner:after {
+    content: "\2715";
+    background-color: #e0e0e0;
+    color: #666666;
+    font-size:15px;
+
+    /* text-shadow:1px 1px 0 rgba(255,255,255,0.5) */
+}
+
+.checkbox-input:checked + .checkbox-label .checkbox-inner:after {
+    display:none;
+}
+
+
+/* On Off Switch */
+/* Based on http://proto.io/freebies/onoff/ */
+.onoffswitch {
+    position: relative; width: 80px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+}
+.onoffswitch-inner {
+    width: 200%; margin-left: -100%;
+    /* -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s; */
+    /* -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s; */
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;
+    font-size: 12px;
+    color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+
+    /* box-shadow:inset 1px 1px 4px rgba(0,0,0,0.1); */
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 7px;
+    background-color: #0373BB;
+    background-color: rgb(0, 121, 211);
+    color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 7px;
+    background-color: #F8F8F8;
+    color: #666666;
+    text-align: right;
+    /* text-shadow:1px 1px 0 #fff; */
+}
+
+.onoffswitch-switch {
+    width: 40px; margin: 0px;
+    background: #FFFFFF;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    position: absolute; top: 0; bottom: 0; right: 38px;
+    /* -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; */
+    /* -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s;  */
+    background-image: -moz-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background-image: linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background:white;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
+
+.center .onoffswitch {
+    margin: 0 auto;
+    text-align:left;
+}
 
 
 /* layout **********************************************************/
@@ -970,6 +1100,19 @@ input[type=text].accept {
 }
 .mc-content.calculation h1 {
     font-size: 30px;
+    font-weight: bold;
+}
+.mc-content.calculation h2 {
+    font-size: 25px;
+    line-height: 35px;
+    font-weight: bold;
+    text-align: center;
+}
+.mc-content.calculation h3 {
+    font-size: 15px;
+    line-height: 35px;
+    font-weight: bold;
+    text-align: center;
 }
 .molcalc.calculation .mc-content pre {
 
@@ -988,11 +1131,152 @@ input[type=text].accept {
     padding: 20px;
 
 }
+.molcalc.calculation .mc-content .calc-menu {
+    height: 60px;
+    margin-top: 10px;
+    border-bottom: 2px solid #bbb;
+}
+.molcalc.calculation .mc-content .calc-menu ul {}
+.molcalc.calculation .mc-content .calc-menu ul li {
+    float: left;
+    display: block;
+}
+.molcalc.calculation .mc-content .calc-menu ul li a {
+    color: #222;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    line-height: 60px;
+    margin-right: 20px;
+    border-bottom: 2px solid #bbb;
+}
+.molcalc.calculation .mc-content .calc-menu ul li a.active,
+.molcalc.calculation .mc-content .calc-menu ul li a:hover {
+    border-color: #000;
+    border-color: rgb(0, 121, 211);
+    outline-style:none;
+}
 .molcalc.calculation .mc-content .calc {
     margin: 30px 0 0 0;
+    padding: 20px;
     background: white;
     min-height: 100px;
+
+    display: none;
 }
+.molcalc.calculation .mc-content .calc.active {
+    display: block;
+}
+.molcalc.calculation .mc-content .calc .tbls_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-gap: 1rem;
+    grid-auto-flow: dense;
+}
+.molcalc.calculation .mc-content .calc .tbl_container {
+    display: block;
+}
+.molcalc.calculation .mc-content svg {
+    /* transform: scale(0.4); */
+    /* -webkit-transform:scale(0.6); */
+    /* -moz-transform:scale(0.6); */
+    /* -ms-transform:scale(0.6); */
+    /* -o-transform:scale(0.6); */
+    /* border: 1px solid green; */
+}
+.molcalc.calculation .mc-content .calc table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin: 0 0 20px 0;
+}
+.molcalc.calculation .mc-content .calc table td {
+    background: #f7f7f7;
+    padding: 10px 10px;
+    line-height: 20px;
+    vertical-align: top;
+    /* border-width: 0 1px 1px 0; */
+    /* border-style: solid; */
+    /* border-color: #bbb; */
+}
+
+
+.molcalc.calculation .mc-content .calc .env {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "options view" ;
+
+}
+
+.molcalc.calculation .mc-content .calc .env .options {
+    grid-area: options;
+    min-height: 400px;
+}
+.molcalc.calculation .mc-content .calc .env .view {
+    grid-area: view;
+}
+
+.molcalc.calculation .mc-content .calc .env .options .choices {
+
+	
+
+}
+.molcalc.calculation .mc-content .calc .env ul.data {
+
+    width: 100%;
+    line-height: 50px;
+
+    max-height: 500px;
+    overflow-y: scroll;
+    direction: rtl;
+
+    border-top: 1px solid #fff;
+}
+.molcalc.calculation .mc-content .calc .env ul.data li {
+    background: #f7f7f7;
+    border-bottom: 1px solid #fff;
+    display:block;
+    padding: 0 20px;
+    position: relative;
+}
+.molcalc.calculation .mc-content .calc .env ul.data li:hover {
+    background: rgb(0, 121, 211);
+    color: #fff;
+}
+.molcalc.calculation .mc-content .calc .env ul.data li .txt {
+    font-weight: bold;
+}
+.molcalc.calculation .mc-content .calc .env ul.data li .index {
+    display: none;
+}
+.molcalc.calculation .mc-content .calc .env ul.data li .energy {
+    display: inline-block;
+    padding:0 80px;
+    text-align: right;
+    direction: ltr;
+}
+.molcalc.calculation .mc-content .calc .env ul.data .action {
+    /* display: none; */
+    position: absolute;
+    right: 0;
+}
+.molcalc.calculation .mc-content .calc .env ul.data li:hover .action {
+    /* display: inline; */
+}
+.molcalc.calculation .mc-content .calc .env ul.data a:hover,
+.molcalc.calculation .mc-content .calc .env ul.data a {
+    display: block;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    outline-style:none;
+}
+
+
 
 /* page */
 .molcalc.page .mc-content {

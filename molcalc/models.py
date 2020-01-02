@@ -40,17 +40,17 @@ def db_connect():
     return create_engine(connect_string)
 
 
-class MyModel(Base):
-    __tablename__ = 'mymodel'
-    id = Column(Integer, primary_key=True)
-    name = Column(Text)
-    value = Column(Integer)
-
-    def __repr__(self):
-        fmt = "<Molecule {:} {:}>"
-        return fmt.format(
-            self.id,
-            self.name)
+# class MyModel(Base):
+#     __tablename__ = 'mymodel'
+#     id = Column(Integer, primary_key=True)
+#     name = Column(Text)
+#     value = Column(Integer)
+#
+#     def __repr__(self):
+#         fmt = "<Molecule {:} {:}>"
+#         return fmt.format(
+#             self.id,
+#             self.name)
 
 
 class Calculation(Base):
@@ -62,9 +62,49 @@ class Calculation(Base):
     smiles = Column(String)
     sdf = Column(String)
     svg = Column(String)
+    coordinates = Column(String)
 
     def __repr__(self):
         fmt = "<Calculation {:} {:} >"
+        return fmt.format(self.smiles, self.hashkey)
+
+
+class GamessCalculation(Base):
+    __tablename__ = "gamesscalculations"
+    id = Column(Integer, primary_key=True)
+
+    # Basic descriptors
+    hashkey = Column(String)
+    created = Column(DateTime)
+    name = Column(String)
+    smiles = Column(String)
+    sdf = Column(String)
+    mol2 = Column(String)
+    svg = Column(String)
+    coordinates = Column(String)
+
+    # GAMESS Results
+    enthalpy = Column(Float)
+    charges = Column(String)
+
+    islinear = Column(String)
+    vibjsmol = Column(String)
+    vibfreq = Column(String)
+    vibintens = Column(String)
+    thermo = Column(String)
+
+    orbitals = Column(String)
+    orbitalstxt = Column(String)
+
+    soltotal = Column(Float)
+    solpolar = Column(Float)
+    solnonpolar = Column(Float)
+    solsurface = Column(Float)
+    soldipole = Column(String)
+    soldipoletotal = Column(Float)
+
+    def __repr__(self):
+        fmt = "<GamessCalculation {:} {:} >"
         return fmt.format(self.smiles, self.hashkey)
 
 

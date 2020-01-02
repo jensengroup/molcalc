@@ -1,0 +1,78 @@
+
+<script type="text/javascript">
+
+var orbInfo1 = {
+    height: '100%',
+    width: '100%',
+    j2sPath: "/static/jsmol/j2s",
+    use: 'HTML5',
+    disableInitialConsole: true,
+    allowJavaScript: true,
+    debug: false,
+};
+
+
+orbMolecule = `{{orbitalstxt}}`
+
+var jmolOrb;
+
+waitForElement('#jmolOrb_appletdiv', function() {
+    jsmolSetMol(jmolOrb, orbMolecule);
+    Jmol.script(jmolOrb, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
+	Jmol.script(jmolOrb, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
+	Jmol.script(jmolOrb, 'mo TITLEFORMAT ""');
+});
+
+
+
+$(function()
+{
+    // View Orbital
+    $('.orbital_levels a').click(function()
+    {
+        // Check for getProperty fileName
+        var orbital = $(this).attr('rel');
+        Jmol.script(jmolOrb, 'mo '+orbital);
+        return false;
+    });
+});
+
+</script>
+
+<section class="env">
+
+    <section class="options">
+
+<ul class="data orbital_levels">
+
+{% for energy in orbitals %}
+
+    <li>
+        <span class="index txt">{{loop.index}}</span>
+        <span class="energy txt">{{ energy }} eV</span>
+        <span class="action"><a href="#" rel="{{loop.index}}"><i class="fas fa-arrow-circle-right"></i></a></span>
+    </li>
+
+{% endfor %}
+
+</ul>
+
+    </section>
+
+    <section class="view">
+
+        <div class="jsmol" style="width: 100%;height: 100%;">
+
+
+<script type="text/javascript">
+jmolOrb = Jmol.getApplet("jmolOrb", orbInfo1);
+</script>
+
+
+        </div>
+
+
+    </section>
+
+
+</section>

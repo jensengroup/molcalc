@@ -5,9 +5,10 @@ import os
 from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
 
-from quantum_chemistry import cheminfo, gamess
+from chemhelp import cheminfo
 
 import models
+import pipelines
 
 # Error Views
 
@@ -42,36 +43,16 @@ def view_calculation(request):
     hashkey = matches['one']
 
     # Look up the key
-    calculation = request.dbsession.query(models.Calculation) \
+    calculation = request.dbsession.query(models.GamessCalculation) \
         .filter_by(hashkey=hashkey).first()
 
     if calculation is None:
         raise httpexceptions.exception_response(404)
 
-    # Get from database
-    # workpath = 'molcalc/data/'+hashkey + '/'
-
-    # Check if calculation exists
-    # if not os.path.exists(workpath):
-    #     raise httpexceptions.exception_response(404)
-
-    data = {}
-
-    # with open(workpath + "start.sdf", 'r') as sdffile:
-    #     sdfstr = sdffile.read()
-    #     data['sdf'] = sdfstr
-    #
-    # molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
-    # smiles = cheminfo.molobj_to_smiles(molobj)
-
-    data["hashkey"] = calculation.hashkey
-    data["smiles"] = calculation.smiles
-    data["sdf"] = calculation.sdf
-    data["svg"] = calculation.svg
-    data["name"] = ""
-
     if hashkey == "404":
         raise httpexceptions.exception_response(404)
+
+    data = pipelines.gamess_quantum_view(calculation)
 
     return data
 
@@ -184,37 +165,45 @@ def ajax_submitquantum(request):
     # Get rdkit
     molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
 
-    # TODO Set conformation and not embed molecule (will fail for some graphs)
-
     if molobj is None:
         status = status.split("]")
         status = status[-1]
         return {'error':'Error 141 - rdkit error', 'message': status}
 
     try:
-        molobj_h = cheminfo.molobj_add_hydrogens(molobj)
-        conf = molobj_h.GetConformer()
-
+        conf = molobj.GetConformer()
     except ValueError:
         # Error
         return {'error':'Error 141 - rdkit error', 'message': "Error. Server was unable to generate conformations for this molecule"}
 
-
-    # Get that smile on your face
-    smiles = cheminfo.molobj_to_smiles(molobj)
+    # If hydrogens not added, assume graph and optimize with forcefield
+    atoms = cheminfo.molobj_to_atoms(molobj)
+    if 1 not in atoms:
+        molobj = cheminfo.molobj_add_hydrogens(molobj)
+        cheminfo.molobj_optimize(molobj)
 
     # hash on sdf (conformer)
     hshobj = hashlib.md5(sdfstr)
     hashkey = hshobj.hexdigest()
 
-    # Start respond message
-    msg = {
-        "smiles" : smiles,
-        "hashkey" : hashkey
+    print("DEBUG:", hashkey)
+
+    molecule_info = {
+        "sdfstr": sdfstr,
+        "molobj": molobj,
+        "hashkey": hashkey
     }
 
+    msg = pipelines.gamess_quantum_pipeline(request, molecule_info)
 
-    calculation = request.dbsession.query(models.Calculation) \
+    return msg
+
+
+    #
+    #
+    #
+
+    calculation = request.dbsession.query(models.GamessCalculation) \
         .filter_by(hashkey=hashkey).first()
 
     if calculation is not None:
@@ -248,26 +237,26 @@ def ajax_submitquantum(request):
 """
 
     # Prepare gamess input
-    inpstr = gamess.molobj2gmsinp(molobj, header)
+    # inpstr = gamess.molobj_to_gmsinp(molobj, header)
 
     # Save and run file
-    with open("optimize.inp", "w") as f:
-        f.write(inpstr)
+    # with open("optimize.inp", "w") as f:
+    #     f.write(inpstr)
+    #
+    # stdout, stderr = gamess.calculate(hashkey+".inp", store_output=False)
 
-    stdout, stderr = gamess.calculate(hashkey+".inp", store_output=False)
-
-    with open("start.sdf", 'w') as f:
-        f.write(cheminfo.molobj_to_sdfstr(molobj))
+    # with open("start.sdf", 'w') as f:
+    #     f.write(cheminfo.molobj_to_sdfstr(molobj))
 
     # Check output
-    status, message = gamess.check_output(stdout)
+    # status, message = gamess.check_output(stdout)
 
     os.chdir(here)
 
-    if not status:
-        msg["error"] = "error 192: QM Calculation fail"
-        msg["message"] = message
-        return msg
+    # if not status:
+    #     msg["error"] = "error 192: QM Calculation fail"
+    #     msg["message"] = message
+    #     return msg
 
     # Saveable sdf and reset title
     sdfstr = cheminfo.molobj_to_sdfstr(molobj)
@@ -282,7 +271,7 @@ def ajax_submitquantum(request):
     svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)
 
     # Success, setup database
-    calculation = models.Calculation()
+    calculation = models.GamessCalculation()
     calculation.smiles = smiles
     calculation.hashkey = hashkey
     calculation.sdf = sdfstr

@@ -1,0 +1,192 @@
+
+<script type="text/javascript">
+
+var sdf = `{{sdf}}`;
+
+var vibMolecule = `{{vibjsmol}}`;
+
+</script>
+
+<script type="text/javascript">
+
+// TODO move j2sPath to a BasePath-based url
+
+var jmolVib;
+var vibInfo1 = {
+    height: '100%',
+    width: '100%',
+    j2sPath: "/static/jsmol/j2s",
+    use: 'HTML5',
+    console: "jmol_vib_infodiv",
+    disableInitialConsole: true,
+    allowJavaScript: true,
+    debug: false
+};
+
+waitForElement('#jmolVib_appletdiv', function() {
+    jsmolSetMol(jmolVib, vibMolecule);
+
+    Jmol.script(jmolVib, 'color echo black; font echo 20 serif;fsize=20;set echo top right;echo echo test;');
+    Jmol.script(jmolVib, 'echo "{{vibfreq | first}} cm<sup>-1</sup>"');
+    Jmol.script(jmolVib, 'vibration on');
+
+    // Switch to the first real vibration
+    Jmol.script(jmolVib, 'frame {{viboffset + 1}}');
+
+    Jmol.script(jmolVib, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
+    // Jmol.script(jmolVib, 'font echo 20 serif;fsize=20;set echo top center;echo echo test');
+});
+
+
+$(function()
+{
+
+
+    // Animation on off
+    $('#vibration_switch').change(function()
+    {
+        var checked = $(this).prop('checked');
+        var rel;
+        if(checked)
+        {
+            rel = 'on';
+        }
+        else
+        {
+            rel = 'off';
+        }
+        Jmol.script(jmolVib, 'vibration '+rel);
+    });
+
+    // Vectors on off
+    $('#vector_switch').change(function()
+    {
+        var checked = $(this).prop('checked');
+        var rel;
+        if(checked)
+        {
+            rel = 'on';
+        }
+        else
+        {
+            rel = 'off';
+        }
+        Jmol.script(jmolVib, 'vectors '+rel+'; color vectors black;');
+        Jmol.script(jmolVib, 'set vectorScale 3');
+    });
+
+    // Balls on off
+    $('#spacefill_switch').change(function()
+    {
+        var checked = $(this).prop('checked');
+        var rel;
+        if(checked)
+        {
+            rel = 'on; spacefill 24%;';
+        }
+        else
+        {
+            rel = 'off';
+        }
+        Jmol.script(jmolVib, 'cpk '+rel);
+    });
+
+    // Show Vibration
+    $('.vibration_level a').click(function() {
+        var rel = $(this).attr('rel');
+        var rcm = $(this).parent().parent().find('.energy').html();
+        jmolCmd  = "frame "+rel;
+        Jmol.script(jmolVib, jmolCmd);
+        Jmol.script(jmolVib, 'echo "'+rcm+'"');
+        return false;
+    });
+
+});
+
+</script>
+
+
+
+<section class="env">
+
+    <section class="options">
+
+    <table>
+    <tbody><tr>
+      <td width="50%">Vibration</td>
+      <td class="center">
+
+        <div class="onoffswitch">
+            <input autocomplete="off" type="checkbox" class="onoffswitch-checkbox" id="vibration_switch" name="vibration_switch" checked="">
+            <label class="onoffswitch-label" for="vibration_switch">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </label>
+        </div>
+
+      </td>
+    </tr>
+    <tr>
+      <td>Vectors</td>
+      <td class="center">
+
+        <div class="onoffswitch">
+            <input autocomplete="off" type="checkbox" class="onoffswitch-checkbox" id="vector_switch" name="vector_switch">
+            <label class="onoffswitch-label" for="vector_switch">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </label>
+        </div>
+
+      </td>
+    </tr>
+    <tr>
+      <td>Balls</td>
+      <td class="center">
+
+        <div class="onoffswitch">
+            <input autocomplete="off" type="checkbox" class="onoffswitch-checkbox" id="spacefill_switch" name="spacefill_switch" checked="">
+            <label class="onoffswitch-label" for="spacefill_switch">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </label>
+        </div>
+
+      </td>
+    </tr>
+  </tbody>
+  </table>
+
+<ul class="data vibration_level">
+
+{% for energy in vibfreq %}
+
+    <li>
+        <span class="index txt">{{loop.index}}</span>
+        <span class="energy txt">{{ energy }} cm<sup>-1</sup></span>
+        <span class="action"><a href="#" rel="{{loop.index + viboffset}}"><i class="fas fa-arrow-circle-right"></i></a></span>
+    </li>
+
+{% endfor %}
+
+</ul>
+
+    </section>
+
+    <section class="view">
+
+        <div class="editor-jsmol" style="width: 100%;height: 100%;">
+
+<script type="text/javascript">
+jmolVib = Jmol.getApplet("jmolVib", vibInfo1);
+Jmol.script(jmolVib, 'background "#ffffff"');
+Jmol.script(jmolVib, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
+</script>
+
+        </div>
+
+
+    </section>
+
+
+</section>

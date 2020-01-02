@@ -29,11 +29,12 @@ function setCurrentSDF(sdf)
     else
     {
         jsmolSetMol(myJmol1, sdf);
+        jsmolCmd(myJmol1, "minimize addHydrogens");
     }
     return false;
 }
 
-function getCurrentSDF()
+function getCurrentSDF(includeHydrogen=false)
 {
     var view = getView();
     var mol;
@@ -44,7 +45,7 @@ function getCurrentSDF()
     }
     else
     {
-        mol = jsmolGetMol(myJmol1);
+        mol = jsmolGetMol(myJmol1, includeHydogen=includeHydrogen);
     }
 
     return mol;
@@ -223,7 +224,7 @@ $('.button.quantum').click(function () {
         promptCalculation.show();
         promptQuantum.cancel();
 
-        var mol = getCurrentSDF();
+        var mol = getCurrentSDF(include_hydrogen=true);
         request("/ajax/submitquantum", {sdf:mol}, function (data)
         {
             url = window.location.href;
@@ -235,7 +236,7 @@ $('.button.quantum').click(function () {
             promptCalculation.cancel();
         }, function() {
             promptCalculation.cancel();
-        });
+        }, timeout=60000);
     });
     promptQuantum.addCancelBtn("Not yet");
     promptQuantum.show();

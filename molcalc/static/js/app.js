@@ -30,13 +30,13 @@ var waitForElement = function(selector, callback) {
 
 // AJAX wrapper
 
-function request(url, data, successFunction, failedFunction)
+function request(url, data, successFunction, failedFunction, timeout=6000)
 {
     var $xhr = $.ajax({
         type: "POST",
         url: url,
         data: data,
-        timeout: 6000,
+        timeout: timeout,
         error: function(xhr, textStatus, errorThrown)
         {
             // Frontend error
@@ -365,7 +365,7 @@ function sdfToSmiles(sdf)
 
 // JSmol ////////////////////////////////////////////////////////
 
-function jsmolGetMol(canvasObj, include_hydrogen=false)
+function jsmolGetMol(canvasObj, includeHydrogen=false)
 {
     // returns a JSON object with all the atoms
     // var atominfo = Jmol.getPropertyAsArray(canvasObj, "atominfo", "all");
@@ -374,7 +374,7 @@ function jsmolGetMol(canvasObj, include_hydrogen=false)
     // allowing up to 999 atoms and 999 bonds to be "extracted" from the
     // model as an independent structure.
     var sdf;
-    if(include_hydrogen)
+    if(includeHydrogen)
     {
         sdf = Jmol.getPropertyAsString(canvasObj, "extractModel", "all");
     }
@@ -404,7 +404,7 @@ function jsmolSetMol(canvasObj, molStr)
     // http://wiki.jmol.org/index.php/File_formats/Chemical_Structure
 
     jsmolCmd(canvasObj, "load inline '"+molStr+"'");
-    jsmolCmd(canvasObj, "minimize addHydrogens");
+    // jsmolCmd(canvasObj, "minimize addHydrogens");
 
     return false;
 }
@@ -500,6 +500,17 @@ function chemdoodleSetMol(canvas, mol)
 }
 
 
+// Tools
+
+function setHash(loc)
+{
+	window.location.hash = "#/"+loc;
+}
+
+function getHash()
+{
+	return window.location.hash.replace("#/", "");
+}
 
 // Production ///////////////////////////////////////////////////////
 
