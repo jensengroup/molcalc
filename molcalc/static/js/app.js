@@ -536,24 +536,26 @@ if (storage == undefined)
 
 // Navigation
 
+var $sidebars = $('.sidebar');
 var $sidebarBtns = $('.btnSidebar');
 var $sidebarCloseBtns = $('.btnCloseSidebar');
 
-$sidebarBtns.click(function (){
-    $('.sidebar').removeClass("active");
+$sidebarBtns.click(function(event)
+{
+    $sidebars.removeClass("active");
 	var link = $(this).attr('href');
     $sidebar = $(link);
     $sidebar.addClass("active");
     return false;
 });
 
-$sidebarCloseBtns.click(function (){
+$sidebarCloseBtns.click(function(event)
+{
 	var link = $(this).attr('href');
     $sidebar = $(link);
     $sidebar.removeClass("active");
     return false;
 });
-
 
 ///////////////////////////////////////////////////////////
 

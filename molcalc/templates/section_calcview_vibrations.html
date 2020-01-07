@@ -40,7 +40,7 @@ waitForElement('#jmolVib_appletdiv', function() {
 
 $(function()
 {
-
+    $sidebars = $(".sidebar");
 
     // Animation on off
     $('#vibration_switch').change(function()
@@ -98,6 +98,7 @@ $(function()
         jmolCmd  = "frame "+rel;
         Jmol.script(jmolVib, jmolCmd);
         Jmol.script(jmolVib, 'echo "'+rcm+'"');
+        $sidebars.removeClass("active");
         return false;
     });
 
@@ -106,9 +107,23 @@ $(function()
 </script>
 
 
+<div class="toggle700 calcOptionMenu">
+    <a class="button icon btnSidebar" href="#calcVibrations">
+        <i class="fas fa-plus"></i>
+    </a>
+</div>
 
+<section class="options sidebar" id="calcVibrations">
 
-    <section class="options">
+    <section class="toolset toggle700">
+        <a class="button icon btnCloseSidebar" href="#calcVibrations">
+            <i class="fas fa-angle-left"></i>
+        </a>
+    </section>
+
+    <section class="sidebar-cover"></section>
+    <section class="sidebar-background btnCloseSidebar" href="#calcVibrations"></section>
+
 
     <table>
     <tbody><tr>
@@ -185,6 +200,6 @@ Jmol.script(jmolVib, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing 
         </div>
 
 
-    </section>
+</section>
 
 

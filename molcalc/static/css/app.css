@@ -315,7 +315,7 @@ table tr td {
 
 table tr td p {margin:0;}
 table tr td img {float:none;display:inline;}
-table tr td.right {text-align:right;}
+table tr td.right {text-align:right;white-space: nowrap;}
 table tr td.center {text-align:center;}
 
 
@@ -369,7 +369,7 @@ table tr td.center {text-align:center;}
     color: #fff;
 }
 .button.icon {
-    height: 30;
+    height: 30px;
     width: 30px;
     line-height: 30px;
     padding: 0;
@@ -378,7 +378,7 @@ table tr td.center {text-align:center;}
     font-size: 15px;
 
     /* color: #222; */
-    /* background: #ddd; /* alt #e7e6ef */ */
+    /* background: #ddd; /* alt #e7e6ef */
     /* border-color: #ddd; */
 
     font-weight:bold;
@@ -1113,7 +1113,6 @@ input[type=text].accept {
     font-size: 30px;
     line-height: 40px;
     font-weight: bold;
-    /* background: green; */
 }
 .mc-content.calculation h2 {
     font-size: 25px;
@@ -1186,6 +1185,7 @@ input[type=text].accept {
     DISPLAY: NONE;
 }
 .molcalc.calculation .mc-content .calc.active {display: grid;}
+
 .molcalc.calculation .mc-content .calc h2 {
     grid-area: title;
 }
@@ -1210,13 +1210,14 @@ input[type=text].accept {
 .molcalc.calculation .mc-content .calc .tbl_container {
     display: block;
 }
+
+
 .molcalc.calculation .mc-content svg {
     /* transform: scale(0.4); */
     /* -webkit-transform:scale(0.6); */
     /* -moz-transform:scale(0.6); */
     /* -ms-transform:scale(0.6); */
     /* -o-transform:scale(0.6); */
-    /* border: 1px solid green; */
 }
 .molcalc.calculation .mc-content .calc table {
     border-collapse: separate;
@@ -1232,6 +1233,7 @@ input[type=text].accept {
     /* border-style: solid; */
     /* border-color: #bbb; */
 }
+
 
 
 .molcalc.calculation .mc-content .calc .options {
@@ -1294,6 +1296,7 @@ input[type=text].accept {
     position: absolute;
     right: 0;
 }
+.molcalc.calculation .mc-content .calc ul.data li:hover .action a.active,
 .molcalc.calculation .mc-content .calc ul.data li:hover .action a {
     color: rgb(0, 121, 211);
 }
@@ -1312,6 +1315,88 @@ input[type=text].accept {
 .molcalc.calculation .mc-content .calc ul.data a {
     color: rgba(255,255,255,0.8);
 }
+
+
+@media only screen and (max-width: 767px) {
+
+    .molcalc.calculation .mc-content {
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+        grid-template-areas: "view";
+    }
+    .molcalc.calculation .mc-content h1 {
+        display: none;
+    }
+    .molcalc.calculation .mc-content h2 {
+        display: none;
+    }
+    .molcalc.calculation .mc-content .calc {
+        /* display: none !important; */
+        grid-area: view;
+        margin: 0;
+        padding: 0;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+        grid-template-areas: "view";
+    }
+    .molcalc.calculation .mc-content .calc-menu {
+        /* display: none; */
+    }
+    .molcalc.calculation .mc-content .calc-menu ul {
+        margin-top: 20px;
+    }
+    .molcalc.calculation .mc-content .calc-menu ul li {
+        display: block;
+        float: none;
+        padding: 0 20px;
+    }
+
+
+    .molcalc.calculation .mc-content .calc .view {
+        z-index: 1;
+        grid-area: view;
+        display: block;
+    }
+    .molcalc.calculation .mc-content .calc .options table {
+        width: inherit;
+    }
+    .molcalc.calculation .mc-content .calc .options .data {
+        width: inherit;
+        height: inherit;
+        overflow: visible;
+        margin: 20px 0;
+    }
+    .molcalc.calculation .mc-content .calc .options .data li {
+        height: 50px;
+    }
+    .molcalc.calculation .mc-content .calc .options .data li .energy {
+        padding: 0 20px;
+        position: absolute;
+        left:0;
+
+    }
+    .molcalc.calculation .mc-content .calc .options .data a {
+        /* color: rgb(0, 121, 211); */
+        color: rgb(102, 187, 251);
+    }
+
+    .molcalc.calculation .mc-content .calc .tbls_container {
+        grid-area: content;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+
+    }
+
+    .molcalc.calculation .mc-content .calc .calcOptionMenu {
+        z-index: 5;
+        position: absolute;
+        bottom: 0;
+    }
+}
+
+
+
 
 
 /* page */

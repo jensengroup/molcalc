@@ -27,12 +27,15 @@ waitForElement('#jmolOrb_appletdiv', function() {
 
 $(function()
 {
+    $sidebars = $(".sidebar");
+
     // View Orbital
     $('.orbital_levels a').click(function()
     {
         // Check for getProperty fileName
         var orbital = $(this).attr('rel');
         Jmol.script(jmolOrb, 'mo '+orbital);
+        $sidebars.removeClass("active");
         return false;
     });
 });
@@ -40,7 +43,24 @@ $(function()
 </script>
 
 
-<section class="options">
+<div class="toggle700 calcOptionMenu">
+    <a class="button icon btnSidebar" href="#calcOrbitals">
+        <i class="fas fa-plus"></i>
+    </a>
+</div>
+
+
+<section class="options sidebar" id="calcOrbitals">
+
+    <section class="toolset toggle700">
+        <a class="button icon btnCloseSidebar" href="#calcOrbitals">
+            <i class="fas fa-times"></i>
+        </a>
+    </section>
+
+    <section class="sidebar-cover"></section>
+    <section class="sidebar-background btnCloseSidebar" href="#calcOrbitals"></section>
+
 
 <ul class="data orbital_levels">
 

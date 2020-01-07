@@ -18,7 +18,9 @@ if(firstHash != "")
 }
 
 
-$('.calc-menu a').each(function ()
+var $sidebars = $('.sidebar');
+
+$('.calc-menu ul a').each(function ()
 {
     var active = "active";
     var that = $(this);
@@ -36,6 +38,8 @@ $('.calc-menu a').each(function ()
         $sections.find(".calc.tab-"+type).addClass(active);
 
         setHash(type);
+
+        $sidebars.removeClass("active");
 
         return false;
     });

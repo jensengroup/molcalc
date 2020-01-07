@@ -18,7 +18,7 @@
         {% include 'section_icon.html' %}
 
         <section class="mc-mobile-navigation toggle700 btnHeader left">
-            <a class="button icon btnSidebar" href="#nav">
+            <a class="button icon btnSidebar" href="#calcmenu">
 				<i class="fas fa-angle-right"></i>
             </a>
         </section>
@@ -33,7 +33,19 @@
 
             <h1>{{name}}</h1>
 
-            <section class="calc-menu">
+            <section class="calc-menu sidebar" id="calcmenu">
+
+                <section class="toolset toggle700">
+                    <a class="button icon btnCloseSidebar" href="#calcmenu">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                    <a class="button btnSidebar menu" href="#nav">Menu</a>
+                </section>
+
+                <section class="sidebar-cover"></section>
+                <section class="sidebar-background btnCloseSidebar" href="#calcmenu"></section>
+
+
                 <ul>
                     <li><a href="#/energies"  class="energies active">Free Energies</a></li>
                     <li><a href="#/vibrations" class="vibrations">Vibrational Frequencies</a></li>
