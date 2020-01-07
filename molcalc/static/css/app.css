@@ -736,7 +736,7 @@ input[type=text].accept {
 }
 .onoffswitch-label {
     display: block; overflow: hidden; cursor: pointer;
-    border: 1px solid #bbb;
+    border: 1px solid #444;
     border-radius: 3px;
 }
 .onoffswitch-inner {
@@ -771,7 +771,7 @@ input[type=text].accept {
 .onoffswitch-switch {
     width: 40px; margin: 0px;
     background: #FFFFFF;
-    border: 1px solid #bbb;
+    border: 1px solid #444;
     border-radius: 2px;
     position: absolute; top: 0; bottom: 0; right: 38px;
     /* -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s; */
@@ -1097,10 +1097,23 @@ input[type=text].accept {
 .molcalc.calculation .mc-content {
     background: transparent;
     overflow: visible;
+    position: relative;
+
+    display: grid;
+ 	grid-template-rows: 40px 70px 20px auto;
+    grid-template-columns: auto;
+    grid-template-areas:
+        "name"
+        "menu"
+        "pad"
+        "calc";
 }
 .mc-content.calculation h1 {
+    grid-area: name;
     font-size: 30px;
+    line-height: 40px;
     font-weight: bold;
+    /* background: green; */
 }
 .mc-content.calculation h2 {
     font-size: 25px;
@@ -1132,9 +1145,9 @@ input[type=text].accept {
 
 }
 .molcalc.calculation .mc-content .calc-menu {
-    height: 60px;
-    margin-top: 10px;
+    grid-area: menu;
     border-bottom: 2px solid #bbb;
+    /* background: blue; */
 }
 .molcalc.calculation .mc-content .calc-menu ul {}
 .molcalc.calculation .mc-content .calc-menu ul li {
@@ -1146,7 +1159,7 @@ input[type=text].accept {
     font-weight: bold;
     text-decoration: none;
     display: block;
-    line-height: 60px;
+    line-height: 68px;
     margin-right: 20px;
     border-bottom: 2px solid #bbb;
 }
@@ -1157,21 +1170,42 @@ input[type=text].accept {
     outline-style:none;
 }
 .molcalc.calculation .mc-content .calc {
-    margin: 30px 0 0 0;
-    padding: 20px;
+    grid-area: calc;
     background: white;
     min-height: 100px;
+    padding: 20px;
 
-    display: none;
+    display: grid;
+ 	grid-template-rows: 40px 10px auto;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+        "title title"
+        "pad pad"
+        "options view";
+
+    DISPLAY: NONE;
 }
-.molcalc.calculation .mc-content .calc.active {
-    display: block;
+.molcalc.calculation .mc-content .calc.active {display: grid;}
+.molcalc.calculation .mc-content .calc h2 {
+    grid-area: title;
+}
+.molcalc.calculation .mc-content .calc.onecol {
+    grid-template-columns: 1fr 2fr;
+ 	grid-template-rows: 40px 10px 1fr;
+    grid-template-areas:
+        "title title"
+        "pad pad"
+        "content content";
 }
 .molcalc.calculation .mc-content .calc .tbls_container {
+    grid-area: content;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    grid-gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 250px 250px auto;
+    grid-gap: 1em;
     grid-auto-flow: dense;
+    grid-auto-flow: row;
+
 }
 .molcalc.calculation .mc-content .calc .tbl_container {
     display: block;
@@ -1200,28 +1234,24 @@ input[type=text].accept {
 }
 
 
-.molcalc.calculation .mc-content .calc .env {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "options view" ;
-
-}
-
-.molcalc.calculation .mc-content .calc .env .options {
+.molcalc.calculation .mc-content .calc .options {
     grid-area: options;
-    min-height: 400px;
+    /* grid-area: options; */
+    /* min-height: 400px; */
+    /* padding: 20px; */
 }
-.molcalc.calculation .mc-content .calc .env .view {
+.molcalc.calculation .mc-content .calc .view {
     grid-area: view;
+    /* grid-area: view; */
+    /* padding: 20px; */
 }
 
-.molcalc.calculation .mc-content .calc .env .options .choices {
+.molcalc.calculation .mc-content .calc .options .choices {
 
 	
 
 }
-.molcalc.calculation .mc-content .calc .env ul.data {
+.molcalc.calculation .mc-content .calc ul.data {
 
     width: 100%;
     line-height: 50px;
@@ -1231,51 +1261,57 @@ input[type=text].accept {
     direction: rtl;
 
     border-top: 1px solid #fff;
+    border-top: 1px solid #f4f4f4;
 }
-.molcalc.calculation .mc-content .calc .env ul.data li {
+.molcalc.calculation .mc-content .calc ul.data li {
     background: #f7f7f7;
+    background: white;
     border-bottom: 1px solid #fff;
+    border-bottom: 1px solid #f4f4f4;;
     display:block;
     padding: 0 20px;
     position: relative;
 }
-.molcalc.calculation .mc-content .calc .env ul.data li:hover {
+.molcalc.calculation .mc-content .calc ul.data li:hover {
     background: rgb(0, 121, 211);
-    color: #fff;
+    background: #fbfbfb;
+    /* color: #fff; */
 }
-.molcalc.calculation .mc-content .calc .env ul.data li .txt {
+.molcalc.calculation .mc-content .calc ul.data li .txt {
     font-weight: bold;
 }
-.molcalc.calculation .mc-content .calc .env ul.data li .index {
+.molcalc.calculation .mc-content .calc ul.data li .index {
     display: none;
 }
-.molcalc.calculation .mc-content .calc .env ul.data li .energy {
+.molcalc.calculation .mc-content .calc ul.data li .energy {
     display: inline-block;
     padding:0 80px;
     text-align: right;
     direction: ltr;
 }
-.molcalc.calculation .mc-content .calc .env ul.data .action {
+.molcalc.calculation .mc-content .calc ul.data .action {
     /* display: none; */
     position: absolute;
     right: 0;
 }
-.molcalc.calculation .mc-content .calc .env ul.data li:hover .action {
-    /* display: inline; */
+.molcalc.calculation .mc-content .calc ul.data li:hover .action a {
+    color: rgb(0, 121, 211);
 }
-.molcalc.calculation .mc-content .calc .env ul.data a:hover,
-.molcalc.calculation .mc-content .calc .env ul.data a {
+.molcalc.calculation .mc-content .calc ul.data a:hover,
+.molcalc.calculation .mc-content .calc ul.data a {
     display: block;
     height: 50px;
     width: 50px;
     text-align: center;
     line-height: 50px;
     font-size: 20px;
-    color: rgba(255,255,255,0.8);
+    /* color: rgba(255,255,255,0.8); */
     cursor: pointer;
     outline-style:none;
 }
-
+.molcalc.calculation .mc-content .calc ul.data a {
+    color: rgba(255,255,255,0.8);
+}
 
 
 /* page */
