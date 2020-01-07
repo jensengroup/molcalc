@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=3.3.1
+VERSION=3.4.1
 
 cd molcalc/static/
 mkdir -p jquery
