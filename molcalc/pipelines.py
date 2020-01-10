@@ -159,7 +159,7 @@ def gamess_quantum_pipeline(request, molinfo):
     smiles = cheminfo.molobj_to_smiles(molobj, remove_hs=True)
 
     # hash on sdf (conformer)
-    hshobj = hashlib.md5(sdfstr)
+    hshobj = hashlib.md5(sdfstr.encode())
     hashkey = hshobj.hexdigest()
 
     # Start respond message
