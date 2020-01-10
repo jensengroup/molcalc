@@ -172,18 +172,20 @@ $(function()
         </tr>
   </table>
 
-  <!-- <table> -->
-  <!--       <tr><td class="center" style="width:50%">Property</td><td style="width:25%" class="center">Value</td><td style="width:25%" class="center">Unit</td><tr> -->
-  <!--       <tr><td>Total Solvation Energy</td><td class="right"><?php print format($totsolv*$c2j) ?></td><td class="right">kJ mol<sup>&#45;1</sup></td><tr> -->
-  <!--       <tr><td>Polar Solvation Energy</td><td class="right"><?php print format($elec*$c2j) ?></td><td class="right">kJ mol<sup>&#45;1</sup></td><tr> -->
-  <!--       <tr><td>Nonpolar Solvation Energy</td><td class="right"><?php print format($nonpolar*$c2j) ?></td><td class="right">kJ mol<sup>&#45;1</sup></td><tr> -->
-  <!-- </table> -->
-  <!--  -->
-  <!-- <table> -->
-  <!--       <tr><td style="width:50%">Surface Area</td><td style="width:25%" class="right"><?php print format($surfarea) ?></td><td style="width:25%" class="right">Å<sup>2</sup></td><tr> -->
-  <!--       <tr><td>Charge of Molecule</td><td class="right"><?php print $charge ?></td><td class="right"></td><tr> -->
-  <!--       <tr><td>Dipole</td><td class="right"><?php print format($dipole) ?></td><td class="right">Debye</td><tr> -->
-  <!-- </table> -->
+  <p style="margin-bottom:10px;text-align:center;">Aqueous Solvation Energy at 298.15 K</p>
+
+  <table>
+        <tr><td class="center" style="width:50%">Property</td><td style="width:25%" class="center">Value</td><td style="width:25%" class="center">Unit</td><tr>
+        <tr><td>Total Solvation Energy</td><td class="right">{{soltotal}}</td><td class="right">kJ mol<sup>-1</sup></td><tr>
+        <tr><td>Polar Solvation Energy</td><td class="right">{{solpolar}}</td><td class="right">kJ mol<sup>-1</sup></td><tr>
+        <tr><td>Nonpolar Solvation Energy</td><td class="right">{{solnonpolar}}</td><td class="right">kJ mol<sup>-1</sup></td><tr>
+  </table>
+
+  <table>
+        <tr><td style="width:50%">Surface Area</td><td style="width:25%" class="right">{{solsurface}}</td><td style="width:25%" class="right">Å<sup>2</sup></td><tr>
+        <tr><td>Charge of Molecule</td><td class="right">{{charge}}</td><td class="right"></td><tr>
+        <tr><td>Dipole</td><td class="right">{{soldipoletotal}}</td><td class="right">Debye</td><tr>
+  </table>
 
 
 

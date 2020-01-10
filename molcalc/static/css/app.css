@@ -1100,15 +1100,16 @@ input[type=text].accept {
     position: relative;
 
     display: grid;
- 	grid-template-rows: 40px 70px 20px auto;
+ 	grid-template-rows: 60px 20px auto;
     grid-template-columns: auto;
     grid-template-areas:
-        "name"
         "menu"
         "pad"
         "calc";
+    margin: 0 10px 10px 10px;
 }
 .mc-content.calculation h1 {
+    display: none;
     grid-area: name;
     font-size: 30px;
     line-height: 40px;
@@ -1158,7 +1159,7 @@ input[type=text].accept {
     font-weight: bold;
     text-decoration: none;
     display: block;
-    line-height: 68px;
+    line-height: 58px;
     margin-right: 20px;
     border-bottom: 2px solid #bbb;
 }
@@ -1287,7 +1288,7 @@ input[type=text].accept {
 }
 .molcalc.calculation .mc-content .calc ul.data li .energy {
     display: inline-block;
-    padding:0 80px;
+    padding:0 40px 0 40px;
     text-align: right;
     direction: ltr;
 }
@@ -1682,6 +1683,8 @@ input[type=text].accept {
         text-align: center;
 
         background: transparent;
+    }
+    .toolset ul.rightbar a.button {
     }
 
     .sidebar-cover {

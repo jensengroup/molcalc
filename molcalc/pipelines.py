@@ -105,6 +105,21 @@ def gamess_quantum_view(calculation):
     data["dipoley"] = dipoles[1]
     data["dipolez"] = dipoles[2]
 
+    data["soltotal"] = fmt.format(data["soltotal"]*calories_to_joule)
+    data["solpolar"] = fmt.format(data["solpolar"]*calories_to_joule)
+    data["solnonpolar"] = fmt.format(data["solnonpolar"]*calories_to_joule)
+    data["solsurface"] = fmt.format(data["solsurface"])
+    data["soldipoletotal"] = fmt.format(data["soldipoletotal"])
+
+
+
+    charges = load_array(data["charges"])
+
+    charge = sum(charges)
+    charge = np.round(charge, decimals=0)
+
+    data["charge"] = int(charge)
+
     return data
 
 
