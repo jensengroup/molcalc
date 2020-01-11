@@ -96,6 +96,7 @@ def ajax_sdf_to_smiles(request):
     sdf to smiles convertion
 
     """
+    return {'message', 'disabled'}
 
     if not request.POST:
         return {'error':'Error 55 - Missing key', 'message': "Error. Missing information."}
@@ -130,6 +131,8 @@ def ajax_smiles_to_sdf(request):
     convert SMILES to SDF format
 
     """
+
+    return {'message', 'disabled'}
 
     if not request.POST:
         return {'error':'Error 53 - Missing key', 'message': "Error. Missing information."}
@@ -182,11 +185,34 @@ def ajax_submitquantum(request):
         molobj = cheminfo.molobj_add_hydrogens(molobj)
         cheminfo.molobj_optimize(molobj)
 
+    # TODO Check lengths of atoms
+    # TODO Define max in settings
+
+
+    # Fix sdfstr
+    sdfstr = sdfstr.decode('utf8')
+    for _ in range(3):
+        i = sdfstr.index('\n')
+        sdfstr = sdfstr[i+1:]
+    sdfstr = "\n"*3 + sdfstr
+
     # hash on sdf (conformer)
-    hshobj = hashlib.md5(sdfstr)
+    hshobj = hashlib.md5(sdfstr.encode())
     hashkey = hshobj.hexdigest()
 
-    print("DEBUG:", hashkey)
+    calculation = request.dbsession.query(models.GamessCalculation) \
+        .filter_by(hashkey=hashkey).first()
+
+    if calculation is not None:
+
+        msg = {
+            'hashkey': hashkey
+        }
+
+        calculation.created = datetime.datetime.now()
+        return msg
+
+    print("new:", hashkey)
 
     molecule_info = {
         "sdfstr": sdfstr,

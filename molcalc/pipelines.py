@@ -105,7 +105,20 @@ def gamess_quantum_view(calculation):
     data["dipoley"] = dipoles[1]
     data["dipolez"] = dipoles[2]
 
-    print(data["dipolex"])
+    data["soltotal"] = fmt.format(data["soltotal"]*calories_to_joule)
+    data["solpolar"] = fmt.format(data["solpolar"]*calories_to_joule)
+    data["solnonpolar"] = fmt.format(data["solnonpolar"]*calories_to_joule)
+    data["solsurface"] = fmt.format(data["solsurface"])
+    data["soldipoletotal"] = fmt.format(data["soldipoletotal"])
+
+
+
+    charges = load_array(data["charges"])
+
+    charge = sum(charges)
+    charge = np.round(charge, decimals=0)
+
+    data["charge"] = int(charge)
 
     return data
 
@@ -133,6 +146,8 @@ def gamess_quantum_pipeline(request, molinfo):
 
     """
 
+    # TODO Read gamess settings from ini
+
     # Read input
     molobj = molinfo["molobj"]
     sdfstr = molinfo["sdfstr"]
@@ -146,7 +161,7 @@ def gamess_quantum_pipeline(request, molinfo):
     smiles = cheminfo.molobj_to_smiles(molobj, remove_hs=True)
 
     # hash on sdf (conformer)
-    hshobj = hashlib.md5(sdfstr)
+    hshobj = hashlib.md5(sdfstr.encode())
     hashkey = hshobj.hexdigest()
 
     # Start respond message
@@ -187,7 +202,7 @@ def gamess_quantum_pipeline(request, molinfo):
         "autoclean": True,
         "debug": False,
     }
-    properties = gamess.calculate_optimize(molobj, filename="gms_opt.inp", **gmsargs)
+    properties = gamess.calculate_optimize(molobj, **gmsargs)
 
     if properties is None:
         return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Server was unable to optimize molecule"}
@@ -214,7 +229,7 @@ def gamess_quantum_pipeline(request, molinfo):
  $end
 """
 
-    stdout, status = gamess.calculate(molobj, header, filename="gms_vib.inp", **gmsargs)
+    stdout, status = gamess.calculate(molobj, header, **gmsargs)
     properties = gamess.read_properties_vibration(stdout)
 
     if properties is None:
@@ -241,7 +256,7 @@ def gamess_quantum_pipeline(request, molinfo):
  $basis gbasis=sto ngauss=3 $end
 """
 
-    stdout, status = gamess.calculate(molobj, header, filename="gms_orb.inp", **gmsargs)
+    stdout, status = gamess.calculate(molobj, header, **gmsargs)
     properties = gamess.read_properties_orbitals(stdout)
 
     if properties is None:
@@ -280,7 +295,7 @@ def gamess_quantum_pipeline(request, molinfo):
 
     #
 
-    stdout, status = gamess.calculate(molobj, header, filename="gms_sol.inp", **gmsargs)
+    stdout, status = gamess.calculate(molobj, header, **gmsargs)
     properties = gamess.read_properties_solvation(stdout)
 
     if properties is None:

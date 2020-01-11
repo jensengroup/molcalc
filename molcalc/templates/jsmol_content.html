@@ -17,11 +17,11 @@ var myInfo1 = {
 
 <script type="text/javascript">
 myJmol1 = Jmol.getApplet("myJmol1", myInfo1);
-// Jmol.script(myJmol1, 'load "static/molecules/methane.sdf";');
 Jmol.script(myJmol1, 'background "#ffffff"');
 Jmol.script(myJmol1, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
-Jmol.script(myJmol1, 'set forcefield "MMFF"')
-Jmol.script(myJmol1, 'minimize')
+Jmol.script(myJmol1, 'set forcefield "MMFF"');
+jsmolSetMol(myJmol1, sdfMethane);
+Jmol.script(myJmol1, 'minimize');
 </script>
 
 </div>

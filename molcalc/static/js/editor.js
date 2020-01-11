@@ -1,5 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function()
+{
 
+// global
+const $loading = $('<div class="meter"><span style="width: 100%"></span></div>');
 
 // Editor specific wrapper functions
 
@@ -146,8 +149,10 @@ onWindowResize();
 
 
 // Switch between 3D and 2D
-$('#editor-jsmol').hide();
-$('.toolset.jsmol').hide();
+// $('#editor-jsmol').hide();
+// $('.toolset.jsmol').hide();
+$('#editor-chemdoodle').hide();
+$('.toolset.chemdoodle').hide();
 
 swithBtns = $('.toolset.tool-choice .button').click(function () {
 
@@ -165,6 +170,7 @@ swithBtns = $('.toolset.tool-choice .button').click(function () {
         var sdf = chemdoodleGetMol(sketcher);
 
         jsmolSetMol(myJmol1, sdf);
+        jsmolCmd(myJmol1, "minimize addHydrogens");
 
         $('#editor-chemdoodle').hide();
         $('.toolset.chemdoodle').hide();
@@ -214,7 +220,7 @@ $('.toolset .load_water').click(function () {
 $('.button.quantum').click(function () {
 
     var promptQuantum = new $.Prompt();
-    promptQuantum.setMessage('Ready to calculate <strong>quantum properties</strong> for the molecule?');
+    promptQuantum.setMessage('Ready to calculate <strong>quantum chemical properties</strong> for the molecule?');
     promptQuantum.addResponseBtn('Indeed', function()
     {
         var $loading = $('<div class="meter"><span style="width: 100%"></span></div>');
@@ -389,6 +395,11 @@ $searchFrm.submit(function(event) {
 
     changeInputStatus($searchInp, "loading");
 
+    var promptWait = new $.Prompt();
+    promptWait.setMessage($loading);
+    promptWait.setType("transparent");
+    promptWait.show();
+
     var search = $searchInp.val();
 
     if (!search || 0 === search.length)
@@ -411,28 +422,22 @@ $searchFrm.submit(function(event) {
         promptSearch.cancel();
         onWindowResize();
 
-        // data = {"smiles": data};
-        // request("/ajax/smiles", data, function(rtnData)
-        // {
-        //     var sdfstr = rtnData["sdf"][0];
-        //     setCurrentSDF(sdfstr);
-        //     promptSearch.cancel();
-        //     onWindowResize();
-        // });
-
         // reset search on success
         $searchInp.focus();
         $searchInp.val("");
         changeInputStatus($searchInp, 'success');
+        promptWait.cancel();
 
     }, function(status)
     {
         changeInputStatus($searchInp, 'failed');
+        promptWait.cancel();
     });
 
     return false;
 });
 
 
+// End
 });
 

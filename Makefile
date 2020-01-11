@@ -3,7 +3,7 @@ PYTHON=env/bin/python
 PSERVE=env/bin/pserve
 CONDA=conda
 
-all: env setup_assets molcalc/data
+all: env setup_assets molcalc/data molcalc/chemhelp
 
 serve_development:
 	ip a | grep inet
@@ -23,11 +23,16 @@ env:
 	${CONDA} env create -f environment.yml -p env
 	env/bin/python setup.py develop
 
+dependencies:
+	sudo apt install -y libxrender-dev
 
 molcalc/data: scripts/setup_datadir.sh
 	bash scripts/setup_datadir.sh
 
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js molcalc/static/rdkit/rdkit.js
+
+molcalc/chemhelp:
+	git clone https://github.com/charnley/chemhelp molcalc/chemhelp
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
