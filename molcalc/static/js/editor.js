@@ -220,7 +220,7 @@ $('.toolset .load_water').click(function () {
 $('.button.quantum').click(function () {
 
     var promptQuantum = new $.Prompt();
-    promptQuantum.setMessage('Ready to calculate <strong>quantum properties</strong> for the molecule?');
+    promptQuantum.setMessage('Ready to calculate <strong>quantum chemical properties</strong> for the molecule?');
     promptQuantum.addResponseBtn('Indeed', function()
     {
         var $loading = $('<div class="meter"><span style="width: 100%"></span></div>');
@@ -438,5 +438,6 @@ $searchFrm.submit(function(event) {
 });
 
 
+// End
 });
 

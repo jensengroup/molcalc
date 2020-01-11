@@ -185,6 +185,10 @@ def ajax_submitquantum(request):
         molobj = cheminfo.molobj_add_hydrogens(molobj)
         cheminfo.molobj_optimize(molobj)
 
+    # TODO Check lengths of atoms
+    # TODO Define max in settings
+
+
     # Fix sdfstr
     sdfstr = sdfstr.decode('utf8')
     for _ in range(3):

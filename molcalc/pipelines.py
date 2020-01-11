@@ -146,6 +146,8 @@ def gamess_quantum_pipeline(request, molinfo):
 
     """
 
+    # TODO Read gamess settings from ini
+
     # Read input
     molobj = molinfo["molobj"]
     sdfstr = molinfo["sdfstr"]
