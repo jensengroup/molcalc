@@ -35,6 +35,7 @@ waitForElement('#jmolVib_appletdiv', function() {
 
     Jmol.script(jmolVib, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');
     // Jmol.script(jmolVib, 'font echo 20 serif;fsize=20;set echo top center;echo echo test');
+	Jmol.script(jmolVib, 'centerAt average 0.0 0.0 0.0');
 });
 
 
@@ -108,8 +109,9 @@ $(function()
 
 
 <div class="toggle700 calcOptionMenu">
-    <a class="button icon btnSidebar" href="#calcVibrations">
-        <i class="fas fa-plus"></i>
+    <a class="button highlight btnSidebar" href="#calcVibrations">
+        Vibrations
+        <!-- <i class="fas fa&#45;plus"></i> -->
     </a>
 </div>
 
@@ -117,7 +119,7 @@ $(function()
 
     <section class="toolset toggle700">
         <a class="button icon btnCloseSidebar" href="#calcVibrations">
-            <i class="fas fa-angle-left"></i>
+            <i class="fas fa-times"></i>
         </a>
     </section>
 
@@ -155,7 +157,7 @@ $(function()
       </td>
     </tr>
     <tr>
-      <td>Balls</td>
+      <td>Sticks and balls</td>
       <td class="center">
 
         <div class="onoffswitch">

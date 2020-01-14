@@ -438,6 +438,16 @@ table tr td.center {text-align:center;}
     filter: invert(100%);
 }
 
+.button.large {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 25px;
+    padding: 0;
+    text-align: center;
+
+}
+
 /* loading meter */
 /* https://css-tricks.com/css3-progress-bars/ */
 
@@ -1273,6 +1283,7 @@ input[type=text].accept {
     width: 100%;
     line-height: 50px;
 
+    /* min-height: 500px; */
     max-height: 500px;
     overflow-y: scroll;
     direction: rtl;

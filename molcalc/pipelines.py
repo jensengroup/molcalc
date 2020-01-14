@@ -275,7 +275,11 @@ def gamess_quantum_pipeline(request, molinfo):
 
     def procfunc(conn, reader, *args, **kwargs):
         stdout, status = gamess.calculate(*args, **kwargs)
-        properties = reader(stdout)
+        try:
+            properties = reader(stdout)
+        except:
+            # TODO Error reading properties
+            properties = None
         conn.send(properties)
         conn.close()
 
