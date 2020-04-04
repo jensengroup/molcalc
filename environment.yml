@@ -1,5 +1,5 @@
 name: molcalc
 dependencies:
-  - python=3.6.5
+  - python=3.6
   - rdkit::rdkit
   - pip

@@ -545,7 +545,13 @@ $sidebarBtns.click(function(event)
     $sidebars.removeClass("active");
 	var link = $(this).attr('href');
     $sidebar = $(link);
+    $sidebar.addClass("iphone-display-bugfix");
+    function emptyFunc() {
+        // alert("hello");
+    }
+    setTimeout(emptyFunc(), 20000);
     $sidebar.addClass("active");
+    $sidebar.removeClass("iphone-display-bugfix");
     return false;
 });
 

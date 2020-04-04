@@ -1600,11 +1600,25 @@ input[type=text].accept {
         background: #eeeff1;
 
         visibility: hidden;
-        transition: all .1s ease-in-out;
-        transition: visibility 0s, opacity 0.2s ease-in-out;
+        /* transition: all .1s ease-in-out; */
+        /* transition: visibility 0s, opacity 0.2s ease-in-out; */
+        /* display: NONE; */
+        /* opacity: 0; */
+        /* pointer-events: none; */
 
+        width: 100%;
+        border-right: 50px solid transparent;
+
+
+    }
+
+    .sidebar .sidebar-wrapper {
+        display: none;
+    }
+    .sidebar.active .sidebar-wrapper {
+        display: block;
+        -webkit-transform: translate(0px, 0px); /* iphone hack */
         width: 90%;
-
     }
 
     .mc-navigation.sidebar {
@@ -1615,11 +1629,18 @@ input[type=text].accept {
     /*     padding: 10px; */
     /* } */
 
+    .iphone-display-bugfix {
+        display: none;
+    }
+
     .sidebar.active,
     #nav:target {
         /* transform: translateX(300px); */
-        opacity:1;
+        /* opacity:1; */
         visibility: visible;
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .mc-navigation ul {
@@ -1653,6 +1674,10 @@ input[type=text].accept {
         width: 40px;
         height: 40px;
         line-height: 40px;
+    }
+    .sidebar .section .btnCloseSidebar:hover,
+    .sidebar .toolset .btnCloseSidebar:hover {
+        color: #333;
     }
 
     .sidebar .btnSidebar.menu {
@@ -1741,7 +1766,9 @@ input[type=text].accept {
         padding: 0;
         position: absolute;
         top: -5px;
-        right: 0;
+        right: 10px;
+        height: 32px;
+        margin:0;
     }
 
     .toolset.chemdoodle,

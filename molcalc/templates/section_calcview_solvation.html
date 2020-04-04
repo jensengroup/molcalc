@@ -117,14 +117,17 @@ $(function()
 
 <section class="options sidebar" id="calcSolvation">
 
+
+    <section class="sidebar-cover"></section>
+    <section class="sidebar-background btnCloseSidebar" href="#calcSolvation"></section>
+
+    <section class="sidebar-wrapper"> <!-- sidebar wrapper -->
+
     <section class="toolset toggle700">
         <a class="button icon btnCloseSidebar" href="#calcSolvation">
             <i class="fas fa-times"></i>
         </a>
     </section>
-
-    <section class="sidebar-cover"></section>
-    <section class="sidebar-background btnCloseSidebar" href="#calcSolvation"></section>
 
     <table>
         <tr>
@@ -190,10 +193,10 @@ $(function()
 
 
 
+    </section> <!-- sidebar wrapper -->
+</section> <!-- sidebar -->
 
-    </section>
-
-    <section class="view">
+<section class="view">
 
         <div class="editor-jsmol" style="width: 100%;height: 100%;">
 
@@ -204,7 +207,6 @@ Jmol.script(jmolSurf, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing
 </script>
 
         </div>
-
 
 </section>
 

@@ -118,15 +118,17 @@ $$$$
 
         <section class="mc-editor-tools sidebar" id="sidebarEditor">
 
+            <section class="sidebar-cover"></section>
+            <section class="sidebar-background btnCloseSidebar" href="#sidebarEditor"></section>
+
+            <section class="sidebar-wrapper"> <!-- sidebar wrapper -->
+
             <section class="toolset toggle700">
                 <a class="button icon btnCloseSidebar" href="#sidebarEditor">
-                    <i class="fas fa-angle-left"></i>
+                    <i class="fas fa-times"></i>
                 </a>
                 <a class="button btnSidebar menu" href="#nav">Menu</a>
             </section>
-
-            <section class="sidebar-cover"></section>
-            <section class="sidebar-background btnCloseSidebar" href="#sidebarEditor"></section>
 
             <section class="toolset tool-choice">
                 <h2></h2>
@@ -143,6 +145,10 @@ $$$$
             <section class="toolset chemdoodle">
                 {% include 'chemtools_toolbar.html' %}
             </section>
+
+
+            </section> <!-- sidebar wrapper -->
+
 
             <section class="toolset quantum">
 				<!-- <h2 class="toggle&#45;desktop">Calculate properties</h2> -->
