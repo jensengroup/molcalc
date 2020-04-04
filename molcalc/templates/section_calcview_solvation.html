@@ -18,6 +18,7 @@ var surfMolecule = `{{mol2 | safe}}`;
 
 waitForElement('#jmolSurf_appletdiv', function() {
     jsmolSetMol(jmolSurf, surfMolecule);
+	// Jmol.script(jmolVib, 'centerAt average 0.0 0.0 0.0');
 
     // Settings
     Jmol.script(jmolSurf, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing -0.3');

@@ -1,12 +1,12 @@
 import datetime
 import hashlib
 import os
+import numpy as np
 
 from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
 
 from chemhelp import cheminfo
-
 import models
 import pipelines
 
@@ -187,7 +187,10 @@ def ajax_submitquantum(request):
 
     # TODO Check lengths of atoms
     # TODO Define max in settings
-
+    max_atoms = 10
+    heavy_atoms, = np.where(atoms != 1)
+    if len(heavy_atoms) > max_atoms:
+        return {'error':'Error 194 - max atoms error', 'message': "Stop Casper. Max ten heavy atoms."}
 
     # Fix sdfstr
     sdfstr = sdfstr.decode('utf8')

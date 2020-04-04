@@ -197,6 +197,7 @@ def gamess_quantum_pipeline(request, molinfo):
     # GAMESS DEBUG
 
     # TODO Add error messages when gamess fails
+    # TODO add timeouts for all gamess calls
 
     # Optimize molecule
 
