@@ -80,10 +80,13 @@ def calculation_pipeline(request, molinfo):
 
     gamess_options["scr"] = hashdir
 
-    properties = gamess_calculations.optimize_coordinates(molobj, **gamess_options)
+    try:
+        properties = gamess_calculations.optimize_coordinates(molobj, **gamess_options)
+    except:
+        properties = None
 
     if properties is None:
-        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Server was unable to optimize molecule"}
+        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. MolCalc was unable to optimize molecule"}
 
     print(smiles, list(properties.keys()))
 
