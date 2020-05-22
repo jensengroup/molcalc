@@ -107,7 +107,10 @@ def calculate_all_properties(molobj, **kwargs):
     ]
 
     def procfunc(conn, func, *args, **kwargs):
-        properties = func(*args, **kwargs)
+        try:
+            properties = func(*args, **kwargs)
+        except:
+            properties = None
         conn.send(properties)
         conn.close()
 
