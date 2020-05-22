@@ -86,7 +86,7 @@ def calculation_pipeline(request, molinfo):
         properties = None
 
     if properties is None:
-        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. MolCalc was unable to optimize molecule"}
+        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}
 
     print(smiles, list(properties.keys()))
 
@@ -103,7 +103,7 @@ def calculation_pipeline(request, molinfo):
     # Check results
 
     if properties_vib is None:
-        return {'error':'Error g-104 - gamess vibration error', 'message': "Error. Server was unable to vibrate molecule"}
+        return {'error':'Error g-104 - gamess vibration error', 'message': "Error. Unable to vibrate molecule"}
 
     print(smiles, list(properties_vib.keys()))
 
@@ -114,14 +114,14 @@ def calculation_pipeline(request, molinfo):
     calculation.thermo = misc.save_array(properties_vib["thermo"])
 
     if properties_orb is None:
-        return {'error':'Error g-128 - gamess orbital error', 'message': "Error. Server was unable to orbital the molecule"}
+        return {'error':'Error g-128 - gamess orbital error', 'message': "Error. Unable to calculate molecular orbitals"}
 
     print(smiles, list(properties_orb.keys()))
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 
     if properties_sol is None:
-        return {'error':'Error g-159 - gamess solvation error', 'message': "Error. Server was unable to run solvation calculation"}
+        return {'error':'Error g-159 - gamess solvation error', 'message': "Error. Unable to calculate solvation"}
 
     # 'charges', 'solvation_total', 'solvation_polar', 'solvation_nonpolar',
     # 'surface', 'total_charge', 'dipole', 'dipole_total'
