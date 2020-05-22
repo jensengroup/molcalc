@@ -13,6 +13,10 @@ from sqlalchemy import (
     Text,
     LargeBinary)
 
+import sqlalchemy as sa
+
+import zlib
+import gzip
 
 # Recommended naming convention used by Alembic, as various different database
 # providers will autogenerate vastly different names making migrations more
@@ -29,6 +33,31 @@ metadata = MetaData(naming_convention=NAMING_CONVENTION)
 Base = declarative_base(metadata=metadata)
 
 
+def compress(s):
+    if type(s) == str:
+        s = s.encode()
+    b = gzip.compress(s)
+    return b
+
+
+def decompress(b):
+    s = gzip.decompress(b)
+    return s
+
+
+class CompressedString(sa.types.TypeDecorator):
+    """
+    Storage datatype for large blobs of text
+    """
+    impl = LargeBinary
+
+    def process_bind_param(self, value, dialect):
+        return compress(value)
+
+    def process_result_value(self, value, dialect):
+        return decompress(value)
+
+
 def db_connect():
     """
     Performs database connection using database settings from settings.py.
@@ -38,35 +67,6 @@ def db_connect():
     connect_string = "sqlite:///database.sqlite"
 
     return create_engine(connect_string)
-
-
-# class MyModel(Base):
-#     __tablename__ = 'mymodel'
-#     id = Column(Integer, primary_key=True)
-#     name = Column(Text)
-#     value = Column(Integer)
-#
-#     def __repr__(self):
-#         fmt = "<Molecule {:} {:}>"
-#         return fmt.format(
-#             self.id,
-#             self.name)
-
-
-class Calculation(Base):
-    __tablename__ = "calculations"
-    id = Column(Integer, primary_key=True)
-    hashkey = Column(String)
-    created = Column(DateTime)
-    name = Column(String)
-    smiles = Column(String)
-    sdf = Column(String)
-    svg = Column(String)
-    coordinates = Column(String)
-
-    def __repr__(self):
-        fmt = "<Calculation {:} {:} >"
-        return fmt.format(self.smiles, self.hashkey)
 
 
 class GamessCalculation(Base):
@@ -88,13 +88,13 @@ class GamessCalculation(Base):
     charges = Column(String)
 
     islinear = Column(String)
-    vibjsmol = Column(String)
+    vibjsmol = Column(CompressedString)
     vibfreq = Column(String)
     vibintens = Column(String)
     thermo = Column(String)
 
     orbitals = Column(String)
-    orbitalstxt = Column(String)
+    orbitalstxt = Column(CompressedString)
 
     soltotal = Column(Float)
     solpolar = Column(Float)
