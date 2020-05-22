@@ -66,6 +66,7 @@ def view_calculations(request):
 
 
     """
+    raise httpexceptions.exception_response(404)
     return {}
 
 
