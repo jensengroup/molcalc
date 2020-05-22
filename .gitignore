@@ -46,6 +46,8 @@ env*/
 logs/
 
 molcalc/chemhelp
+chemhelp
+.test
 
 # ignore downloaded packages
 molcalc/static/js/*jquery*
