@@ -6,18 +6,18 @@ import numpy as np
 
 import context
 from context import molcalc_lib
-from context import config
+from context import CONFIG, SCR
 
-from molcalc_lib import gamess
-from molcalc_lib import cheminfo
+from chemhelp import gamess
+from chemhelp import cheminfo
 
 from rdkit import Chem
 
 GAMESS_OPTIONS = {
-    "scr": context.scr,
-    "cmd": config["gamess"].get("rungms"),
-    "gamess_scr": config["gamess"].get("scr"),
-    "gamess_userscr": config["gamess"].get("userscr"),
+    "scr": SCR,
+    "cmd": CONFIG["gamess"].get("rungms"),
+    "gamess_scr": CONFIG["gamess"].get("scr"),
+    "gamess_userscr": CONFIG["gamess"].get("userscr"),
     "debug": True,
 }
 
@@ -288,14 +288,14 @@ def test_solvation_read():
 
 def main():
 
-    # test_output()
-    # test_optimization()
-    # test_vibration_read()
+    test_output()
+    test_optimization()
+    test_vibration_read()
     test_vibration()
-    # test_orbitals_read()
-    # test_orbitals()
-    # test_solvation_read()
-    # test_solvation()
+    test_orbitals_read()
+    test_orbitals()
+    test_solvation_read()
+    test_solvation()
 
     return
 

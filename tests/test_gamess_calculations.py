@@ -1,19 +1,21 @@
 
 import pytest
-
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from context import molcalc_lib
-from context import config
 
+from context import molcalc_lib
+from context import chemhelp
+from context import CONFIG, SCR
+import context
 
 GAMESS_OPTIONS = {
-    "scr": context.scr,
-    "cmd": config["gamess"].get("rungms"),
-    "gamess_scr": config["gamess"].get("scr"),
-    "gamess_userscr": config["gamess"].get("userscr"),
+    "scr": SCR,
+    "cmd": CONFIG["gamess"].get("rungms"),
+    "gamess_scr": CONFIG["gamess"].get("scr"),
+    "gamess_userscr": CONFIG["gamess"].get("userscr"),
     "debug": True,
 }
+
 
 TEST_SMILES_COORD = [
    ('CCC', -23.62341),
@@ -58,7 +60,7 @@ def test_calculate_solvation(smiles):
     coord = properties["coord"]
 
     # Set new coordinates
-    molcalc_lib.cheminfo.molobj_set_coordinates(molobj, coord)
+    chemhelp.cheminfo.molobj_set_coordinates(molobj, coord)
 
     # Calculate solvation properties
     properties = molcalc_lib.gamess_calculations.calculate_solvation(molobj, **GAMESS_OPTIONS)
