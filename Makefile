@@ -31,8 +31,8 @@ molcalc/data: scripts/setup_datadir.sh
 
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js molcalc/static/rdkit/rdkit.js
 
-molcalc/chemhelp:
-	git clone https://github.com/charnley/chemhelp molcalc/chemhelp
+chemhelp:
+	git clone https://github.com/charnley/chemhelp chemhelp --depth 1
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
