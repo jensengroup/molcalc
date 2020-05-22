@@ -3,17 +3,24 @@ import re
 import sys
 import os
 import numpy as np
-try:
-    import molcalc
-except:
-    here = os.path.dirname(__file__)
-    sys.path.append(here + "/..")
-    import molcalc
 
-import molcalc.chemhelp.cheminfo
-import molcalc.chemhelp.chemistry.gamess
+import context
+from context import molcalc_lib
+from context import config
 
-import rdkit.Chem as Chem
+from molcalc_lib import gamess
+from molcalc_lib import cheminfo
+
+from rdkit import Chem
+
+GAMESS_OPTIONS = {
+    "scr": context.scr,
+    "cmd": config["gamess"].get("rungms"),
+    "gamess_scr": config["gamess"].get("scr"),
+    "gamess_userscr": config["gamess"].get("userscr"),
+    "debug": True,
+}
+
 
 def test_optimization():
 
@@ -34,16 +41,15 @@ M  END
 $$$$
     """
 
-    molobj, status = molcalc.chemhelp.cheminfo.sdfstr_to_molobj(methane)
+    header = """ $basis gbasis=pm3 $end
+ $contrl runtyp=optimize icharg={:} $end
+ $statpt opttol=0.0005 nstep=300 projct=.F. $end
+"""
 
-    parameters = {
-        "method": "PM3",
-        "type": "optimize",
-        "charge": 0
-    }
+    molobj = molcalc_lib.cheminfo.sdfstr_to_molobj(methane)
+    stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
-    properties = molcalc.chemhelp.chemistry.gamess.calculate_optimize(molobj,
-            parser=molcalc.chemhelp.chemistry.gamess.read_properties_coordinates)
+    properties = gamess.read_properties_coordinates(stdout)
 
     atoms = properties["atoms"]
     energy = properties["h"]
@@ -59,8 +65,7 @@ def test_output():
     with open("tests/data/gamess_methane.log", 'r') as f:
         output = f.read()
 
-
-    properties = molcalc.chemhelp.chemistry.gamess.read_properties_coordinates(output)
+    properties = molcalc_lib.gamess.read_properties_coordinates(output)
 
     atoms = properties["atoms"]
     energy = properties["h"]
@@ -90,15 +95,16 @@ M  END
 $$$$
     """
 
-    coordinates = np.array([[ 0., -0., 0., ],
+    coordinates = np.array([
+        [ 0., -0., 0., ],
         [-0., -0.88755027, -0.62754422],
         [-0., 0.88755027, -0.62754422],
         [-0.88755027, 0., 0.62754422],
         [ 0.88755027, 0., 0.62754422],
     ])
 
-    molobj, status = molcalc.chemhelp.cheminfo.sdfstr_to_molobj(methane)
-    molcalc.chemhelp.cheminfo.molobj_set_coordinates(molobj, coordinates)
+    molobj = cheminfo.sdfstr_to_molobj(methane)
+    cheminfo.molobj_set_coordinates(molobj, coordinates)
 
     header = """
  $basis
@@ -113,8 +119,12 @@ $$$$
  $end
 """
 
-    properties = molcalc.chemhelp.chemistry.gamess.calculate(molobj, header,
-        molcalc.chemhelp.chemistry.gamess.read_properties_vibration)
+    stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
+
+    properties = gamess.read_properties_vibration(stdout)
+
+    assert properties is not None
+    assert 'thermo' in properties
 
     return
 
@@ -125,7 +135,7 @@ def test_vibration_read():
         output = f.read()
 
 
-    properties = molcalc.chemhelp.chemistry.gamess.read_properties_vibration(output)
+    properties = gamess.read_properties_vibration(output)
 
     vibs = properties["freq"]
     result = np.array([
@@ -180,9 +190,11 @@ $$$$
  $basis gbasis=sto ngauss=3 $end
 """
 
-    molobj, status = molcalc.chemhelp.cheminfo.sdfstr_to_molobj(methane)
-    properties = molcalc.chemhelp.chemistry.gamess.calculate(molobj, header,
-        molcalc.chemhelp.chemistry.gamess.read_properties_orbitals)
+    molobj = cheminfo.sdfstr_to_molobj(methane)
+
+    stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
+
+    properties = gamess.read_properties_orbitals(stdout)
 
     orbitals = properties["orbitals"]
     results = [-11.0303, -0.9085, -0.5177, -0.5177, -0.5177, 0.713, 0.713, 0.713, 0.7505]
@@ -196,7 +208,7 @@ def test_orbitals_read():
     with open("tests/data/gamess_methane_orb.log", 'r') as f:
         output = f.read()
 
-    properties = molcalc.chemhelp.chemistry.gamess.read_properties_orbitals(output)
+    properties = gamess.read_properties_orbitals(output)
 
     orbitals = properties["orbitals"]
     results = [-11.0303, -0.9085, -0.5177, -0.5177, -0.5177, 0.713, 0.713, 0.713, 0.7505]
@@ -249,9 +261,9 @@ $$$$
 
 """
 
-    molobj, status = molcalc.chemhelp.cheminfo.sdfstr_to_molobj(methane)
-    properties = molcalc.chemhelp.chemistry.gamess.calculate(molobj, header,
-        molcalc.chemhelp.chemistry.gamess.read_properties_solvation)
+    molobj = cheminfo.sdfstr_to_molobj(methane)
+    stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
+    properties = gamess.read_properties_solvation(stdout)
 
     total_solvation = properties["solvation_total"]
     result = 1.24
@@ -265,7 +277,7 @@ def test_solvation_read():
     with open("tests/data/gamess_methane_sol.log", 'r') as f:
         output = f.read()
 
-    properties = molcalc.chemhelp.chemistry.gamess.read_properties_solvation(output)
+    properties = gamess.read_properties_solvation(output)
 
     total_solvation = properties["solvation_total"]
     result = 1.24
@@ -276,14 +288,14 @@ def test_solvation_read():
 
 def main():
 
-    test_output()
-    test_optimization()
-    test_vibration_read()
+    # test_output()
+    # test_optimization()
+    # test_vibration_read()
     test_vibration()
-    test_orbitals_read()
-    test_orbitals()
-    test_solvation_read()
-    test_solvation()
+    # test_orbitals_read()
+    # test_orbitals()
+    # test_solvation_read()
+    # test_solvation()
 
     return
 
