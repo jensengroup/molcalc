@@ -1,6 +1,11 @@
 # notes
 note.md
 
+development.ini
+configuration.ini
+production.ini
+molcalc_configuration.ini
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
