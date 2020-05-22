@@ -5,10 +5,10 @@ MolCalc - The Molecule Calculator
 |screenshot|
 
 Important! Currently version 2.0 is *under construction*. Version 1.3 is still hosted
-at molcalc.org_ and source is avaliable at `github.com/jensengroup/molcalc-1.3`__.
+at molcalc.org_ and source is available at `github.com/jensengroup/molcalc-1.3`__.
 
-The molcule calculator is a small web-based interface for doing small-scale
-quantum chemistry calculation with the intent of giving chemical intution to
+The molecule calculator is a small web-based interface for doing small-scale
+quantum chemistry calculation with the intent of giving chemical intuition to
 students, from high-school to university.
 Hosted at molcalc.org_.
 
@@ -24,11 +24,11 @@ Installation
 ------------
 
 Simply clone the repo and install dependencies.
-Easiest is to use Anaconda_, because we use RDKit in the background (sorry).
+Easiest is to use Anaconda_, because we use RDKit in the background.
 
 .. _Anaconda: https://www.anaconda.com/download
 
-The following steps are included in the ``Makefile`` for convienced, so
+The following steps are included in the ``Makefile``.
 
 .. code-block:: bash
 
@@ -44,7 +44,7 @@ will execute the following points.
 
     git clone https://github.com/jensengroup/molcalc
 
-2. Create the Python enviroment using Conda and Pip
+2. Create the Python environment using Conda and Pip
 
 .. code-block:: bash
 
@@ -72,7 +72,7 @@ Deploy using either development or production ``ini`` files.
     env/bin/pserve development.ini --reload
 
 
-And molcalc should now be avaliable on ``localhost:6543``, based on the settings of development.ini.
+And molcalc should now be available on ``localhost:6543``, based on the settings of development.ini.
 
 
 Deploy cloud
@@ -109,15 +109,26 @@ programs
 note on GAMESS setup
 
 
-
 Setup on Apache server
 ----------------------
+
+Easy config is just to host the service on port and use ProxyPass, for example for port `6543`.
+
+   <VirtualHost *:80>
+         ServerName hostname.com
+         ProxyPreserveHost On
+         ProxyPass / http://127.0.0.1:6543/
+         ProxyPassReverse / http://127.0.0.1:6543/
+   </VirtualHost>
 
 
 Test
 ----
 
-TODO. should add tests to ``molcalc/tests.py``
+Remmember to edit configuriation for your GAMESS setup. Then run
+
+   python -m pytest tests
+
 
 
 TODO
