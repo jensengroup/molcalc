@@ -22,6 +22,6 @@ def ini_settings(filename):
     return config
 
 # Init enviroment
-CONFIG = ini_settings("gamess.ini")
+CONFIG = ini_settings("development.ini")
 Path(SCR).mkdir(parents=True, exist_ok=True)
 

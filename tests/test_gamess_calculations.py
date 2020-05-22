@@ -17,6 +17,10 @@ GAMESS_OPTIONS = {
 }
 
 
+TEST_SMILES = [
+    "C"
+]
+
 TEST_SMILES_COORD = [
    ('CCC', -23.62341),
 ]
@@ -70,8 +74,30 @@ def test_calculate_solvation(smiles):
     return
 
 
-def main():
+@pytest.mark.parametrize("smiles", TEST_SMILES)
+def test_calculate_all_properties(smiles):
 
+    # Get molecule with 3D coordinates
+    molobj = prepare_molobj(smiles)
+
+    # Optimize coordinates
+    properties = molcalc_lib.gamess_calculations.optimize_coordinates(molobj, autoclean=True, **GAMESS_OPTIONS)
+    coord = properties["coord"]
+
+    # Set new coordinates
+    chemhelp.cheminfo.molobj_set_coordinates(molobj, coord)
+
+    # Calculate solvation properties
+    properties_vib, properties_orb, properties_sol = molcalc_lib.gamess_calculations.calculate_all_properties(molobj, **GAMESS_OPTIONS)
+
+    assert properties_vib is not None
+    assert properties_orb is not None
+    assert properties_sol is not None
+
+    return
+
+
+def main():
     return
 
 if __name__ == "__main__":

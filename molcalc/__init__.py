@@ -5,12 +5,14 @@ import os
 here = os.path.dirname(__file__)
 sys.path.append(here)
 
+import json
 
 from pyramid.config import Configurator
 from wsgiref.simple_server import make_server
 
 from pyramid_jinja2.filters import static_url_filter
 
+import configparser
 
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
@@ -131,9 +133,21 @@ def get_config(config=None):
 
 from sqlalchemy import engine_from_config
 
-def main(global_settings, **settings):
+def main(global_conf, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+
+    # Load custom sections from ini file
+    # TODO Is there a better solution to read settings?
+    sections = ["gamess", "scr"]
+    parser = configparser.ConfigParser()
+    parser.read(global_conf['__file__'])
+    for section in sections:
+        for k, v in parser.items(section):
+            settings[section + '.' + k] = v
+
+    print(json.dumps(settings, indent=1))
+
     config = get_config(config=Configurator(settings=settings))
 
     return config.make_wsgi_app()

@@ -9,6 +9,7 @@ from pyramid.view import notfound_view_config, view_config
 from chemhelp import cheminfo
 import models
 import pipelines
+from molcalc_lib import gamess_results
 
 # Error Views
 
@@ -52,7 +53,7 @@ def view_calculation(request):
     if hashkey == "404":
         raise httpexceptions.exception_response(404)
 
-    data = pipelines.gamess_quantum_view(calculation)
+    data = gamess_results.view_gamess_calculation(calculation)
 
     return data
 
@@ -167,7 +168,7 @@ def ajax_submitquantum(request):
     sdfstr = request.POST["sdf"].encode('utf-8')
 
     # Get rdkit
-    molobj, status = cheminfo.sdfstr_to_molobj(sdfstr)
+    molobj, status = cheminfo.sdfstr_to_molobj(sdfstr, return_status=True)
 
     if molobj is None:
         status = status.split("]")
@@ -204,18 +205,18 @@ def ajax_submitquantum(request):
     hshobj = hashlib.md5(sdfstr.encode())
     hashkey = hshobj.hexdigest()
 
+    # Check if hash/calculation already exists in db
     calculation = request.dbsession.query(models.GamessCalculation) \
         .filter_by(hashkey=hashkey).first()
 
+    # If calculation already exists, return
     if calculation is not None:
-
-        msg = {
-            'hashkey': hashkey
-        }
-
+        msg = {'hashkey': hashkey}
         calculation.created = datetime.datetime.now()
         return msg
 
+
+    # The calculation is valid and does not exists, pass to pipeline
     print("new:", hashkey)
 
     molecule_info = {
@@ -224,7 +225,7 @@ def ajax_submitquantum(request):
         "hashkey": hashkey
     }
 
-    msg = pipelines.gamess_quantum_pipeline(request, molecule_info)
+    msg = pipelines.calculation_pipeline(request, molecule_info)
 
     return msg
 

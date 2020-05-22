@@ -1,4 +1,5 @@
 
+from multiprocessing import Process, Pipe
 from chemhelp import gamess
 
 
@@ -9,10 +10,7 @@ def optimize_coordinates(molobj, **kwargs):
  $statpt opttol=0.0005 nstep=300 projct=.F. $end
 """
 
-    filename = "_tmp_optimize.inp"
-
     parser = gamess.read_properties_coordinates
-
     stdout, stderr = gamess.calculate(molobj, header, **kwargs)
 
     # TODO Check stderr and return None
@@ -22,13 +20,10 @@ def optimize_coordinates(molobj, **kwargs):
     return properties
 
 
-def calculate_vibrations(molobj,
-    scr=None,
-    autoclean=True,
-    debug=False):
+def calculate_vibrations(molobj, **kwargs):
 
     # Vibrate molecule
-    vibheader = """
+    header = """
  $basis
      gbasis=PM3
  $end
@@ -41,7 +36,6 @@ def calculate_vibrations(molobj,
  $end
 """
 
-    filename = "_tmp_vibrations.inp"
     parser = gamess.read_properties_vibration
     stdout, status = gamess.calculate(molobj, header, **kwargs)
     properties = parser(stdout)
@@ -49,10 +43,7 @@ def calculate_vibrations(molobj,
     return properties
 
 
-def calculate_orbitals(molobj,
-    scr=None,
-    autoclean=True,
-    debug=False):
+def calculate_orbitals(molobj, **kwargs):
 
     header = """
  $contrl
@@ -65,7 +56,6 @@ def calculate_orbitals(molobj,
  $basis gbasis=sto ngauss=3 $end
 """
 
-    filename = "_tmp_orbitals.inp"
     parser = gamess.read_properties_orbitals
     stdout, status = gamess.calculate(molobj, header, **kwargs)
     properties = parser(stdout)
@@ -100,7 +90,6 @@ def calculate_solvation(molobj, **kwargs):
 
 """
 
-    filename = "_tmp_solvation.inp"
     parser = gamess.read_properties_solvation
     stdout, status = gamess.calculate(molobj, header, **kwargs)
     properties = parser(stdout)
@@ -109,32 +98,26 @@ def calculate_solvation(molobj, **kwargs):
 
 
 
+def calculate_all_properties(molobj, **kwargs):
 
+    funcs = [
+        calculate_vibrations,
+        calculate_orbitals,
+        calculate_solvation,
+    ]
 
-# DEPRECATED
-
-def gamess_quantum_pipeline(request, molinfo):
-
-    headers = [vibheader, orbheader, solheader]
-    readers = [gamess.read_properties_vibration, gamess.read_properties_orbitals, gamess.read_properties_solvation]
-
-    def procfunc(conn, reader, *args, **kwargs):
-        stdout, status = gamess.calculate(*args, **kwargs)
-        try:
-            properties = reader(stdout)
-        except:
-            # TODO Error reading properties
-            properties = None
+    def procfunc(conn, func, *args, **kwargs):
+        properties = func(*args, **kwargs)
         conn.send(properties)
         conn.close()
 
     procs = []
     conns = []
 
-    for header, reader in zip(headers, readers):
+    for func in funcs:
 
         parent_conn, child_conn = Pipe()
-        p = Process(target=procfunc, args=(child_conn, reader, molobj, header), kwargs=gmsargs)
+        p = Process(target=procfunc, args=(child_conn, func, molobj), kwargs=kwargs)
         p.start()
 
         procs.append(p)
@@ -147,6 +130,17 @@ def gamess_quantum_pipeline(request, molinfo):
     properties_orb = conns[1].recv()
     properties_sol = conns[2].recv()
 
+    return properties_vib, properties_orb, properties_sol
+
+
+
+
+
+# DEPRECATED
+
+def gamess_quantum_pipeline(request, molinfo):
+
+
     if properties_vib is None:
         return {'error':'Error g-104 - gamess vibration error', 'message': "Error. Server was unable to vibrate molecule"}
 
@@ -154,15 +148,15 @@ def gamess_quantum_pipeline(request, molinfo):
 
     calculation.islinear = properties_vib["linear"]
     calculation.vibjsmol = properties_vib["jsmol"]
-    calculation.vibfreq = save_array(properties_vib["freq"])
-    calculation.vibintens = save_array(properties_vib["intens"])
-    calculation.thermo = save_array(properties_vib["thermo"])
+    calculation.vibfreq = misc.save_array(properties_vib["freq"])
+    calculation.vibintens = misc.save_array(properties_vib["intens"])
+    calculation.thermo = misc.save_array(properties_vib["thermo"])
 
     if properties_orb is None:
         return {'error':'Error g-128 - gamess orbital error', 'message': "Error. Server was unable to orbital the molecule"}
 
     print(smiles, list(properties_orb.keys()))
-    calculation.orbitals = save_array(properties_orb["orbitals"])
+    calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
     # calculation.orbitalstxt = models.compress(properties_orb["stdout"])
 
@@ -174,12 +168,12 @@ def gamess_quantum_pipeline(request, molinfo):
     print(smiles, list(properties_sol.keys()))
 
     charges = properties_sol["charges"]
-    calculation.charges = save_array(charges)
+    calculation.charges = misc.save_array(charges)
     calculation.soltotal = properties_sol["solvation_total"]
     calculation.solpolar = properties_sol["solvation_polar"]
     calculation.solnonpolar = properties_sol["solvation_nonpolar"]
     calculation.solsurface = properties_sol["surface"]
-    calculation.soldipole = save_array(properties_sol["dipole"])
+    calculation.soldipole = misc.save_array(properties_sol["dipole"])
     calculation.soldipoletotal = properties_sol["dipole_total"]
 
     # GAMESS DEBUG
@@ -227,4 +221,5 @@ def gamess_quantum_pipeline(request, molinfo):
         countobj.count += 1
 
     return msg
+
 

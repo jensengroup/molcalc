@@ -46,7 +46,7 @@ $$$$
  $statpt opttol=0.0005 nstep=300 projct=.F. $end
 """
 
-    molobj = molcalc_lib.cheminfo.sdfstr_to_molobj(methane)
+    molobj = cheminfo.sdfstr_to_molobj(methane)
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
     properties = gamess.read_properties_coordinates(stdout)
@@ -65,7 +65,7 @@ def test_output():
     with open("tests/data/gamess_methane.log", 'r') as f:
         output = f.read()
 
-    properties = molcalc_lib.gamess.read_properties_coordinates(output)
+    properties = gamess.read_properties_coordinates(output)
 
     atoms = properties["atoms"]
     energy = properties["h"]

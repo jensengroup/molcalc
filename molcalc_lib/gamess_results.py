@@ -1,4 +1,9 @@
 
+from chemhelp import cheminfo
+from chemhelp import misc
+from chemhelp import units
+import numpy as np
+
 def view_gamess_calculation(calculation):
     """
 
@@ -54,7 +59,7 @@ def view_gamess_calculation(calculation):
     #  VIB. THERMAL CORRECTION E(T)-E(0) = H(T)-H(0) =        99.870 J/MOL
 
     thermotable = calculation.thermo
-    thermotable = load_array(thermotable)
+    thermotable = misc.load_array(thermotable)
 
     data["h_elect"] = fmt.format(thermotable[0,1])
     data["h_trans"] = fmt.format(thermotable[1,1])
@@ -76,13 +81,13 @@ def view_gamess_calculation(calculation):
 
 
     # Molecular orbitals format
-    data["orbitals"] = load_array(data["orbitals"])
+    data["orbitals"] = misc.load_array(data["orbitals"])
     data["orbitals"] *= units.hartree_to_ev
     data["orbitals"] = [fmt.format(x) for x in data["orbitals"]]
 
 
     # Vibrational Frequencies format
-    data["vibfreq"] = load_array(data["vibfreq"])
+    data["vibfreq"] = misc.load_array(data["vibfreq"])
     islinear = int(data["islinear"]) == int(1)
     offset = 5
     if not islinear:
@@ -92,7 +97,7 @@ def view_gamess_calculation(calculation):
     data["viboffset"] = offset
 
 
-    dipoles = load_array(data["soldipole"])
+    dipoles = misc.load_array(data["soldipole"])
 
     data["dipolex"] = dipoles[0]
     data["dipoley"] = dipoles[1]
@@ -106,7 +111,7 @@ def view_gamess_calculation(calculation):
 
 
 
-    charges = load_array(data["charges"])
+    charges = misc.load_array(data["charges"])
 
     charge = sum(charges)
     charge = np.round(charge, decimals=0)

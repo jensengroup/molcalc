@@ -58,6 +58,33 @@ class CompressedString(sa.types.TypeDecorator):
         return decompress(value)
 
 
+class NumpyArray(sa.types.TypeDecorator):
+    """
+    Storage datatype for numpy arrays
+    """
+
+    impl = LargeBinary
+
+    def save_array(arr):
+        s = StringIO()
+        np.savetxt(s, arr)
+        return s.getvalue()
+
+    def load_array(txt):
+        s = StringIO(txt)
+        arr = np.loadtxt(s)
+        return arr
+
+    def process_bind_param(self, value, dialect):
+        value = self.save_array(value)
+        return compress(value)
+
+    def process_result_value(self, value, dialect):
+        value = decompress(value)
+        value = self.load_array(value)
+        return value
+
+
 def db_connect():
     """
     Performs database connection using database settings from settings.py.
