@@ -43,9 +43,6 @@ def calculation_pipeline(request, molinfo):
     molobj = molinfo["molobj"]
     sdfstr = molinfo["sdfstr"]
 
-    print(sdfstr)
-    print(cheminfo.molobj_to_sdfstr(molobj))
-
     if "name" in molinfo:
         name = info["name"]
 
