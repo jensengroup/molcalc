@@ -7,6 +7,7 @@ import re
 from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
 
+from rdkit.Chem import AllChem
 from chemhelp import cheminfo
 import models
 import pipelines
@@ -187,7 +188,10 @@ def ajax_submitquantum(request):
     atoms = cheminfo.molobj_to_atoms(molobj)
     if 1 not in atoms:
         molobj = cheminfo.molobj_add_hydrogens(molobj)
+        AllChem.EmbedMultipleConfs(molobj, numConfs=1)
         cheminfo.molobj_optimize(molobj)
+
+    atoms = cheminfo.molobj_to_atoms(molobj)
 
     # TODO Check lengths of atoms
     # TODO Define max in settings
