@@ -30,8 +30,8 @@ To setup the Python environment please use Anaconda_, because we use RDKit in th
 
 .. _Anaconda: https://www.anaconda.com/download
 
-
 .. code-block:: bash
+
    # Install anaconda (only needed if you don't already have a Python enviroment with conda)
    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda3.sh
    bash miniconda3.sh -b -p /opt/miniconda3
