@@ -2,6 +2,7 @@ import datetime
 import hashlib
 import os
 import numpy as np
+import re
 
 from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
@@ -173,6 +174,7 @@ def ajax_submitquantum(request):
     if molobj is None:
         status = status.split("]")
         status = status[-1]
+        status = re.sub(r'\# [0-9]+', '', status)
         return {'error':'Error 141 - rdkit error', 'message': status}
 
     try:
