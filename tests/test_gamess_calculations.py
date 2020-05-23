@@ -99,8 +99,8 @@ def test_optimize_coordinates(smiles, test_energy):
 
     molobj = prepare_molobj(smiles)
     properties = molcalc_lib.gamess_calculations.optimize_coordinates(molobj, **GAMESS_OPTIONS)
-    assert properties["h"] == pytest.approx(test_energy)
 
+    assert properties["h"] == pytest.approx(test_energy)
     return
 
 
@@ -164,6 +164,8 @@ def test_error_smiles(sdfstr):
 
 
 def main():
+
+    test_optimize_coordinates("[Na+]", 0.0)
 
     return
 
