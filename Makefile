@@ -1,6 +1,7 @@
 
 PYTHON=env/bin/python
 PSERVE=env/bin/pserve
+PIP=env/bin/pip
 CONDA=conda
 
 all: env setup_assets molcalc/data molcalc/chemhelp
@@ -21,7 +22,7 @@ test:
 
 env:
 	${CONDA} env create -f environment.yml -p env
-	env/bin/python setup.py develop
+	${PIP} install -r requirements.txt
 
 dependencies:
 	sudo apt install -y libxrender-dev

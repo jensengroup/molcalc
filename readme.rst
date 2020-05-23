@@ -23,96 +23,103 @@ __ github_molcalc13_
 Installation
 ------------
 
-Simply clone the repo and install dependencies.
-Easiest is to use Anaconda_, because we use RDKit in the background.
+MolCalc is a Python based web-service, so dependencies includes
+python-packages, javascript-modules and a backend quantum chemistry program (for now it will be GAMESS).
+
+To setup the Python environment please use Anaconda_, because we use RDKit in the background.
 
 .. _Anaconda: https://www.anaconda.com/download
 
-The following steps are included in the ``Makefile``.
+
+.. code-block:: bash
+   # Install anaconda (only needed if you don't already have a Python enviroment with conda)
+   wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda3.sh
+   bash miniconda3.sh -b -p /opt/miniconda3
+
+with the Python environment we can setup MolCalc. Note that most of the steps are inserted into the `Makefile`.
+
+1. Clone down the repository
 
 .. code-block:: bash
 
-    git clone https://github.com/jensengroup/molcalc
+    git clone https://github.com/jensengroup/molcalc --depth 1
     cd molcalc
-    make
 
-will execute the following points.
 
-1. Clone the repository
+2. Create the Python environment using `conda` and `pip`.
 
 .. code-block:: bash
 
-    git clone https://github.com/jensengroup/molcalc
-
-2. Create the Python environment using Conda and Pip
-
-.. code-block:: bash
-
+    # make env chemhelp
     conda env create -f environment.yml -p env
-    env/bin/python setup.py develop
+    pip install -r requirements.txt
+    git clone https://github.com/charnley/chemhelp --depth 1
 
-3. Download the JavaScript and frontend libaries, using the scripts. You need `unzip` and `wget` installed.
+3. Download the JavaScript and frontend libraries, using the scripts.
+   You need `unzip` and `wget` installed.
+   All JavaScript libraries will be installed in the `molcalc/static` folder.
 
 .. code-block:: bash
 
-    bash scripts/setup_datadir.sh
+    # make setup_assets
     bash scripts/setup_chemdoodle.sh
     bash scripts/setup_jsmol.sh
     bash scripts/setup_fontawesome.sh
     bash scripts/setup_jquery.sh
+    bash scripts/setup_rdkit.sh
+
+4. Setup GAMESS_. You need to download and `compile GAMESS`__.
 
 
-Deploy locally
---------------
+.. _GAMESS: https://www.msg.chem.iastate.edu/gamess/download.html
+.. __: http://computerandchemistry.blogspot.com/2014/02/compiling-and-setting-up-gamess.html
 
-Deploy using either development or production ``ini`` files.
+5. Setup configuration by copying the example and edit.
+   Especially note to edit the GAMESS section to reflect the setup of your setup.
 
 .. code-block:: bash
 
+    cp example.development.ini development.ini
+    # edit development.ini
+
+
+6. Test. Use the unittest to check that the configuration for GAMESS is setup correctly
+
+.. code-block:: bash
+
+    # make test
+    python -m pytest tests
+
+
+7. You are ready. Serve the server by
+
+.. code-block:: bash
+
+    # make serve
     env/bin/pserve development.ini --reload
 
 
 And molcalc should now be available on ``localhost:6543``, based on the settings of development.ini.
 
 
-Deploy cloud
-------------
-
-# TODO add guide to deploy on AWS
-
-
 Dependencies
 ------------
 
-conda
-
-    conda install -c rdkit rdkit
-
-pip
-
-    pyramid
-    rdkit
-
-modules
-
-    fontawesome
-
-    jquery
-    chemdoodle
-    jsmol
-
-
-programs
-
-    gamess
-
-note on GAMESS setup
+rdkit,
+pyramid,
+fontawesome,
+jquery,
+chemdoodle,
+jsmol,
+gamess
 
 
 Setup on Apache server
 ----------------------
 
 Easy config is just to host the service on port and use ProxyPass, for example for port `6543`.
+
+.. code-block::
 
    <VirtualHost *:80>
          ServerName hostname.com
@@ -122,17 +129,13 @@ Easy config is just to host the service on port and use ProxyPass, for example f
    </VirtualHost>
 
 
-Test
-----
-
-Remmember to edit configuriation for your GAMESS setup. Then run
-
-   python -m pytest tests
-
-
 
 TODO
 ----
+
+Remove connections from javascript libs
+
+.. code-block::
 
     Failed to load resource: net::ERR_INTERNET_DISCONNECTED
     ichemlabs.cloud.chemdoodle.com/icl_cdc_v070001/WebHQ
@@ -141,30 +144,37 @@ TODO
 TODO computation
 ----------------
 
-    spectrum
-        H/C-NMR
-        mass spectrum
-        vibrational
+Extend the computations for molcalc to include
 
-    open shell systems
+* spectrum
+** H/C-NMR
+** mass spectrum
+** vibrational
+
+* open shell systems
 
 
 TODO Better texts
 -----------------
 
-    Tutorials and assignment examples (with answers)
+Tutorials and assignment examples (with answers)
 
-    Better FAQ interface
+Better FAQ interface
 
 
-Problems
+Known Problems
 --------
 
-if rdkit has problems finding libxrender.so then you need to install some of the following
+If rdkit has problems finding `libxrender.so` then you need to install
+
+.. code-block:: bash
 
     apt install -y libxrender-dev
 
 or
 
+.. code-block:: bash
+
     ./env/bin/conda install nox
     ./env/bin/conda install cairo
+
