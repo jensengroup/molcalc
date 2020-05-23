@@ -219,7 +219,7 @@ def ajax_submitquantum(request):
 
 
     # The calculation is valid and does not exists, pass to pipeline
-    print("new:", hashkey)
+    print("new:", datetime.date.today(), hashkey, atoms)
 
     molecule_info = {
         "sdfstr": sdfstr,
