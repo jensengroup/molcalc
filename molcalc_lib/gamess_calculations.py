@@ -15,7 +15,14 @@ def optimize_coordinates(molobj, **kwargs):
 
     # TODO Check stderr and return None
 
-    properties = parser(stdout)
+    key = " ddikick.x: Fatal error detected."
+    idx = stderr.index(key)
+    if idx is None:
+        properties = parser(stdout)
+
+    else:
+        # check why calculation failed
+        properties = gamess.read_errors(stdout)
 
     return properties
 

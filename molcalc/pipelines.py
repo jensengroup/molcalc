@@ -88,6 +88,12 @@ def calculation_pipeline(request, molinfo):
     if properties is None:
         return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}
 
+    if "error" in properties:
+        return {
+            'error': 'Error g-93 - gamess optimization error known',
+            'message': properties["error"]
+        }
+
     print(smiles, list(properties.keys()))
 
     # Save and set coordinates
