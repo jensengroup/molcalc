@@ -5,7 +5,7 @@ from context import chemhelp
 from chemhelp import cheminfo
 
 
-TEST_ERROR_SMILES = "C[NH4+]"
+TEST_ERROR_SMILES = ["C[NH4+]"]
 
 
 @pytest.mark.parametrize("smiles", TEST_ERROR_SMILES)
