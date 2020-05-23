@@ -47,7 +47,10 @@ def calculation_pipeline(request, molinfo):
         name = info["name"]
 
     # Get that smile on your face
-    smiles = cheminfo.molobj_to_smiles(molobj, remove_hs=True)
+    try:
+        smiles = cheminfo.molobj_to_smiles(molobj, remove_hs=True)
+    except:
+        smiles = cheminfo.molobj_to_smiles(molobj)
 
     # hash on sdf (conformer)
     hshobj = hashlib.md5(sdfstr.encode())
