@@ -98,6 +98,9 @@ def test_calculate_all_properties(smiles):
 
 
 def main():
+
+    test_calculate_solvation("CCCF")
+
     return
 
 if __name__ == "__main__":
