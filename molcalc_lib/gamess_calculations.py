@@ -10,15 +10,15 @@ def optimize_coordinates(molobj, **kwargs):
  $statpt opttol=0.0005 nstep=300 projct=.F. $end
 """
 
-    parser = gamess.read_properties_coordinates
     stdout, stderr = gamess.calculate(molobj, header, **kwargs)
 
     # TODO Check stderr and return None
 
     key = " ddikick.x: Fatal error detected."
-    idx = stderr.index(key)
-    if idx is None:
-        properties = parser(stdout)
+    error = key in stderr
+
+    if not error:
+        properties = gamess.read_properties_coordinates(stdout)
 
     else:
         # check why calculation failed

@@ -25,7 +25,7 @@ TEST_SMILES_COORD = [
    ('CCC', -23.62341),
 ]
 
-TEST_ERROR_MOLECULES = [
+TEST_ERROR_SDF = [
 """
 
 
@@ -39,6 +39,36 @@ TEST_ERROR_MOLECULES = [
   1  4  1  0  0  0  0
 M  END
 """,
+"""
+Benzene
+
+ 12 12  0  0  0  0  0  0  0  0999 V2000
+    0.8065   -1.1431    0.0149 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.3933    0.1268   -0.0021 C   0  0  0  0  0  0  0  0  0  0  0  0
+    0.5868    1.2699   -0.0170 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.8065    1.1431   -0.0149 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -1.3933   -0.1268    0.0021 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.5868   -1.2699    0.0171 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.4304   -2.0274    0.0264 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.4712    0.2250   -0.0038 H   0  0  0  0  0  0  0  0  0  0  0  0
+    1.0407    2.2524   -0.0302 H   0  0  0  0  0  0  0  0  0  0  0  0
+   -1.4304    2.0274   -0.0265 H   0  0  0  0  0  0  0  0  0  0  0  0
+   -2.4712   -0.2250    0.0038 H   0  0  0  0  0  0  0  0  0  0  0  0
+   -1.0407   -2.2524    0.0302 H   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  2  0
+  2  3  1  0
+  3  4  2  0
+  4  5  1  0
+  5  6  2  0
+  6  1  1  0
+  1  7  1  0
+  2  8  1  0
+  3  9  1  0
+  4 10  1  0
+  5 11  1  0
+  6 12  1  0
+M  END
+"""
 ]
 
 # b'string\n__Jmol-14_05232017433D 1   1.00000     0.00000     0\nJmol version 14.29.29  2018-11-28 19:07 EXTRACT: ({0 1 3 4})\n 
@@ -118,6 +148,7 @@ def test_calculate_all_properties(smiles):
     return
 
 
+@pytest.mark.parametrize("sdfstr", TEST_ERROR_SDF)
 def test_error_smiles(sdfstr):
 
     # Get molecule with 3D coordinates
@@ -127,14 +158,12 @@ def test_error_smiles(sdfstr):
     properties = molcalc_lib.gamess_calculations.optimize_coordinates(molobj, autoclean=True, **GAMESS_OPTIONS)
 
     assert "error" in properties
-    assert "There are" in properties["error"]
+    assert type(properties["error"]) is str
 
     return
 
 
 def main():
-
-    test_error_smiles(TEST_ERROR_MOLECULES[0])
 
     return
 
