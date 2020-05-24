@@ -112,8 +112,8 @@ def view_gamess_calculation(calculation):
 
 
     charges = misc.load_array(data["charges"])
-
-    charge = sum(charges)
+    charges = np.array(charges)
+    charge = np.sum(charges)
     charge = np.round(charge, decimals=0)
 
     data["charge"] = int(charge)
