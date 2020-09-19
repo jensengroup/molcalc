@@ -1,11 +1,12 @@
-# notes
+# Development
 note.md
+.vim
 
+# configuration
 development.ini
 configuration.ini
 production.ini
 molcalc_configuration.ini
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -52,6 +53,7 @@ env*/
 logs/
 
 molcalc/chemhelp
+molcalc/ppqm
 chemhelp
 .test
 

@@ -4,7 +4,7 @@ PSERVE=env/bin/pserve
 PIP=env/bin/pip
 CONDA=conda
 
-all: env setup_assets molcalc/data molcalc/chemhelp
+all: env setup_assets molcalc/data molcalc/ppqm
 
 serve_development:
 	ip a | grep inet
@@ -32,8 +32,8 @@ molcalc/data: scripts/setup_datadir.sh
 
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js molcalc/static/rdkit/rdkit.js
 
-chemhelp:
-	git clone https://github.com/charnley/chemhelp chemhelp --depth 1
+molcalc/ppqm:
+	git clone https://github.com/ppqm/ppqm molcalc/ppqm --depth 1
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
