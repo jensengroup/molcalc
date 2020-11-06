@@ -39,7 +39,7 @@ $$$$
     molobj = chembridge.sdfstr_to_molobj(methane)
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
-    properties = gamess.read_properties_coordinates(stdout)
+    properties = gamess.get_properties_coordinates(stdout)
 
     atoms = properties["atoms"]
     energy = properties["h"]
@@ -53,9 +53,9 @@ $$$$
 def test_output():
 
     with open("tests/data/gamess_methane.log", "r") as f:
-        output = f.read()
+        output = f.readlines()
 
-    properties = gamess.read_properties_coordinates(output)
+    properties = gamess.get_properties_coordinates(output)
 
     atoms = properties["atoms"]
     energy = properties["h"]
@@ -117,7 +117,7 @@ $$$$
 
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
-    properties = gamess.read_properties_vibration(stdout)
+    properties = gamess.get_properties_vibration(stdout)
 
     assert properties is not None
     assert "thermo" in properties
@@ -128,9 +128,9 @@ $$$$
 def test_vibration_read():
 
     with open("tests/data/gamess_methane_vib.log", "r") as f:
-        output = f.read()
+        output = f.readlines()
 
-    properties = gamess.read_properties_vibration(output)
+    properties = gamess.get_properties_vibration(output)
 
     vibs = properties["freq"]
     result = np.array(
@@ -192,7 +192,7 @@ $$$$
 
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
-    properties = gamess.read_properties_orbitals(stdout)
+    properties = gamess.get_properties_orbitals(stdout)
 
     orbitals = properties["orbitals"]
     results = [
@@ -207,16 +207,14 @@ $$$$
         0.7505,
     ]
     np.testing.assert_almost_equal(orbitals, results)
-
-    return
 
 
 def test_orbitals_read():
 
     with open("tests/data/gamess_methane_orb.log", "r") as f:
-        output = f.read()
+        output = f.readlines()
 
-    properties = gamess.read_properties_orbitals(output)
+    properties = gamess.get_properties_orbitals(output)
 
     orbitals = properties["orbitals"]
     results = [
@@ -231,8 +229,6 @@ def test_orbitals_read():
         0.7505,
     ]
     np.testing.assert_almost_equal(orbitals, results)
-
-    return
 
 
 def test_solvation():
@@ -281,42 +277,20 @@ $$$$
 
     molobj = chembridge.sdfstr_to_molobj(methane)
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
-    properties = gamess.read_properties_solvation(stdout)
+    properties = gamess.get_properties_solvation(stdout)
 
     total_solvation = properties["solvation_total"]
     result = 1.24
     np.testing.assert_almost_equal(total_solvation, result)
-
-    return
 
 
 def test_solvation_read():
 
     with open("tests/data/gamess_methane_sol.log", "r") as f:
-        output = f.read()
+        output = f.readlines()
 
-    properties = gamess.read_properties_solvation(output)
+    properties = gamess.get_properties_solvation(output)
 
     total_solvation = properties["solvation_total"]
     result = 1.24
     np.testing.assert_almost_equal(total_solvation, result)
-
-    return
-
-
-def main():
-
-    test_output()
-    test_optimization()
-    test_vibration_read()
-    test_vibration()
-    test_orbitals_read()
-    test_orbitals()
-    test_solvation_read()
-    test_solvation()
-
-    return
-
-
-if __name__ == "__main__":
-    main()
