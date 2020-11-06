@@ -25,8 +25,7 @@ TEST_SMILES_COORD = [
    ('CCC', -23.62341),
 ]
 
-TEST_ERROR_SDF = [
-"""
+TEST_ERROR_SDF = ["""
 
 
   4  3  0  0  0  0  0  0  0  0999 V2000
@@ -38,8 +37,7 @@ TEST_ERROR_SDF = [
   1  3  1  0  0  0  0
   1  4  1  0  0  0  0
 M  END
-""",
-"""
+""", """
 Benzene
 
  12 12  0  0  0  0  0  0  0  0999 V2000
@@ -68,12 +66,7 @@ Benzene
   5 11  1  0
   6 12  1  0
 M  END
-"""
-]
-
-# b'string\n__Jmol-14_05232017433D 1   1.00000     0.00000     0\nJmol version 14.29.29  2018-11-28 19:07 EXTRACT: ({0 1 3 4})\n 
-#
-# 4  3  0  00  0            999 V2000\n   -0.0001   -0.0001   -0.0001 C   0  0  0  0  0  0\n   -0.0000   -0.8926   -0.6311 H   0  0  0  0  0  0\n   -0.8926   -0.0000    0.6311 H   0  0  0  0  0  0\n    0.8927   -0.0000    0.6312 H   0  0  0  0  0  0\n  1  2  1  0  0  0\n  1  3  1  0  0  0\n 1  4  1  0  0  0\nM  END\n'
+"""]
 
 
 TEST_SMILES_SOLVATION = [
@@ -89,8 +82,8 @@ def prepare_molobj(smiles):
     """
     mol = Chem.MolFromSmiles(smiles)
     mol = Chem.AddHs(mol)
-    status = AllChem.EmbedMolecule(mol)
-    status = AllChem.UFFOptimizeMolecule(mol)
+    _ = AllChem.EmbedMolecule(mol)
+    _ = AllChem.UFFOptimizeMolecule(mol)
     return mol
 
 

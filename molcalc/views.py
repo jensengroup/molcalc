@@ -198,7 +198,10 @@ def ajax_submitquantum(request):
     max_atoms = 10
     heavy_atoms, = np.where(atoms != 1)
     if len(heavy_atoms) > max_atoms:
-        return {'error':'Error 194 - max atoms error', 'message': "Stop Casper. Max ten heavy atoms."}
+        return {
+            'error': 'Error 194 - max atoms error',
+            'message': "Stop Casper. Max ten heavy atoms."
+        }
 
     # Fix sdfstr
     sdfstr = sdfstr.decode('utf8')
@@ -221,7 +224,6 @@ def ajax_submitquantum(request):
         calculation.created = datetime.datetime.now()
         return msg
 
-
     # The calculation is valid and does not exists, pass to pipeline
     print("new:", datetime.date.today(), hashkey, atoms)
 
@@ -231,105 +233,11 @@ def ajax_submitquantum(request):
         "hashkey": hashkey
     }
 
-    msg = pipelines.calculation_pipeline(request, molecule_info)
-
-    return msg
-
-
-    #
-    #
-    #
-
-    calculation = request.dbsession.query(models.GamessCalculation) \
-        .filter_by(hashkey=hashkey).first()
-
-    if calculation is not None:
-        calculation.created = datetime.datetime.now()
-        return msg
-    else:
-        pass
-
-    # check if folder exists
-    here = os.path.abspath(os.path.dirname(__file__)) + "/"
-    datahere = here + "data/"
-
-    if os.path.isdir(datahere + hashkey):
-        # return msg
-        pass
-
-    else:
-        os.mkdir(datahere + hashkey)
-
-    os.chdir(datahere + hashkey)
-
-    # Minimize with forcefield first
-    molobj = cheminfo.molobj_add_hydrogens(molobj)
-
-
-    cheminfo.molobj_optimize(molobj)
-
-    header = """ $basis gbasis=pm3 $end
- $contrl runtyp=optimize icharg=0 $end
- $statpt opttol=0.0005 nstep=200 projct=.F. $end
-"""
-
-    # Prepare gamess input
-    # inpstr = gamess.molobj_to_gmsinp(molobj, header)
-
-    # Save and run file
-    # with open("optimize.inp", "w") as f:
-    #     f.write(inpstr)
-    #
-    # stdout, stderr = gamess.calculate(hashkey+".inp", store_output=False)
-
-    # with open("start.sdf", 'w') as f:
-    #     f.write(cheminfo.molobj_to_sdfstr(molobj))
-
-    # Check output
-    # status, message = gamess.check_output(stdout)
-
-    os.chdir(here)
-
-    # if not status:
-    #     msg["error"] = "error 192: QM Calculation fail"
-    #     msg["message"] = message
-    #     return msg
-
-    # Saveable sdf and reset title
-    sdfstr = cheminfo.molobj_to_sdfstr(molobj)
-    sdfstr = str(sdfstr)
-    for _ in range(2):
-        i = sdfstr.index('\n')
-        sdfstr = sdfstr[i+1:]
-    sdfstr = "\n\n" + sdfstr
-
-    # Get a 2D Picture
-    # TODO Compute 2D coordinates
-    svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)
-
-    # Success, setup database
-    calculation = models.GamessCalculation()
-    calculation.smiles = smiles
-    calculation.hashkey = hashkey
-    calculation.sdf = sdfstr
-    calculation.svg = svgstr
-    calculation.created = datetime.datetime.now()
+    settings = request.registry.settings
+    msg = pipelines.calculation_pipeline(molecule_info, settings)
 
     # Add calculation to the database
-    request.dbsession.add(calculation)
-
-    # Add smiles to counter
-    countobj = request.dbsession.query(models.Counter) \
-        .filter_by(smiles=smiles).first()
-
-    if countobj is None:
-        counter = models.Counter()
-        counter.smiles = smiles
-        counter.count = 1
-        request.dbsession.add(counter)
-        print(counter)
-    else:
-        countobj.count += 1
-
+    if calculation is not None:
+        request.dbsession.add(calculation)
 
     return msg

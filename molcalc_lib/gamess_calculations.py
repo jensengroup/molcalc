@@ -10,6 +10,8 @@ def optimize_coordinates(molobj, **kwargs):
  $statpt opttol=0.0005 nstep=300 projct=.F. $end
 """
 
+    print(kwargs)
+
     stdout, stderr = gamess.calculate(molobj, header, **kwargs)
 
     # TODO Check stderr and return None
@@ -104,7 +106,6 @@ def calculate_solvation(molobj, **kwargs):
     return properties
 
 
-
 def calculate_all_properties(molobj, **kwargs):
 
     funcs = [
@@ -127,7 +128,11 @@ def calculate_all_properties(molobj, **kwargs):
     for func in funcs:
 
         parent_conn, child_conn = Pipe()
-        p = Process(target=procfunc, args=(child_conn, func, molobj), kwargs=kwargs)
+        p = Process(
+            target=procfunc,
+            args=(child_conn, func, molobj),
+            kwargs=kwargs
+        )
         p.start()
 
         procs.append(p)
@@ -141,4 +146,3 @@ def calculate_all_properties(molobj, **kwargs):
     properties_sol = conns[2].recv()
 
     return properties_vib, properties_orb, properties_sol
-

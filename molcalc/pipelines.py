@@ -13,22 +13,24 @@ from molcalc_lib import gamess_calculations
 from chemhelp import cheminfo
 from chemhelp import misc
 
+import logging
 
-def calculation_pipeline(request, molinfo):
+logger = logging.getLogger('molcalc')
+
+
+def calculation_pipeline(molinfo, settings):
     """
 
     Assumed that rdkit understands the molecule
 
     args:
-        request - 
         molinfo - dict
+        settings -
 
 
     """
 
-    settings = request.registry.settings
-
-    scratch_dir =  settings["scr.scr"]
+    scratch_dir = settings["scr.scr"]
 
     gamess_options = {
         "cmd": settings["gamess.rungms"],
@@ -38,6 +40,8 @@ def calculation_pipeline(request, molinfo):
         "autoclean": True,
         "debug": False,
     }
+
+    logger.info("test info")
 
     # Read input
     molobj = molinfo["molobj"]
@@ -58,8 +62,8 @@ def calculation_pipeline(request, molinfo):
 
     # Start respond message
     msg = {
-        "smiles" : smiles,
-        "hashkey" : hashkey
+        "smiles": smiles,
+        "hashkey": hashkey
     }
 
 
@@ -84,12 +88,14 @@ def calculation_pipeline(request, molinfo):
     gamess_options["scr"] = hashdir
 
     try:
-        properties = gamess_calculations.optimize_coordinates(molobj, **gamess_options)
+        properties = gamess_calculations.optimize_coordinates(
+            molobj, **gamess_options
+        )
     except:
         properties = None
 
     if properties is None:
-        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}
+        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}, None
 
     if "error" in properties:
         return {
@@ -98,8 +104,7 @@ def calculation_pipeline(request, molinfo):
         }
 
     if "coord" not in properties:
-        return {'error':'Error g-98 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}
-
+        return {'error':'Error g-98 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}, None
 
     print(smiles, list(properties.keys()))
 
@@ -111,12 +116,16 @@ def calculation_pipeline(request, molinfo):
 
     # Optimization is finished, do other calculation async-like
 
-    properties_vib, properties_orb, properties_sol = gamess_calculations.calculate_all_properties(molobj, **gamess_options)
+    properties_vib, properties_orb, properties_sol = (
+        gamess_calculations.calculate_all_properties(
+            molobj, **gamess_options
+        )
+    )
 
     # Check results
 
     if properties_vib is None:
-        return {'error':'Error g-104 - gamess vibration error', 'message': "Error. Unable to vibrate molecule"}
+        return {'error':'Error g-104 - gamess vibration error', 'message': "Error. Unable to vibrate molecule"}, None
 
     print(smiles, list(properties_vib.keys()))
 
@@ -127,7 +136,7 @@ def calculation_pipeline(request, molinfo):
     calculation.thermo = misc.save_array(properties_vib["thermo"])
 
     if properties_orb is None:
-        return {'error':'Error g-128 - gamess orbital error', 'message': "Error. Unable to calculate molecular orbitals"}
+        return {'error':'Error g-128 - gamess orbital error', 'message': "Error. Unable to calculate molecular orbitals"}, None
 
     print(smiles, list(properties_orb.keys()))
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
@@ -168,10 +177,7 @@ def calculation_pipeline(request, molinfo):
     calculation.svg = svgstr
     calculation.created = datetime.datetime.now()
 
-    # Add calculation to the database
-    request.dbsession.add(calculation)
-
-    return msg
+    return msg, calculation
 
 
 def update_smiles_counter(request, smiles):
