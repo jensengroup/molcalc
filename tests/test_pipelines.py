@@ -1,7 +1,7 @@
 from context import CONFIG, SCR
 
-from chemhelp import cheminfo
 from molcalc import pipelines
+from ppqm import chembridge
 
 GAMESS_OPTIONS = {
     "scr": SCR,
@@ -34,8 +34,8 @@ M  END """
     # smi = "N#N"
     # molobj = Chem.MolFromSmiles(smi)
     # AllChem.Compute2DCoords(molobj)
-    molobj = cheminfo.sdfstr_to_molobj(sdf)
-    sdf = cheminfo.molobj_to_sdfstr(molobj)
+    molobj = chembridge.sdfstr_to_molobj(sdf)
+    sdf = chembridge.molobj_to_sdfstr(molobj)
     print(sdf)
 
     molecule_info = {"sdfstr": sdf, "molobj": molobj, "hashkey": "TEST"}

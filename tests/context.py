@@ -1,15 +1,18 @@
 import configparser
-import os
+import pathlib
 import sys
-from pathlib import Path
 
 try:
-    pass
-except:
-    here = os.path.dirname(__file__)
-    sys.path.append(here + "/..")
+    import molcalc
+except ImportError:
+    parent = str(pathlib.Path(__file__).absolute().parent.parent)
+    sys.path.insert(0, parent)
+    import molcalc
 
+import molcalc_lib
+import ppqm
 
+# TODO Should be handled by pytest
 SCR = ".test/"
 
 
@@ -21,4 +24,8 @@ def ini_settings(filename):
 
 # Init enviroment
 CONFIG = ini_settings("development.ini")
-Path(SCR).mkdir(parents=True, exist_ok=True)
+pathlib.Path(SCR).mkdir(parents=True, exist_ok=True)
+
+molcalc = molcalc
+molcalc_lib = molcalc_lib
+ppqm = ppqm

@@ -1,7 +1,9 @@
 import pytest
-from context import CONFIG, SCR, chemhelp, molcalc_lib
+from context import CONFIG, SCR, molcalc_lib
 from rdkit import Chem
 from rdkit.Chem import AllChem
+
+from ppqm import chembridge
 
 GAMESS_OPTIONS = {
     "scr": SCR,
@@ -92,7 +94,6 @@ def test_optimize_coordinates(smiles, test_energy):
     )
 
     assert properties["h"] == pytest.approx(test_energy)
-    return
 
 
 @pytest.mark.parametrize("smiles", TEST_SMILES_SOLVATION)
@@ -108,7 +109,7 @@ def test_calculate_solvation(smiles):
     coord = properties["coord"]
 
     # Set new coordinates
-    chemhelp.cheminfo.molobj_set_coordinates(molobj, coord)
+    chembridge.molobj_set_coordinates(molobj, coord)
 
     # Calculate solvation properties
     properties = molcalc_lib.gamess_calculations.calculate_solvation(
@@ -116,8 +117,6 @@ def test_calculate_solvation(smiles):
     )
 
     assert properties is not None
-
-    return
 
 
 @pytest.mark.parametrize("smiles", TEST_SMILES)
@@ -133,7 +132,7 @@ def test_calculate_all_properties(smiles):
     coord = properties["coord"]
 
     # Set new coordinates
-    chemhelp.cheminfo.molobj_set_coordinates(molobj, coord)
+    chembridge.molobj_set_coordinates(molobj, coord)
 
     # Calculate solvation properties
     (
@@ -148,14 +147,12 @@ def test_calculate_all_properties(smiles):
     assert properties_orb is not None
     assert properties_sol is not None
 
-    return
-
 
 @pytest.mark.parametrize("sdfstr", TEST_ERROR_SDF)
 def test_error_smiles(sdfstr):
 
     # Get molecule with 3D coordinates
-    molobj = chemhelp.cheminfo.sdfstr_to_molobj(sdfstr)
+    molobj = chembridge.sdfstr_to_molobj(sdfstr)
 
     # Optimize coordinates, unsuccessfully
     properties = molcalc_lib.gamess_calculations.optimize_coordinates(
@@ -164,16 +161,3 @@ def test_error_smiles(sdfstr):
 
     assert "error" in properties
     assert type(properties["error"]) is str
-
-    return
-
-
-def main():
-
-    test_optimize_coordinates("[Na+]", 0.0)
-
-    return
-
-
-if __name__ == "__main__":
-    main()

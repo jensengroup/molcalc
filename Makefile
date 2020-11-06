@@ -65,7 +65,8 @@ molcalc/data: scripts/setup_datadir.sh
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js molcalc/static/rdkit/rdkit.js
 
 ppqm:
-	git clone https://github.com/ppqm/ppqm ppqm --depth 1
+	git clone https://github.com/ppqm/ppqm ppqm_src --depth 1
+	ln -s ./ppqm_src/ppqm ppqm
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh

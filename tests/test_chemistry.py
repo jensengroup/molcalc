@@ -1,9 +1,9 @@
 import numpy as np
-from context import CONFIG, SCR, chemhelp, molcalc_lib
+from context import CONFIG, SCR, molcalc_lib
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-from chemhelp import cheminfo
+from ppqm import chembridge
 
 GAMESS_OPTIONS = {
     "scr": SCR,
@@ -27,7 +27,7 @@ def test_single_hydrogen():
 def test_dihydrogen():
 
     smi = "[H][H]"
-    molobj = chemhelp.cheminfo.smiles_to_molobj(smi)
+    molobj = chembridge.smiles_to_molobj(smi)
     assert molobj
 
 
@@ -38,7 +38,7 @@ def test_dinitrogen():
     molobj = Chem.MolFromSmiles(smi)
     AllChem.Compute2DCoords(molobj)
 
-    sdfstr = cheminfo.molobj_to_sdfstr(molobj)
+    sdfstr = chembridge.molobj_to_sdfstr(molobj)
     print(sdfstr)
 
     assert False
@@ -53,7 +53,7 @@ def test_dinitrogen():
     assert isinstance(properties["coord"], np.ndarray)
 
     coord = properties["coord"]
-    chemhelp.cheminfo.molobj_set_coordinates(molobj, coord)
+    chembridge.molobj_set_coordinates(molobj, coord)
 
     # Vibrate
     properties = molcalc_lib.gamess_calculations.calculate_vibrations(

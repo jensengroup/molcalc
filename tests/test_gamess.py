@@ -1,7 +1,7 @@
 import numpy as np
 from context import CONFIG, SCR
 
-from chemhelp import cheminfo, gamess
+from ppqm import chembridge, gamess
 
 GAMESS_OPTIONS = {
     "scr": SCR,
@@ -36,7 +36,7 @@ $$$$
  $statpt opttol=0.0005 nstep=300 projct=.F. $end
 """
 
-    molobj = cheminfo.sdfstr_to_molobj(methane)
+    molobj = chembridge.sdfstr_to_molobj(methane)
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
     properties = gamess.read_properties_coordinates(stdout)
@@ -99,8 +99,8 @@ $$$$
         ]
     )
 
-    molobj = cheminfo.sdfstr_to_molobj(methane)
-    cheminfo.molobj_set_coordinates(molobj, coordinates)
+    molobj = chembridge.sdfstr_to_molobj(methane)
+    chembridge.molobj_set_coordinates(molobj, coordinates)
 
     header = """
  $basis
@@ -188,7 +188,7 @@ $$$$
  $basis gbasis=sto ngauss=3 $end
 """
 
-    molobj = cheminfo.sdfstr_to_molobj(methane)
+    molobj = chembridge.sdfstr_to_molobj(methane)
 
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
 
@@ -279,7 +279,7 @@ $$$$
 
 """
 
-    molobj = cheminfo.sdfstr_to_molobj(methane)
+    molobj = chembridge.sdfstr_to_molobj(methane)
     stdout, stderr = gamess.calculate(molobj, header, **GAMESS_OPTIONS)
     properties = gamess.read_properties_solvation(stdout)
 
