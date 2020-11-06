@@ -1,14 +1,8 @@
-
-import pytest
-
 import numpy as np
+from context import CONFIG, SCR, chemhelp, molcalc_lib
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-from context import molcalc_lib
-from context import chemhelp
-from context import CONFIG, SCR
-import context
 from chemhelp import cheminfo
 
 GAMESS_OPTIONS = {
@@ -20,13 +14,7 @@ GAMESS_OPTIONS = {
 }
 
 
-EDGE_SMILES = [
-    "[Na+]",
-    "[O-2]",
-    "[H-]",
-    "[H][H]",
-    "N#N"
-]
+EDGE_SMILES = ["[Na+]", "[O-2]", "[H-]", "[H][H]", "N#N"]
 
 
 def test_single_hydrogen():
@@ -56,12 +44,8 @@ def test_dinitrogen():
     assert False
 
     # Test optimize
-    properties = (
-        molcalc_lib
-        .gamess_calculations
-        .optimize_coordinates(
-            molobj, **GAMESS_OPTIONS
-        )
+    properties = molcalc_lib.gamess_calculations.optimize_coordinates(
+        molobj, **GAMESS_OPTIONS
     )
 
     assert properties is not None
@@ -72,20 +56,12 @@ def test_dinitrogen():
     chemhelp.cheminfo.molobj_set_coordinates(molobj, coord)
 
     # Vibrate
-    properties = (
-        molcalc_lib
-        .gamess_calculations
-        .calculate_vibrations(
-            molobj, **GAMESS_OPTIONS
-        )
+    properties = molcalc_lib.gamess_calculations.calculate_vibrations(
+        molobj, **GAMESS_OPTIONS
     )
 
-    vib, orb, sol = (
-        molcalc_lib
-        .gamess_calculations
-        .calculate_all_properties(
-            molobj, **GAMESS_OPTIONS
-        )
+    vib, orb, sol = molcalc_lib.gamess_calculations.calculate_all_properties(
+        molobj, **GAMESS_OPTIONS
     )
 
     assert vib is not None
@@ -97,4 +73,3 @@ def test_dinitrogen():
 
 if __name__ == "__main__":
     test_dinitrogen()
-

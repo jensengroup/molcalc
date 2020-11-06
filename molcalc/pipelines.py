@@ -1,21 +1,14 @@
-
-from multiprocessing import Process, Pipe
 import datetime
 import hashlib
+import logging
 import os
-
-import numpy as np
-from pyramid.view import notfound_view_config, view_config
 
 import models
 
+from chemhelp import cheminfo, misc
 from molcalc_lib import gamess_calculations
-from chemhelp import cheminfo
-from chemhelp import misc
 
-import logging
-
-logger = logging.getLogger('molcalc')
+logger = logging.getLogger("molcalc")
 
 
 def calculation_pipeline(molinfo, settings):
@@ -47,8 +40,8 @@ def calculation_pipeline(molinfo, settings):
     molobj = molinfo["molobj"]
     sdfstr = molinfo["sdfstr"]
 
-    if "name" in molinfo:
-        name = info["name"]
+    # if "name" in molinfo:
+    #     info["name"]
 
     # Get that smile on your face
     try:
@@ -61,11 +54,7 @@ def calculation_pipeline(molinfo, settings):
     hashkey = hshobj.hexdigest()
 
     # Start respond message
-    msg = {
-        "smiles": smiles,
-        "hashkey": hashkey
-    }
-
+    msg = {"smiles": smiles, "hashkey": hashkey}
 
     # Create new calculation
     calculation = models.GamessCalculation()
@@ -95,16 +84,22 @@ def calculation_pipeline(molinfo, settings):
         properties = None
 
     if properties is None:
-        return {'error':'Error g-80 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}, None
+        return {
+            "error": "Error g-80 - gamess optimization error",
+            "message": "Error. Unable to optimize molecule",
+        }, None
 
     if "error" in properties:
         return {
-            'error': 'Error g-93 - gamess optimization error known',
-            'message': properties["error"]
+            "error": "Error g-93 - gamess optimization error known",
+            "message": properties["error"],
         }
 
     if "coord" not in properties:
-        return {'error':'Error g-98 - gamess optimization error', 'message': "Error. Unable to optimize molecule"}, None
+        return {
+            "error": "Error g-98 - gamess optimization error",
+            "message": "Error. Unable to optimize molecule",
+        }, None
 
     print(smiles, list(properties.keys()))
 
@@ -116,16 +111,19 @@ def calculation_pipeline(molinfo, settings):
 
     # Optimization is finished, do other calculation async-like
 
-    properties_vib, properties_orb, properties_sol = (
-        gamess_calculations.calculate_all_properties(
-            molobj, **gamess_options
-        )
-    )
+    (
+        properties_vib,
+        properties_orb,
+        properties_sol,
+    ) = gamess_calculations.calculate_all_properties(molobj, **gamess_options)
 
     # Check results
 
     if properties_vib is None:
-        return {'error':'Error g-104 - gamess vibration error', 'message': "Error. Unable to vibrate molecule"}, None
+        return {
+            "error": "Error g-104 - gamess vibration error",
+            "message": "Error. Unable to vibrate molecule",
+        }, None
 
     print(smiles, list(properties_vib.keys()))
 
@@ -136,14 +134,20 @@ def calculation_pipeline(molinfo, settings):
     calculation.thermo = misc.save_array(properties_vib["thermo"])
 
     if properties_orb is None:
-        return {'error':'Error g-128 - gamess orbital error', 'message': "Error. Unable to calculate molecular orbitals"}, None
+        return {
+            "error": "Error g-128 - gamess orbital error",
+            "message": "Error. Unable to calculate molecular orbitals",
+        }, None
 
     print(smiles, list(properties_orb.keys()))
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 
     if properties_sol is None:
-        return {'error':'Error g-159 - gamess solvation error', 'message': "Error. Unable to calculate solvation"}
+        return {
+            "error": "Error g-159 - gamess solvation error",
+            "message": "Error. Unable to calculate solvation",
+        }
 
     # 'charges', 'solvation_total', 'solvation_polar', 'solvation_nonpolar',
     # 'surface', 'total_charge', 'dipole', 'dipole_total'
@@ -183,9 +187,11 @@ def calculation_pipeline(molinfo, settings):
 def update_smiles_counter(request, smiles):
 
     # Add smiles to counter
-    countobj = request.dbsession \
-        .query(models.Counter) \
-        .filter_by(smiles=smiles).first()
+    countobj = (
+        request.dbsession.query(models.Counter)
+        .filter_by(smiles=smiles)
+        .first()
+    )
 
     if countobj is None:
         counter = models.Counter()
@@ -196,4 +202,3 @@ def update_smiles_counter(request, smiles):
         countobj.count += 1
 
     return
-

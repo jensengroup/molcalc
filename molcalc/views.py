@@ -1,21 +1,21 @@
 import datetime
 import hashlib
-import os
-import numpy as np
 import re
 
+import models
+import numpy as np
+import pipelines
 from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
-
 from rdkit.Chem import AllChem
+
 from chemhelp import cheminfo
-import models
-import pipelines
 from molcalc_lib import gamess_results
 
 # Error Views
 
-@notfound_view_config(renderer='templates/page_404.html')
+
+@notfound_view_config(renderer="templates/page_404.html")
 def not_found(request):
     request.response.status = 404
     return {}
@@ -23,7 +23,8 @@ def not_found(request):
 
 # Calculation Views
 
-@view_config(route_name='editor', renderer='templates/page_editor.html')
+
+@view_config(route_name="editor", renderer="templates/page_editor.html")
 def editor(request):
     """
 
@@ -33,7 +34,9 @@ def editor(request):
     return {}
 
 
-@view_config(route_name='calculation', renderer='templates/page_calculation.html')
+@view_config(
+    route_name="calculation", renderer="templates/page_calculation.html"
+)
 def view_calculation(request):
     """
 
@@ -43,11 +46,14 @@ def view_calculation(request):
 
     # Get the key
     matches = request.matchdict
-    hashkey = matches['one']
+    hashkey = matches["one"]
 
     # Look up the key
-    calculation = request.dbsession.query(models.GamessCalculation) \
-        .filter_by(hashkey=hashkey).first()
+    calculation = (
+        request.dbsession.query(models.GamessCalculation)
+        .filter_by(hashkey=hashkey)
+        .first()
+    )
 
     if calculation is None:
         raise httpexceptions.exception_response(404)
@@ -60,7 +66,9 @@ def view_calculation(request):
     return data
 
 
-@view_config(route_name='calculations', renderer='templates/page_calculation.html')
+@view_config(
+    route_name="calculations", renderer="templates/page_calculation.html"
+)
 def view_calculations(request):
     """
 
@@ -75,7 +83,8 @@ def view_calculations(request):
 
 # Static page view
 
-@view_config(route_name='about', renderer='templates/page_about.html')
+
+@view_config(route_name="about", renderer="templates/page_about.html")
 def about(request):
     """
 
@@ -84,7 +93,8 @@ def about(request):
     """
     return {}
 
-@view_config(route_name='help', renderer='templates/page_help.html')
+
+@view_config(route_name="help", renderer="templates/page_help.html")
 def page_help(request):
     """
 
@@ -93,22 +103,29 @@ def page_help(request):
     """
     return {}
 
-@view_config(route_name='sdf_to_smiles', renderer='json')
+
+@view_config(route_name="sdf_to_smiles", renderer="json")
 def ajax_sdf_to_smiles(request):
     """
 
     sdf to smiles convertion
 
     """
-    return {'message', 'disabled'}
+    return {"message", "disabled"}
 
     if not request.POST:
-        return {'error':'Error 55 - Missing key', 'message': "Error. Missing information."}
+        return {
+            "error": "Error 55 - Missing key",
+            "message": "Error. Missing information.",
+        }
 
     try:
-        sdf = request.POST["sdf"].encode('utf-8')
+        sdf = request.POST["sdf"].encode("utf-8")
     except:
-        return {'error':'Error 60 - get error', 'message': "Error. Missing information."}
+        return {
+            "error": "Error 60 - get error",
+            "message": "Error. Missing information.",
+        }
 
     # Get smiles
     smiles, status = cheminfo.sdf_to_smiles(sdf)
@@ -117,18 +134,17 @@ def ajax_sdf_to_smiles(request):
         status = status.split("]")
         status = status[-1]
 
-        return {'error':'Error 69 - rdkit error', 'message': status}
+        return {"error": "Error 69 - rdkit error", "message": status}
 
-    msg = {
-        'smiles' : smiles
-    }
+    msg = {"smiles": smiles}
 
     return msg
 
 
 # Ajax views
 
-@view_config(route_name='smiles_to_sdf', renderer='json')
+
+@view_config(route_name="smiles_to_sdf", renderer="json")
 def ajax_smiles_to_sdf(request):
     """
 
@@ -136,23 +152,29 @@ def ajax_smiles_to_sdf(request):
 
     """
 
-    return {'message', 'disabled'}
+    return {"message", "disabled"}
 
     if not request.POST:
-        return {'error':'Error 53 - Missing key', 'message': "Error. Missing information."}
+        return {
+            "error": "Error 53 - Missing key",
+            "message": "Error. Missing information.",
+        }
 
     try:
-        smiles = request.POST["smiles"].encode('utf-8')
+        smiles = request.POST["smiles"].encode("utf-8")
     except:
-        return {'error':'Error 58 - get error', 'message': "Error. Missing information."}
+        return {
+            "error": "Error 58 - get error",
+            "message": "Error. Missing information.",
+        }
 
     sdfstr = cheminfo.smiles_to_sdfstr(smiles)
-    msg = {"sdf" : sdfstr}
+    msg = {"sdf": sdfstr}
 
     return msg
 
 
-@view_config(route_name='submitquantum', renderer='json')
+@view_config(route_name="submitquantum", renderer="json")
 def ajax_submitquantum(request):
     """
 
@@ -161,13 +183,19 @@ def ajax_submitquantum(request):
     """
 
     if not request.POST:
-        return {'error':'Error 128 - empty post', 'message': "Error. Empty post."}
+        return {
+            "error": "Error 128 - empty post",
+            "message": "Error. Empty post.",
+        }
 
     if not request.POST["sdf"]:
-        return {'error':'Error 132 - sdf key error', 'message': "Error. Missing information."}
+        return {
+            "error": "Error 132 - sdf key error",
+            "message": "Error. Missing information.",
+        }
 
     # Get coordinates from request
-    sdfstr = request.POST["sdf"].encode('utf-8')
+    sdfstr = request.POST["sdf"].encode("utf-8")
 
     # Get rdkit
     molobj, status = cheminfo.sdfstr_to_molobj(sdfstr, return_status=True)
@@ -175,14 +203,20 @@ def ajax_submitquantum(request):
     if molobj is None:
         status = status.split("]")
         status = status[-1]
-        status = re.sub(r'\# [0-9]+', '', status)
-        return {'error':'Error 141 - rdkit error', 'message': status}
+        status = re.sub(r"\# [0-9]+", "", status)
+        return {"error": "Error 141 - rdkit error", "message": status}
 
     try:
-        conf = molobj.GetConformer()
+        molobj.GetConformer()
     except ValueError:
         # Error
-        return {'error':'Error 141 - rdkit error', 'message': "Error. Server was unable to generate conformations for this molecule"}
+        return {
+            "error": "Error 141 - rdkit error",
+            "message": (
+                "Error. Server was unable to generate "
+                "conformations for this molecule"
+            ),
+        }
 
     # If hydrogens not added, assume graph and optimize with forcefield
     atoms = cheminfo.molobj_to_atoms(molobj)
@@ -196,42 +230,41 @@ def ajax_submitquantum(request):
     # TODO Check lengths of atoms
     # TODO Define max in settings
     max_atoms = 10
-    heavy_atoms, = np.where(atoms != 1)
+    (heavy_atoms,) = np.where(atoms != 1)
     if len(heavy_atoms) > max_atoms:
         return {
-            'error': 'Error 194 - max atoms error',
-            'message': "Stop Casper. Max ten heavy atoms."
+            "error": "Error 194 - max atoms error",
+            "message": "Stop Casper. Max ten heavy atoms.",
         }
 
     # Fix sdfstr
-    sdfstr = sdfstr.decode('utf8')
+    sdfstr = sdfstr.decode("utf8")
     for _ in range(3):
-        i = sdfstr.index('\n')
-        sdfstr = sdfstr[i+1:]
-    sdfstr = "\n"*3 + sdfstr
+        i = sdfstr.index("\n")
+        sdfstr = sdfstr[i + 1 :]
+    sdfstr = "\n" * 3 + sdfstr
 
     # hash on sdf (conformer)
     hshobj = hashlib.md5(sdfstr.encode())
     hashkey = hshobj.hexdigest()
 
     # Check if hash/calculation already exists in db
-    calculation = request.dbsession.query(models.GamessCalculation) \
-        .filter_by(hashkey=hashkey).first()
+    calculation = (
+        request.dbsession.query(models.GamessCalculation)
+        .filter_by(hashkey=hashkey)
+        .first()
+    )
 
     # If calculation already exists, return
     if calculation is not None:
-        msg = {'hashkey': hashkey}
+        msg = {"hashkey": hashkey}
         calculation.created = datetime.datetime.now()
         return msg
 
     # The calculation is valid and does not exists, pass to pipeline
     print("new:", datetime.date.today(), hashkey, atoms)
 
-    molecule_info = {
-        "sdfstr": sdfstr,
-        "molobj": molobj,
-        "hashkey": hashkey
-    }
+    molecule_info = {"sdfstr": sdfstr, "molobj": molobj, "hashkey": hashkey}
 
     settings = request.registry.settings
     msg = pipelines.calculation_pipeline(molecule_info, settings)

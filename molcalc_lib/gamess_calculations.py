@@ -1,5 +1,5 @@
+from multiprocessing import Pipe, Process
 
-from multiprocessing import Process, Pipe
 from chemhelp import gamess
 
 
@@ -129,9 +129,7 @@ def calculate_all_properties(molobj, **kwargs):
 
         parent_conn, child_conn = Pipe()
         p = Process(
-            target=procfunc,
-            args=(child_conn, func, molobj),
-            kwargs=kwargs
+            target=procfunc, args=(child_conn, func, molobj), kwargs=kwargs
         )
         p.start()
 

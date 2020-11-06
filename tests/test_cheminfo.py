@@ -1,9 +1,6 @@
-import pytest 
-
-from context import chemhelp
+import pytest
 
 from chemhelp import cheminfo
-
 
 TEST_ERROR_SMILES = ["C[NH4+]"]
 
@@ -17,7 +14,3 @@ def test_capture_error(smiles):
     assert molobj is None
 
     return
-
-if __name__ == "__main__":
-    main()
-

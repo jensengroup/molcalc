@@ -1,24 +1,35 @@
 
-python=env/bin/python
-conda=conda
+python = env/bin/python
+conda = conda
 
-line_length=79
-blackargs=--line-length ${line_length}
+line_length = 79
+blackargs = --line-length ${line_length}
+isortargs =	\
+	--multi-line=3 \
+	--trailing-comma \
+	--force-grid-wrap=0 \
+	--use-parentheses \
+	--line-width=${line_length}
 
-src=molcalc/*.py molcalc_lib/*.py tests/*.py
+autoflakeargs = \
+	--remove-all-unused-imports \
+	--remove-unused-variables \
+	--expand-star-imports
+
+src = molcalc/*.py molcalc_lib/*.py tests/*.py
 
 ## Development
 
 lint:
-	${python} -m isort --check-only ${src}
-	${python} -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-	${python} -m flake8 . --count --exit-zero --max-complexity=10 --statistics
-	${python} -m black --check ${BLACKARGS} ${src}
+	${python} -m isort --check-only ${src} ${isortargs}
+	${python} -m flake8 ${src} --count --select=E9,F63,F7,F82 --show-source --statistics
+	${python} -m flake8 ${src} --count --exit-zero --max-complexity=10 --statistics
+	${python} -m black --check ${blackargs} ${src}
 
 format:
-	${python} -m isort ${src}
-	${python} -m autoflake --in-place --remove-unused-variables ${src}
-	${python} -m black ${BLACKARGS} ${src}
+	${python} -m isort ${src} ${isortargs}
+	${python} -m autoflake --in-place ${autoflakeargs} ${src}
+	${python} -m black ${blackargs} ${src}
 
 test:
 	${python} -m pytest -vrs tests

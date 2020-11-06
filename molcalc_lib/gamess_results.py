@@ -1,8 +1,7 @@
-
-from chemhelp import cheminfo
-from chemhelp import misc
-from chemhelp import units
 import numpy as np
+
+from chemhelp import misc, units
+
 
 def view_gamess_calculation(calculation):
     """
@@ -43,11 +42,13 @@ def view_gamess_calculation(calculation):
     else:
         data["name"] = calculation.name
 
-    data["svg"] = data["svg"].replace("<?xml version='1.0' encoding='iso-8859-1'?>", "")
+    data["svg"] = data["svg"].replace(
+        "<?xml version='1.0' encoding='iso-8859-1'?>", ""
+    )
 
     fmt = "{:.2f}"
 
-    data["enthalpy"] = fmt.format(data["enthalpy"]*units.calories_to_joule)
+    data["enthalpy"] = fmt.format(data["enthalpy"] * units.calories_to_joule)
 
     #               E         H         G         CV        CP        S
     #            KJ/MOL    KJ/MOL    KJ/MOL   J/MOL-K   J/MOL-K   J/MOL-K
@@ -61,30 +62,28 @@ def view_gamess_calculation(calculation):
     thermotable = calculation.thermo
     thermotable = misc.load_array(thermotable)
 
-    data["h_elect"] = fmt.format(thermotable[0,1])
-    data["h_trans"] = fmt.format(thermotable[1,1])
-    data["h_rotat"] = fmt.format(thermotable[2,1])
-    data["h_vibra"] = fmt.format(thermotable[3,1])
-    data["h_total"] = fmt.format(thermotable[4,1])
+    data["h_elect"] = fmt.format(thermotable[0, 1])
+    data["h_trans"] = fmt.format(thermotable[1, 1])
+    data["h_rotat"] = fmt.format(thermotable[2, 1])
+    data["h_vibra"] = fmt.format(thermotable[3, 1])
+    data["h_total"] = fmt.format(thermotable[4, 1])
 
-    data["cp_elect"] = fmt.format(thermotable[0,4])
-    data["cp_trans"] = fmt.format(thermotable[1,4])
-    data["cp_rotat"] = fmt.format(thermotable[2,4])
-    data["cp_vibra"] = fmt.format(thermotable[3,4])
-    data["cp_total"] = fmt.format(thermotable[4,4])
+    data["cp_elect"] = fmt.format(thermotable[0, 4])
+    data["cp_trans"] = fmt.format(thermotable[1, 4])
+    data["cp_rotat"] = fmt.format(thermotable[2, 4])
+    data["cp_vibra"] = fmt.format(thermotable[3, 4])
+    data["cp_total"] = fmt.format(thermotable[4, 4])
 
-    data["s_elect"] = fmt.format(thermotable[0,5])
-    data["s_trans"] = fmt.format(thermotable[1,5])
-    data["s_rotat"] = fmt.format(thermotable[2,5])
-    data["s_vibra"] = fmt.format(thermotable[3,5])
-    data["s_total"] = fmt.format(thermotable[4,5])
-
+    data["s_elect"] = fmt.format(thermotable[0, 5])
+    data["s_trans"] = fmt.format(thermotable[1, 5])
+    data["s_rotat"] = fmt.format(thermotable[2, 5])
+    data["s_vibra"] = fmt.format(thermotable[3, 5])
+    data["s_total"] = fmt.format(thermotable[4, 5])
 
     # Molecular orbitals format
     data["orbitals"] = misc.load_array(data["orbitals"])
     data["orbitals"] *= units.hartree_to_ev
     data["orbitals"] = [fmt.format(x) for x in data["orbitals"]]
-
 
     # Vibrational Frequencies format
     data["vibfreq"] = misc.load_array(data["vibfreq"])
@@ -96,20 +95,19 @@ def view_gamess_calculation(calculation):
     data["vibfreq"] = [fmt.format(x) for x in data["vibfreq"]]
     data["viboffset"] = offset
 
-
     dipoles = misc.load_array(data["soldipole"])
 
     data["dipolex"] = dipoles[0]
     data["dipoley"] = dipoles[1]
     data["dipolez"] = dipoles[2]
 
-    data["soltotal"] = fmt.format(data["soltotal"]*units.calories_to_joule)
-    data["solpolar"] = fmt.format(data["solpolar"]*units.calories_to_joule)
-    data["solnonpolar"] = fmt.format(data["solnonpolar"]*units.calories_to_joule)
+    data["soltotal"] = fmt.format(data["soltotal"] * units.calories_to_joule)
+    data["solpolar"] = fmt.format(data["solpolar"] * units.calories_to_joule)
+    data["solnonpolar"] = fmt.format(
+        data["solnonpolar"] * units.calories_to_joule
+    )
     data["solsurface"] = fmt.format(data["solsurface"])
     data["soldipoletotal"] = fmt.format(data["soldipoletotal"])
-
-
 
     charges = misc.load_array(data["charges"])
     charges = np.array(charges)
@@ -119,5 +117,3 @@ def view_gamess_calculation(calculation):
     data["charge"] = int(charge)
 
     return data
-
-

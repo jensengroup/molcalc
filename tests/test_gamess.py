@@ -1,17 +1,7 @@
-
-import re
-import sys
-import os
 import numpy as np
-
-import context
-from context import molcalc_lib
 from context import CONFIG, SCR
 
-from chemhelp import gamess
-from chemhelp import cheminfo
-
-from rdkit import Chem
+from chemhelp import cheminfo, gamess
 
 GAMESS_OPTIONS = {
     "scr": SCR,
@@ -54,7 +44,7 @@ $$$$
     atoms = properties["atoms"]
     energy = properties["h"]
 
-    assert (atoms == np.array([6,1,1,1,1], dtype=int)).all()
+    assert (atoms == np.array([6, 1, 1, 1, 1], dtype=int)).all()
     np.testing.assert_almost_equal(energy, -13.0148)
 
     return
@@ -62,7 +52,7 @@ $$$$
 
 def test_output():
 
-    with open("tests/data/gamess_methane.log", 'r') as f:
+    with open("tests/data/gamess_methane.log", "r") as f:
         output = f.read()
 
     properties = gamess.read_properties_coordinates(output)
@@ -70,7 +60,7 @@ def test_output():
     atoms = properties["atoms"]
     energy = properties["h"]
 
-    assert (atoms == np.array([6,1,1,1,1], dtype=int)).all()
+    assert (atoms == np.array([6, 1, 1, 1, 1], dtype=int)).all()
     np.testing.assert_almost_equal(energy, -13.0148)
 
     return
@@ -95,13 +85,19 @@ M  END
 $$$$
     """
 
-    coordinates = np.array([
-        [ 0., -0., 0., ],
-        [-0., -0.88755027, -0.62754422],
-        [-0., 0.88755027, -0.62754422],
-        [-0.88755027, 0., 0.62754422],
-        [ 0.88755027, 0., 0.62754422],
-    ])
+    coordinates = np.array(
+        [
+            [
+                0.0,
+                -0.0,
+                0.0,
+            ],
+            [-0.0, -0.88755027, -0.62754422],
+            [-0.0, 0.88755027, -0.62754422],
+            [-0.88755027, 0.0, 0.62754422],
+            [0.88755027, 0.0, 0.62754422],
+        ]
+    )
 
     molobj = cheminfo.sdfstr_to_molobj(methane)
     cheminfo.molobj_set_coordinates(molobj, coordinates)
@@ -124,36 +120,38 @@ $$$$
     properties = gamess.read_properties_vibration(stdout)
 
     assert properties is not None
-    assert 'thermo' in properties
+    assert "thermo" in properties
 
     return
 
 
 def test_vibration_read():
 
-    with open("tests/data/gamess_methane_vib.log", 'r') as f:
+    with open("tests/data/gamess_methane_vib.log", "r") as f:
         output = f.read()
-
 
     properties = gamess.read_properties_vibration(output)
 
     vibs = properties["freq"]
-    result = np.array([
-        5.757000e+00,
-        5.757000e+00,
-        9.600000e-02,
-        6.419200e+01,
-        7.002200e+01,
-        7.002200e+01,
-        1.362606e+03,
-        1.362741e+03,
-        1.362741e+03,
-        1.451008e+03,
-        1.451231e+03,
-        3.207758e+03,
-        3.207864e+03,
-        3.207864e+03,
-        3.311312e+03])
+    result = np.array(
+        [
+            5.757000e00,
+            5.757000e00,
+            9.600000e-02,
+            6.419200e01,
+            7.002200e01,
+            7.002200e01,
+            1.362606e03,
+            1.362741e03,
+            1.362741e03,
+            1.451008e03,
+            1.451231e03,
+            3.207758e03,
+            3.207864e03,
+            3.207864e03,
+            3.311312e03,
+        ]
+    )
 
     np.testing.assert_almost_equal(vibs, result)
 
@@ -197,7 +195,17 @@ $$$$
     properties = gamess.read_properties_orbitals(stdout)
 
     orbitals = properties["orbitals"]
-    results = [-11.0303, -0.9085, -0.5177, -0.5177, -0.5177, 0.713, 0.713, 0.713, 0.7505]
+    results = [
+        -11.0303,
+        -0.9085,
+        -0.5177,
+        -0.5177,
+        -0.5177,
+        0.713,
+        0.713,
+        0.713,
+        0.7505,
+    ]
     np.testing.assert_almost_equal(orbitals, results)
 
     return
@@ -205,13 +213,23 @@ $$$$
 
 def test_orbitals_read():
 
-    with open("tests/data/gamess_methane_orb.log", 'r') as f:
+    with open("tests/data/gamess_methane_orb.log", "r") as f:
         output = f.read()
 
     properties = gamess.read_properties_orbitals(output)
 
     orbitals = properties["orbitals"]
-    results = [-11.0303, -0.9085, -0.5177, -0.5177, -0.5177, 0.713, 0.713, 0.713, 0.7505]
+    results = [
+        -11.0303,
+        -0.9085,
+        -0.5177,
+        -0.5177,
+        -0.5177,
+        0.713,
+        0.713,
+        0.713,
+        0.7505,
+    ]
     np.testing.assert_almost_equal(orbitals, results)
 
     return
@@ -274,7 +292,7 @@ $$$$
 
 def test_solvation_read():
 
-    with open("tests/data/gamess_methane_sol.log", 'r') as f:
+    with open("tests/data/gamess_methane_sol.log", "r") as f:
         output = f.read()
 
     properties = gamess.read_properties_solvation(output)
@@ -299,6 +317,6 @@ def main():
 
     return
 
-if __name__ == '__main__':
-    main()
 
+if __name__ == "__main__":
+    main()

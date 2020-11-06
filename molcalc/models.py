@@ -1,22 +1,19 @@
+import gzip
+import io
 
-from sqlalchemy import create_engine, Column, Table, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.schema import MetaData
+import numpy as np
+import sqlalchemy as sa
 from sqlalchemy import (
-    Integer,
-    SmallInteger,
-    String,
-    Date,
+    Column,
     DateTime,
     Float,
-    Boolean,
-    Text,
-    LargeBinary)
-
-import sqlalchemy as sa
-
-import zlib
-import gzip
+    Integer,
+    LargeBinary,
+    String,
+    create_engine,
+)
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.schema import MetaData
 
 # Recommended naming convention used by Alembic, as various different database
 # providers will autogenerate vastly different names making migrations more
@@ -26,7 +23,7 @@ NAMING_CONVENTION = {
     "uq": "uq_%(table_name)s_%(column_0_name)s",
     "ck": "ck_%(table_name)s_%(constraint_name)s",
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
+    "pk": "pk_%(table_name)s",
 }
 
 metadata = MetaData(naming_convention=NAMING_CONVENTION)
@@ -49,6 +46,7 @@ class CompressedString(sa.types.TypeDecorator):
     """
     Storage datatype for large blobs of text
     """
+
     impl = LargeBinary
 
     def process_bind_param(self, value, dialect):
@@ -66,12 +64,12 @@ class NumpyArray(sa.types.TypeDecorator):
     impl = LargeBinary
 
     def save_array(arr):
-        s = StringIO()
+        s = io.StringIO()
         np.savetxt(s, arr)
         return s.getvalue()
 
     def load_array(txt):
-        s = StringIO(txt)
+        s = io.StringIO(txt)
         arr = np.loadtxt(s)
         return arr
 

@@ -1,13 +1,4 @@
-
-import pytest
-from rdkit import Chem
-from rdkit.Chem import AllChem
-
-from context import molcalc_lib
-from context import molcalc
-from context import chemhelp
 from context import CONFIG, SCR
-import context
 
 from chemhelp import cheminfo
 from molcalc import pipelines
@@ -47,18 +38,13 @@ M  END """
     sdf = cheminfo.molobj_to_sdfstr(molobj)
     print(sdf)
 
-    molecule_info = {
-        "sdfstr": sdf,
-        "molobj": molobj,
-        "hashkey": "TEST"
-    }
+    molecule_info = {"sdfstr": sdf, "molobj": molobj, "hashkey": "TEST"}
 
     results = pipelines.calculation_pipeline(molecule_info, settings)
 
     print(results)
 
     return
-
 
 
 if __name__ == "__main__":
