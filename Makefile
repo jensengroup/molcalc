@@ -85,6 +85,9 @@ molcalc/static/rdkit/rdkit.js: scripts/setup_rdkit.sh
 
 ## Admin
 
+update:
+	cd ppqm_src; git pull
+
 backup:
 	# Make backup of database
 	cp database.sqlite database-`date +%m-%d-%Y`.sqlite
