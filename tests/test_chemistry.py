@@ -50,26 +50,33 @@ def test_small_smiles(smi):
     assert "error" not in prop_sol
 
 
-def test_molecule():
-    """ Single atom does not have vibrations, and should error """
+def test_mg():
 
-    smi = "[Na+]"
-    filename = "test_molecule"
+    smi = "[Mg]"
     gamess_options = GAMESS_OPTIONS
-    gamess_options["filename"] = filename
+    gamess_options["filename"] = "test_mg"
 
     molobj = Chem.MolFromSmiles(smi)
     AllChem.Compute2DCoords(molobj)
 
-    # Test optimize
-    properties = molcalc_lib.gamess_calculations.calculate_vibrations(
+    properties = molcalc_lib.gamess_calculations.optimize_coordinates(
         molobj, gamess_options
     )
+    assert ppqm.constants.COLUMN_COORDINATES in properties
 
-    print(properties)
+    properties_list = gamess_calculations.calculate_all_properties(molobj, GAMESS_OPTIONS)
 
+    assert isinstance(properties_list, tuple)
 
+    prop_vib, prop_orb, prop_sol = properties_list
 
+    assert isinstance(prop_vib, dict)
+    assert isinstance(prop_orb, dict)
+    assert isinstance(prop_sol, dict)
 
-if __name__ == "__main__":
-    test_dihydrogen()
+    # Vibrations and solvation will fail
+    # assert "error" in prop_vib
+    assert "error" in prop_sol
+
+    # Orbitals should work
+    assert "error" not in prop_orb

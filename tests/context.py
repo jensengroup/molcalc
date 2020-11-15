@@ -5,12 +5,13 @@ import logging
 
 try:
     import molcalc
+    import molcalc_lib
 except ImportError:
     parent = str(pathlib.Path(__file__).absolute().parent.parent)
     sys.path.insert(0, parent)
     import molcalc
+    import molcalc_lib
 
-import molcalc_lib
 import ppqm
 
 # TODO Should be handled by pytest

@@ -54,8 +54,12 @@ def calculate_orbitals(molobj, gamess_options):
     }
 
     calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
-    results = calc_obj.calculate(molobj, calculation_options)
-    properties = results[0]
+    try:
+        results = calc_obj.calculate(molobj, calculation_options)
+        properties = results[0]
+    except TypeError:
+        properties = dict()
+        properties["error"] = "Failed orbital calculation"
 
     return properties
 
@@ -69,8 +73,12 @@ def calculate_solvation(molobj, gamess_options):
     calculation_options["tescav"] = {"mthall": 4, "ntsall": 60}
 
     calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
-    results = calc_obj.calculate(molobj, calculation_options)
-    properties = results[0]
+    try:
+        results = calc_obj.calculate(molobj, calculation_options)
+        properties = results[0]
+    except TypeError:
+        properties = dict()
+        properties["error"] = "Solvation calculation failed"
 
     return properties
 

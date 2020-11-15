@@ -25,34 +25,28 @@ def calculation_pipeline(molinfo, settings):
 
     """
 
-    scratch_dir = settings["scr.scr"]
+    # Read input
+    molobj = molinfo["molobj"]
+    sdfstr = molinfo["sdfstr"]
+    hashkey = molinfo["hashkey"]
 
-    # TODO set filename in gamess_options
+    scratch_dir = settings["scr.scr"]
 
     gamess_options = {
         "cmd": settings["gamess.rungms"],
         "gamess_scr": settings["gamess.scr"],
         "gamess_userscr": settings["gamess.userscr"],
         "scr": scratch_dir,
+        "filename": hashkey,
     }
 
-    _logger.info(gamess_options)
-
-    # Read input
-    molobj = molinfo["molobj"]
-    sdfstr = molinfo["sdfstr"]
-
-    # if "name" in molinfo:
-    #     info["name"]
+    # TODO Get molecule names
 
     # Get that smile on your face
     try:
         smiles = chembridge.molobj_to_smiles(molobj, remove_hs=True)
     except:
         smiles = chembridge.molobj_to_smiles(molobj)
-
-    # hash on sdf (conformer)
-    hashkey = hashlib.md5(sdfstr.encode()).hexdigest()
 
     # Start respond message
     msg = {"smiles": smiles, "hashkey": hashkey}
