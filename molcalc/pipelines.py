@@ -6,9 +6,11 @@ import os
 import models
 
 from molcalc_lib import gamess_calculations
+import ppqm
 from ppqm import chembridge, misc
 
-logger = logging.getLogger("molcalc")
+
+_logger = logging.getLogger("molcalc:pipe")
 
 
 def calculation_pipeline(molinfo, settings):
@@ -32,11 +34,9 @@ def calculation_pipeline(molinfo, settings):
         "gamess_scr": settings["gamess.scr"],
         "gamess_userscr": settings["gamess.userscr"],
         "scr": scratch_dir,
-        "autoclean": True,
-        "debug": False,
     }
 
-    logger.info("test info")
+    _logger.info(gamess_options)
 
     # Read input
     molobj = molinfo["molobj"]
@@ -77,12 +77,14 @@ def calculation_pipeline(molinfo, settings):
 
     gamess_options["scr"] = hashdir
 
-    try:
-        properties = gamess_calculations.optimize_coordinates(
-            molobj, gamess_options
-        )
-    except:
-        properties = None
+    # try:
+    properties = gamess_calculations.optimize_coordinates(
+        molobj, gamess_options
+    )
+    # except:
+    #     properties = None
+
+    _logger.info(properties)
 
     if properties is None:
         return {
@@ -96,18 +98,19 @@ def calculation_pipeline(molinfo, settings):
             "message": properties["error"],
         }, None
 
-    if "coord" not in properties:
+    if ppqm.constants.COLUMN_COORDINATES not in properties:
         return {
-            "error": "Error g-98 - gamess optimization error",
+            "error": "Error g-104 - gamess optimization error",
             "message": "Error. Unable to optimize molecule",
         }, None
 
-    print(smiles, list(properties.keys()))
+    _logger.info(smiles, "optimized")
 
     # Save and set coordinates
-    coord = properties["coord"]
+    # TODO Use ppqm constants keywords
+    coord = properties[ppqm.constants.COLUMN_COORDINATES]
     calculation.coordinates = misc.save_array(coord)
-    calculation.enthalpy = properties["h"]
+    calculation.enthalpy = properties[ppqm.constants.COLUMN_ENERGY]
     chembridge.molobj_set_coordinates(molobj, coord)
 
     # Optimization is finished, do other calculation async-like
@@ -116,7 +119,7 @@ def calculation_pipeline(molinfo, settings):
         properties_vib,
         properties_orb,
         properties_sol,
-    ) = gamess_calculations.calculate_all_properties(molobj, **gamess_options)
+    ) = gamess_calculations.calculate_all_properties(molobj, gamess_options)
 
     # Check results
 
@@ -126,8 +129,9 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to vibrate molecule",
         }, None
 
-    print(smiles, list(properties_vib.keys()))
+    _logger.info(smiles, "vibrated")
 
+    # TODO Make a custom reader and move this out of ppqm
     calculation.islinear = properties_vib["linear"]
     calculation.vibjsmol = properties_vib["jsmol"]
     calculation.vibfreq = misc.save_array(properties_vib["freq"])
@@ -140,7 +144,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to calculate molecular orbitals",
         }, None
 
-    print(smiles, list(properties_orb.keys()))
+    _logger.info(smiles, "orbitals")
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 
@@ -152,7 +156,7 @@ def calculation_pipeline(molinfo, settings):
 
     # 'charges', 'solvation_total', 'solvation_polar', 'solvation_nonpolar',
     # 'surface', 'total_charge', 'dipole', 'dipole_total'
-    print(smiles, list(properties_sol.keys()))
+    _logger.info(smiles, "solvation")
 
     charges = properties_sol["charges"]
     calculation.charges = misc.save_array(charges)

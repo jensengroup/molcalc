@@ -1,6 +1,6 @@
 import numpy as np
 
-from chemhelp import misc, units
+from ppqm import misc, units
 
 
 def view_gamess_calculation(calculation):

@@ -5,7 +5,7 @@ import copy
 import logging
 
 
-_logger = logging.getLogger("gamess_calculations")
+_logger = logging.getLogger("molcalc:calc")
 
 
 def optimize_coordinates(molobj, gamess_options):
@@ -16,10 +16,11 @@ def optimize_coordinates(molobj, gamess_options):
         "statpt": {"opttol": 0.0005, "nstep": 300, "projct": False},
     }
 
-    _logger.debug("Optimizing pm3")
+    _logger.info("Optimizing pm3")
 
     calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
     results = calc_obj.calculate(molobj, calculation_options)
+
     properties = results[0]
 
     return properties

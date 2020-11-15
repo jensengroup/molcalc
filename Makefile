@@ -1,5 +1,6 @@
 
-python = env/bin/python
+python = ./env/bin/python
+pserve = ./env/bin/pserve
 conda = conda
 
 line_length = 79
@@ -40,10 +41,10 @@ test:
 
 serve_development:
 	ip a | grep inet
-	${python} -m pserve development.ini --reload
+	${pserve} development.ini --reload
 
 serve_production:
-	env/bin/pserve production.ini
+	${pyserve} production.ini
 
 serve: serve_development
 
@@ -51,10 +52,13 @@ serve: serve_development
 
 env:
 	${conda} env create -f environment.yml -p env
-	${python} -m pip install -r requirements.txt
+	${python} -m pip install -r requirements.txt --ignore-installed
 
 env-dev:
-	${python} -m pip install -r requirements.dev.txt
+	${python} -m pip install -r requirements.dev.txt --ignore-installed
+
+env-egg:
+	${python} setup.y develop
 
 dependencies:
 	sudo apt install -y libxrender-dev

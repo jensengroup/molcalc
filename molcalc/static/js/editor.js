@@ -231,7 +231,15 @@ $('.button.quantum').click(function () {
         promptQuantum.cancel();
 
         var mol = getCurrentSDF(include_hydrogen=true);
-        request("/ajax/submitquantum", {sdf:mol}, function (data)
+        var currentView = getView();
+        var addHydrogens = 1
+        if (ciEquals(currentView, "3d")){
+            addHydrogens = 0
+        }
+
+        var sdf_data = {sdf:mol, add_hydrogens:addHydrogens, current_view:currentView}
+
+        request("/ajax/submitquantum", sdf_data, function (data)
         {
             url = window.location.href;
             url = url.split("#");

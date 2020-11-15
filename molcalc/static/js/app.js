@@ -6,11 +6,11 @@ var fail;
 var uid;
 
 try {
-	uid = new Date;
-	(storage = window.localStorage).setItem(uid, uid);
-	fail = storage.getItem(uid) != uid;
-	storage.removeItem(uid);
-	fail && (storage = false);
+    uid = new Date;
+    (storage = window.localStorage).setItem(uid, uid);
+    fail = storage.getItem(uid) != uid;
+    storage.removeItem(uid);
+    fail && (storage = false);
 } catch (exception) {}
 
 
@@ -18,14 +18,20 @@ try {
 // Wait for element to exists
 
 var waitForElement = function(selector, callback) {
-	if (jQuery(selector).length) {
-		callback();
-	} else {
-		setTimeout(function() {
-			waitForElement(selector, callback);
-		}, 100);
-	}
+    if (jQuery(selector).length) {
+        callback();
+    } else {
+        setTimeout(function() {
+            waitForElement(selector, callback);
+        }, 100);
+    }
 };
+
+function ciEquals(a, b) {
+    return typeof a === 'string' && typeof b === 'string'
+        ? a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
+        : a === b;
+}
 
 
 // AJAX wrapper
@@ -161,25 +167,25 @@ function requestCactus(from, to, successFunction, failedFunction)
 
 $(function()
 {
-	// Prompt function
+    // Prompt function
 
-	/*
+    /*
 
-	USAGE:
+    USAGE:
     Create a new prompt for the user like following, then add header, message,
     responses etc like this;
 
-		var askuser = new $.Prompt();
-		askuser.setTitle('This is the title');
-		askuser.setMessage('This is the body text');
-		askuser.addResponseBtn('Hello', function() {
+        var askuser = new $.Prompt();
+        askuser.setTitle('This is the title');
+        askuser.setMessage('This is the body text');
+        askuser.addResponseBtn('Hello', function() {
             alert('action');
             askuser.cancel();
-		});
+        });
         askuser.addCancelBtn();
         askuser.show();
 
-	*/
+    */
 
     // Create AJAX Area
     $('body').append('<div class="ajaxarea"></div>');
@@ -337,12 +343,12 @@ function smilesToSdf(smi)
 
     var mol = RDKit.Molecule.fromSmiles( smi );
 
-	mol.addHs();
-	mol.Embedmolecule3D();
-	mol.removeHs();
-	mol3d = mol.sdwrite();
+    mol.addHs();
+    mol.Embedmolecule3D();
+    mol.removeHs();
+    mol3d = mol.sdwrite();
 
-	return mol3d;
+    return mol3d;
 }
 
 function sdfToSmiles(sdf)
@@ -504,12 +510,12 @@ function chemdoodleSetMol(canvas, mol)
 
 function setHash(loc)
 {
-	window.location.hash = "#/"+loc;
+    window.location.hash = "#/"+loc;
 }
 
 function getHash()
 {
-	return window.location.hash.replace("#/", "");
+    return window.location.hash.replace("#/", "");
 }
 
 // Production ///////////////////////////////////////////////////////
@@ -543,7 +549,7 @@ var $sidebarCloseBtns = $('.btnCloseSidebar');
 $sidebarBtns.click(function(event)
 {
     $sidebars.removeClass("active");
-	var link = $(this).attr('href');
+    var link = $(this).attr('href');
     $sidebar = $(link);
     $sidebar.addClass("iphone-display-bugfix");
     function emptyFunc() {
@@ -557,7 +563,7 @@ $sidebarBtns.click(function(event)
 
 $sidebarCloseBtns.click(function(event)
 {
-	var link = $(this).attr('href');
+    var link = $(this).attr('href');
     $sidebar = $(link);
     $sidebar.removeClass("active");
     return false;

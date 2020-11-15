@@ -1,16 +1,21 @@
 import datetime
 import hashlib
 import re
+import logging
 
 import models
 import numpy as np
 import pipelines
 from pyramid import httpexceptions
 from pyramid.view import notfound_view_config, view_config
+from rdkit import Chem
 from rdkit.Chem import AllChem
 
-from chemhelp import cheminfo
 from molcalc_lib import gamess_results
+from ppqm import chembridge
+
+
+_logger = logging.getLogger("molcalc:views")
 
 # Error Views
 
@@ -128,7 +133,7 @@ def ajax_sdf_to_smiles(request):
         }
 
     # Get smiles
-    smiles, status = cheminfo.sdf_to_smiles(sdf)
+    smiles, status = chembridge.sdf_to_smiles(sdf)
     if smiles is None:
 
         status = status.split("]")
@@ -168,7 +173,7 @@ def ajax_smiles_to_sdf(request):
             "message": "Error. Missing information.",
         }
 
-    sdfstr = cheminfo.smiles_to_sdfstr(smiles)
+    sdfstr = chembridge.smiles_to_sdfstr(smiles)
     msg = {"sdf": sdfstr}
 
     return msg
@@ -197,8 +202,12 @@ def ajax_submitquantum(request):
     # Get coordinates from request
     sdfstr = request.POST["sdf"].encode("utf-8")
 
+    # Is this 2D or 3D?
+    add_hydrogens = request.POST.get("add_hydrogens", "1")
+    add_hydrogens = add_hydrogens == "1"
+
     # Get rdkit
-    molobj, status = cheminfo.sdfstr_to_molobj(sdfstr, return_status=True)
+    molobj, status = chembridge.sdfstr_to_molobj(sdfstr, return_status=True)
 
     if molobj is None:
         status = status.split("]")
@@ -219,13 +228,15 @@ def ajax_submitquantum(request):
         }
 
     # If hydrogens not added, assume graph and optimize with forcefield
-    atoms = cheminfo.molobj_to_atoms(molobj)
-    if 1 not in atoms:
-        molobj = cheminfo.molobj_add_hydrogens(molobj)
-        AllChem.EmbedMultipleConfs(molobj, numConfs=1)
-        cheminfo.molobj_optimize(molobj)
+    atoms = chembridge.molobj_to_atoms(molobj)
 
-    atoms = cheminfo.molobj_to_atoms(molobj)
+    if 1 not in atoms and add_hydrogens:
+        molobj = Chem.AddHs(molobj)
+        AllChem.EmbedMultipleConfs(molobj, numConfs=1)
+        chembridge.molobj_optimize(molobj)
+
+    atoms = chembridge.molobj_to_atoms(molobj)
+
 
     # TODO Check lengths of atoms
     # TODO Define max in settings
@@ -262,15 +273,15 @@ def ajax_submitquantum(request):
         return msg
 
     # The calculation is valid and does not exists, pass to pipeline
-    print("new:", datetime.date.today(), hashkey, atoms)
+    _logger.info("new:", datetime.date.today(), hashkey, atoms)
 
     molecule_info = {"sdfstr": sdfstr, "molobj": molobj, "hashkey": hashkey}
 
     settings = request.registry.settings
-    msg = pipelines.calculation_pipeline(molecule_info, settings)
+    msg, new_calculation = pipelines.calculation_pipeline(molecule_info, settings)
 
     # Add calculation to the database
-    if calculation is not None:
-        request.dbsession.add(calculation)
+    if new_calculation is not None:
+        request.dbsession.add(new_calculation)
 
     return msg

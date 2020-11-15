@@ -13,4 +13,3 @@ numpy
 scipy
 rmsd
 networkx
-ase
