@@ -57,6 +57,7 @@ ppqm_src
 chemhelp
 molcalc/chemhelp
 .test
+.tmptest
 
 # ignore downloaded packages
 molcalc/static/js/*jquery*

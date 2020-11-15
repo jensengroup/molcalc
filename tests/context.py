@@ -15,6 +15,7 @@ import ppqm
 
 # TODO Should be handled by pytest
 SCR = ".test/"
+RESOURCES = pathlib.Path("tests/resources/chemistry")
 
 
 def ini_settings(filename):

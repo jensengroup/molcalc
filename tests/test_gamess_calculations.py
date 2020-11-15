@@ -1,7 +1,7 @@
 import pytest
 import copy
 import pathlib
-from context import CONFIG, SCR
+from context import CONFIG, SCR, RESOURCES
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
@@ -24,49 +24,8 @@ TEST_SMILES_COORD = [
 ]
 
 TEST_ERROR_SDF = [
-    """
-
-
-  4  3  0  0  0  0  0  0  0  0999 V2000
-    0.0000   -0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
-    0.0000   -0.8900   -0.6293 H   0  0  0  0  0  0  0  0  0  0  0  0
-    0.0000    0.8900   -0.6293 H   0  0  0  0  0  0  0  0  0  0  0  0
-   -0.8900   -0.0000    0.6293 H   0  0  0  0  0  0  0  0  0  0  0  0
-  1  2  1  0  0  0  0
-  1  3  1  0  0  0  0
-  1  4  1  0  0  0  0
-M  END
-""",
-    """
-Benzene
-
- 12 12  0  0  0  0  0  0  0  0999 V2000
-    0.8065   -1.1431    0.0149 C   0  0  0  0  0  0  0  0  0  0  0  0
-    1.3933    0.1268   -0.0021 C   0  0  0  0  0  0  0  0  0  0  0  0
-    0.5868    1.2699   -0.0170 C   0  0  0  0  0  0  0  0  0  0  0  0
-   -0.8065    1.1431   -0.0149 C   0  0  0  0  0  0  0  0  0  0  0  0
-   -1.3933   -0.1268    0.0021 C   0  0  0  0  0  0  0  0  0  0  0  0
-   -0.5868   -1.2699    0.0171 C   0  0  0  0  0  0  0  0  0  0  0  0
-    1.4304   -2.0274    0.0264 H   0  0  0  0  0  0  0  0  0  0  0  0
-    2.4712    0.2250   -0.0038 H   0  0  0  0  0  0  0  0  0  0  0  0
-    1.0407    2.2524   -0.0302 H   0  0  0  0  0  0  0  0  0  0  0  0
-   -1.4304    2.0274   -0.0265 H   0  0  0  0  0  0  0  0  0  0  0  0
-   -2.4712   -0.2250    0.0038 H   0  0  0  0  0  0  0  0  0  0  0  0
-   -1.0407   -2.2524    0.0302 H   0  0  0  0  0  0  0  0  0  0  0  0
-  1  2  2  0
-  2  3  1  0
-  3  4  2  0
-  4  5  1  0
-  5  6  2  0
-  6  1  1  0
-  1  7  1  0
-  2  8  1  0
-  3  9  1  0
-  4 10  1  0
-  5 11  1  0
-  6 12  1  0
-M  END
-""",
+    "wrong_methane.sdf",
+    "wrong_benzene.sdf"
 ]
 
 
@@ -151,8 +110,12 @@ def test_calculate_all_properties(smiles):
     assert properties_sol is not None
 
 
-@pytest.mark.parametrize("sdfstr", TEST_ERROR_SDF)
-def test_error_smiles(tmpdir, sdfstr):
+@pytest.mark.parametrize("filename", TEST_ERROR_SDF)
+def test_error_smiles(tmpdir, filename):
+
+    filename = RESOURCES / filename
+    with open(filename, 'r') as f:
+        sdfstr = f.read()
 
     gamess_options = copy.deepcopy(GAMESS_OPTIONS)
     gamess_options["scr"] = tmpdir
