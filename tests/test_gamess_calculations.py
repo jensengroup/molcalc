@@ -1,8 +1,12 @@
 import pytest
-from context import CONFIG, SCR, molcalc_lib
+import copy
+import pathlib
+from context import CONFIG, SCR
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
+import ppqm
+from molcalc_lib import gamess_calculations
 from ppqm import chembridge
 
 GAMESS_OPTIONS = {
@@ -10,7 +14,6 @@ GAMESS_OPTIONS = {
     "cmd": CONFIG["gamess"].get("rungms"),
     "gamess_scr": CONFIG["gamess"].get("scr"),
     "gamess_userscr": CONFIG["gamess"].get("userscr"),
-    "debug": True,
 }
 
 
@@ -74,7 +77,7 @@ TEST_SMILES_SOLVATION = [
 ]
 
 
-def prepare_molobj(smiles):
+def _prepare_molobj(smiles):
     """
     Helper function for getting 3D coordinates from SMILES
     """
@@ -88,32 +91,34 @@ def prepare_molobj(smiles):
 @pytest.mark.parametrize("smiles, test_energy", TEST_SMILES_COORD)
 def test_optimize_coordinates(smiles, test_energy):
 
-    molobj = prepare_molobj(smiles)
-    properties = molcalc_lib.gamess_calculations.optimize_coordinates(
-        molobj, **GAMESS_OPTIONS
+    molobj = _prepare_molobj(smiles)
+    properties = gamess_calculations.optimize_coordinates(
+        molobj, GAMESS_OPTIONS
     )
 
-    assert properties["h"] == pytest.approx(test_energy)
+    assert properties[ppqm.constants.COLUMN_ENERGY] == pytest.approx(
+        test_energy
+    )
 
 
 @pytest.mark.parametrize("smiles", TEST_SMILES_SOLVATION)
 def test_calculate_solvation(smiles):
 
     # Get molecule with 3D coordinates
-    molobj = prepare_molobj(smiles)
+    molobj = _prepare_molobj(smiles)
 
     # Optimize coordinates
-    properties = molcalc_lib.gamess_calculations.optimize_coordinates(
-        molobj, autoclean=True, **GAMESS_OPTIONS
+    properties = gamess_calculations.optimize_coordinates(
+        molobj, GAMESS_OPTIONS
     )
-    coord = properties["coord"]
+    coord = properties[ppqm.constants.COLUMN_COORDINATES]
 
     # Set new coordinates
     chembridge.molobj_set_coordinates(molobj, coord)
 
     # Calculate solvation properties
-    properties = molcalc_lib.gamess_calculations.calculate_solvation(
-        molobj, **GAMESS_OPTIONS
+    properties = gamess_calculations.calculate_solvation(
+        molobj, GAMESS_OPTIONS
     )
 
     assert properties is not None
@@ -123,13 +128,13 @@ def test_calculate_solvation(smiles):
 def test_calculate_all_properties(smiles):
 
     # Get molecule with 3D coordinates
-    molobj = prepare_molobj(smiles)
+    molobj = _prepare_molobj(smiles)
 
     # Optimize coordinates
-    properties = molcalc_lib.gamess_calculations.optimize_coordinates(
-        molobj, autoclean=True, **GAMESS_OPTIONS
+    properties = gamess_calculations.optimize_coordinates(
+        molobj, GAMESS_OPTIONS
     )
-    coord = properties["coord"]
+    coord = properties[ppqm.constants.COLUMN_COORDINATES]
 
     # Set new coordinates
     chembridge.molobj_set_coordinates(molobj, coord)
@@ -139,9 +144,7 @@ def test_calculate_all_properties(smiles):
         properties_vib,
         properties_orb,
         properties_sol,
-    ) = molcalc_lib.gamess_calculations.calculate_all_properties(
-        molobj, **GAMESS_OPTIONS
-    )
+    ) = gamess_calculations.calculate_all_properties(molobj, GAMESS_OPTIONS)
 
     assert properties_vib is not None
     assert properties_orb is not None
@@ -149,15 +152,30 @@ def test_calculate_all_properties(smiles):
 
 
 @pytest.mark.parametrize("sdfstr", TEST_ERROR_SDF)
-def test_error_smiles(sdfstr):
+def test_error_smiles(tmpdir, sdfstr):
+
+    gamess_options = copy.deepcopy(GAMESS_OPTIONS)
+    gamess_options["scr"] = tmpdir
 
     # Get molecule with 3D coordinates
     molobj = chembridge.sdfstr_to_molobj(sdfstr)
 
     # Optimize coordinates, unsuccessfully
-    properties = molcalc_lib.gamess_calculations.optimize_coordinates(
-        molobj, autoclean=True, **GAMESS_OPTIONS
+    properties = gamess_calculations.optimize_coordinates(
+        molobj, gamess_options
     )
 
     assert "error" in properties
     assert type(properties["error"]) is str
+
+
+if __name__ == "__main__":
+
+    tmpdir = pathlib.Path(".tmptest")
+    tmpdir.mkdir(parents=True, exist_ok=True)
+
+    # test_optimize_coordinates("C", 5.0)
+    # test_calculate_all_properties("C")
+    # test_error_smiles(tmpdir, TEST_ERROR_SDF[0])
+
+

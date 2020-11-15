@@ -1,112 +1,80 @@
 from multiprocessing import Pipe, Process
 
-from chemhelp import gamess
+import ppqm
+import copy
+import logging
 
 
-def optimize_coordinates(molobj, **kwargs):
+_logger = logging.getLogger("gamess_calculations")
 
-    header = """ $basis gbasis=pm3 $end
- $contrl runtyp=optimize icharg={:} $end
- $statpt opttol=0.0005 nstep=300 projct=.F. $end
-"""
 
-    print(kwargs)
+def optimize_coordinates(molobj, gamess_options):
 
-    stdout, stderr = gamess.calculate(molobj, header, **kwargs)
+    calculation_options = {
+        "basis": {"gbasis": "PM3"},
+        "contrl": {"runtyp": "optimize"},
+        "statpt": {"opttol": 0.0005, "nstep": 300, "projct": False},
+    }
 
-    # TODO Check stderr and return None
+    _logger.debug("Optimizing pm3")
 
-    key = " ddikick.x: Fatal error detected."
-    error = key in stderr
-
-    if not error:
-        properties = gamess.read_properties_coordinates(stdout)
-
-    else:
-        # check why calculation failed
-        properties = gamess.read_errors(stdout)
+    calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
+    results = calc_obj.calculate(molobj, calculation_options)
+    properties = results[0]
 
     return properties
 
 
-def calculate_vibrations(molobj, **kwargs):
+def calculate_vibrations(molobj, gamess_options):
 
     # Vibrate molecule
-    header = """
- $basis
-     gbasis=PM3
- $end
+    calculation_options = {
+        "basis": {"gbasis": "PM3"},
+        "contrl": {"runtyp": "hessian", "maxit": 60},
+    }
 
- $contrl
-    scftyp=RHF
-    runtyp=hessian
-    icharg={:}
-    maxit=60
- $end
-"""
-
-    parser = gamess.read_properties_vibration
-    stdout, status = gamess.calculate(molobj, header, **kwargs)
-    properties = parser(stdout)
+    calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
+    results = calc_obj.calculate(molobj, calculation_options)
+    properties = results[0]
 
     return properties
 
 
-def calculate_orbitals(molobj, **kwargs):
+def calculate_orbitals(molobj, gamess_options):
 
-    header = """
- $contrl
- coord=cart
- units=angs
- scftyp=rhf
- icharg={:}
- maxit=60
- $end
- $basis gbasis=sto ngauss=3 $end
-"""
+    calculation_options = {
+        "contrl": {
+            "coord": "cart",
+            "units": "angs",
+            "scftyp": "rhf",
+            "maxit": 60,
+        },
+        "basis": {"gbasis": "sto", "ngauss": 3},
+    }
 
-    parser = gamess.read_properties_orbitals
-    stdout, status = gamess.calculate(molobj, header, **kwargs)
-    properties = parser(stdout)
-
-    return properties
-
-
-def calculate_solvation(molobj, **kwargs):
-
-    header = """
- $system
-    mwords=125
- $end
- $basis
-    gbasis=PM3
- $end
- $contrl
-    scftyp=RHF
-    runtyp=energy
-    icharg={:}
- $end
- $pcm
-    solvnt=water
-    mxts=15000
-    icav=1
-    idisp=1
- $end
- $tescav
-    mthall=4
-    ntsall=60
- $end
-
-"""
-
-    parser = gamess.read_properties_solvation
-    stdout, status = gamess.calculate(molobj, header, **kwargs)
-    properties = parser(stdout)
+    calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
+    results = calc_obj.calculate(molobj, calculation_options)
+    properties = results[0]
 
     return properties
 
 
-def calculate_all_properties(molobj, **kwargs):
+def calculate_solvation(molobj, gamess_options):
+
+    calculation_options = dict()
+    calculation_options["basis"] = {"gbasis": "PM3"}
+    calculation_options["system"] = {"mwords": 125}
+    calculation_options["pcm"] = {"solvnt": "water", "mxts": 15000, "icav": 1, "idisp": 1}
+    calculation_options["tescav"] = {"mthall": 4, "ntsall": 60}
+
+    calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
+    results = calc_obj.calculate(molobj, calculation_options)
+    properties = results[0]
+
+    return properties
+
+
+def calculate_all_properties(molobj, gamess_options):
 
     funcs = [
         calculate_vibrations,
@@ -115,21 +83,24 @@ def calculate_all_properties(molobj, **kwargs):
     ]
 
     def procfunc(conn, func, *args, **kwargs):
-        try:
-            properties = func(*args, **kwargs)
-        except:
-            properties = None
+        properties = func(*args, **kwargs)
         conn.send(properties)
         conn.close()
 
     procs = []
     conns = []
 
+    filename = gamess_options.get("filename", "gamess_calc")
+
     for func in funcs:
+
+        # Change scr
+        gamess_options = copy.deepcopy(gamess_options)
+        gamess_options["filename"] = filename + "_" + func.__name__
 
         parent_conn, child_conn = Pipe()
         p = Process(
-            target=procfunc, args=(child_conn, func, molobj), kwargs=kwargs
+            target=procfunc, args=(child_conn, func, molobj, gamess_options)
         )
         p.start()
 

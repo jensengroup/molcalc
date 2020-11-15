@@ -1,6 +1,7 @@
 import configparser
 import pathlib
 import sys
+import logging
 
 try:
     import molcalc
@@ -29,3 +30,5 @@ pathlib.Path(SCR).mkdir(parents=True, exist_ok=True)
 molcalc = molcalc
 molcalc_lib = molcalc_lib
 ppqm = ppqm
+
+logging.basicConfig(level=logging.DEBUG)

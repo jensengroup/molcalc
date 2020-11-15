@@ -5,8 +5,8 @@ import os
 
 import models
 
-from chemhelp import cheminfo, misc
 from molcalc_lib import gamess_calculations
+from ppqm import chembridge, misc
 
 logger = logging.getLogger("molcalc")
 
@@ -24,6 +24,8 @@ def calculation_pipeline(molinfo, settings):
     """
 
     scratch_dir = settings["scr.scr"]
+
+    # TODO set filename in gamess_options
 
     gamess_options = {
         "cmd": settings["gamess.rungms"],
@@ -45,13 +47,12 @@ def calculation_pipeline(molinfo, settings):
 
     # Get that smile on your face
     try:
-        smiles = cheminfo.molobj_to_smiles(molobj, remove_hs=True)
+        smiles = chembridge.molobj_to_smiles(molobj, remove_hs=True)
     except:
-        smiles = cheminfo.molobj_to_smiles(molobj)
+        smiles = chembridge.molobj_to_smiles(molobj)
 
     # hash on sdf (conformer)
-    hshobj = hashlib.md5(sdfstr.encode())
-    hashkey = hshobj.hexdigest()
+    hashkey = hashlib.md5(sdfstr.encode()).hexdigest()
 
     # Start respond message
     msg = {"smiles": smiles, "hashkey": hashkey}
@@ -78,7 +79,7 @@ def calculation_pipeline(molinfo, settings):
 
     try:
         properties = gamess_calculations.optimize_coordinates(
-            molobj, **gamess_options
+            molobj, gamess_options
         )
     except:
         properties = None
@@ -93,7 +94,7 @@ def calculation_pipeline(molinfo, settings):
         return {
             "error": "Error g-93 - gamess optimization error known",
             "message": properties["error"],
-        }
+        }, None
 
     if "coord" not in properties:
         return {
@@ -107,7 +108,7 @@ def calculation_pipeline(molinfo, settings):
     coord = properties["coord"]
     calculation.coordinates = misc.save_array(coord)
     calculation.enthalpy = properties["h"]
-    cheminfo.molobj_set_coordinates(molobj, coord)
+    chembridge.molobj_set_coordinates(molobj, coord)
 
     # Optimization is finished, do other calculation async-like
 
@@ -147,7 +148,7 @@ def calculation_pipeline(molinfo, settings):
         return {
             "error": "Error g-159 - gamess solvation error",
             "message": "Error. Unable to calculate solvation",
-        }
+        }, None
 
     # 'charges', 'solvation_total', 'solvation_polar', 'solvation_nonpolar',
     # 'surface', 'total_charge', 'dipole', 'dipole_total'
@@ -163,16 +164,16 @@ def calculation_pipeline(molinfo, settings):
     calculation.soldipoletotal = properties_sol["dipole_total"]
 
     # Saveable sdf and reset title
-    sdfstr = cheminfo.molobj_to_sdfstr(molobj)
-    sdfstr = cheminfo.clean_sdf_header(sdfstr)
+    sdfstr = chembridge.molobj_to_sdfstr(molobj)
+    sdfstr = chembridge.clean_sdf_header(sdfstr)
 
     # Save mol2 fmt
-    mol2 = cheminfo.molobj_to_mol2(molobj, charges=charges)
+    mol2 = chembridge.molobj_to_mol2(molobj, charges=charges)
     calculation.mol2 = mol2
 
     # Get a 2D Picture
     # TODO Compute 2D coordinates
-    svgstr = cheminfo.molobj_to_svgstr(molobj, removeHs=True)
+    svgstr = chembridge.molobj_to_svgstr(molobj, removeHs=True)
 
     # Success, store results database
     calculation.smiles = smiles
