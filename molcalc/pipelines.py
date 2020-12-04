@@ -1,7 +1,7 @@
 import datetime
-import hashlib
 import logging
 import os
+import pathlib
 
 import models
 
@@ -31,54 +31,50 @@ def calculation_pipeline(molinfo, settings):
     hashkey = molinfo["hashkey"]
 
     scratch_dir = settings["scr.scr"]
-
-    gamess_options = {
-        "cmd": settings["gamess.rungms"],
-        "gamess_scr": settings["gamess.scr"],
-        "gamess_userscr": settings["gamess.userscr"],
-        "scr": scratch_dir,
-        "filename": hashkey,
-    }
+    scratch_dir = pathlib.Path(scratch_dir)
 
     # TODO Get molecule names
 
     # Get that smile on your face
     try:
         smiles = chembridge.molobj_to_smiles(molobj, remove_hs=True)
-    except:
+    except Exception:
         smiles = chembridge.molobj_to_smiles(molobj)
 
     # Start respond message
     msg = {"smiles": smiles, "hashkey": hashkey}
 
+    _logger.info(f"got {hashkey} {smiles}")
+
     # Create new calculation
     calculation = models.GamessCalculation()
 
-    hashdir = os.path.join(scratch_dir + hashkey)
+    # Switch to scrdir / hashkey
+    hashdir = scratch_dir / hashkey
+    hashdir.mkdir(parents=True, exist_ok=True)
 
-    # check if folder exists
-    if not os.path.isdir(hashdir):
-        os.mkdir(hashdir)
-
-    os.chdir(hashdir)
-
-    # GAMESS DEBUG
+    gamess_options = {
+        "cmd": settings["gamess.rungms"],
+        "gamess_scr": settings["gamess.scr"],
+        "gamess_userscr": settings["gamess.userscr"],
+        "scr": hashdir,
+        "filename": hashkey,
+    }
 
     # TODO Add error messages when gamess fails
     # TODO add timeouts for all gamess calls
 
     # Optimize molecule
+    try:
+        properties = gamess_calculations.optimize_coordinates(
+            molobj, gamess_options
+        )
 
-    gamess_options["scr"] = hashdir
-
-    # try:
-    properties = gamess_calculations.optimize_coordinates(
-        molobj, gamess_options
-    )
-    # except:
-    #     properties = None
-
-    _logger.info(properties)
+    except Exception:
+        # TODO Logger + rich should store these exceptions somewhere. One file
+        # per exception for easy debugging.
+        _logger.error("FatalOptimization", exc_info=True)
+        properties = None
 
     if properties is None:
         return {
@@ -98,10 +94,9 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to optimize molecule",
         }, None
 
-    _logger.info(smiles, "optimized")
+    _logger.info(f"{hashkey} optimized")
 
     # Save and set coordinates
-    # TODO Use ppqm constants keywords
     coord = properties[ppqm.constants.COLUMN_COORDINATES]
     calculation.coordinates = misc.save_array(coord)
     calculation.enthalpy = properties[ppqm.constants.COLUMN_ENERGY]
@@ -123,7 +118,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to vibrate molecule",
         }, None
 
-    _logger.info(smiles, "vibrated")
+    _logger.info("{hashkey} vibrated")
 
     # TODO Make a custom reader and move this out of ppqm
     calculation.islinear = properties_vib["linear"]
@@ -138,7 +133,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to calculate molecular orbitals",
         }, None
 
-    _logger.info(smiles, "orbitals")
+    _logger.info("{hashkey} orbitals")
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 
@@ -150,7 +145,7 @@ def calculation_pipeline(molinfo, settings):
 
     # 'charges', 'solvation_total', 'solvation_polar', 'solvation_nonpolar',
     # 'surface', 'total_charge', 'dipole', 'dipole_total'
-    _logger.info(smiles, "solvation")
+    _logger.info(f"{hashkey} solvation")
 
     charges = properties_sol["charges"]
     calculation.charges = misc.save_array(charges)

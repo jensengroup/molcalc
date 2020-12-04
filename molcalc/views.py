@@ -167,10 +167,11 @@ def ajax_smiles_to_sdf(request):
 
     try:
         smiles = request.POST["smiles"].encode("utf-8")
-    except:
+    except Exception as e:
         return {
             "error": "Error 58 - get error",
             "message": "Error. Missing information.",
+            "exception": f"{e}"
         }
 
     sdfstr = chembridge.smiles_to_sdfstr(smiles)
