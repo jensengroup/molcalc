@@ -62,7 +62,7 @@ env-dev:
 	${python} -m pip install -r requirements.dev.txt --ignore-installed
 
 env-egg:
-	${python} setup.y develop
+	${python} setup.py develop
 
 dependencies:
 	sudo apt install -y libxrender-dev
