@@ -42,10 +42,6 @@ def view_gamess_calculation(calculation):
     else:
         data["name"] = calculation.name
 
-    data["svg"] = data["svg"].replace(
-        "<?xml version='1.0' encoding='iso-8859-1'?>", ""
-    )
-
     fmt = "{:.2f}"
 
     data["enthalpy"] = fmt.format(data["enthalpy"] * units.calories_to_joule)
@@ -95,25 +91,33 @@ def view_gamess_calculation(calculation):
     data["vibfreq"] = [fmt.format(x) for x in data["vibfreq"]]
     data["viboffset"] = offset
 
-    dipoles = misc.load_array(data["soldipole"])
+    # Solvation calculations
+    if data["charges"] is None:
+        data["has_solvation"] = False
 
-    data["dipolex"] = dipoles[0]
-    data["dipoley"] = dipoles[1]
-    data["dipolez"] = dipoles[2]
+    else:
 
-    data["soltotal"] = fmt.format(data["soltotal"] * units.calories_to_joule)
-    data["solpolar"] = fmt.format(data["solpolar"] * units.calories_to_joule)
-    data["solnonpolar"] = fmt.format(
-        data["solnonpolar"] * units.calories_to_joule
-    )
-    data["solsurface"] = fmt.format(data["solsurface"])
-    data["soldipoletotal"] = fmt.format(data["soldipoletotal"])
+        data["has_solvation"] = True
 
-    charges = misc.load_array(data["charges"])
-    charges = np.array(charges)
-    charge = np.sum(charges)
-    charge = np.round(charge, decimals=0)
+        dipoles = misc.load_array(data["soldipole"])
 
-    data["charge"] = int(charge)
+        data["dipolex"] = dipoles[0]
+        data["dipoley"] = dipoles[1]
+        data["dipolez"] = dipoles[2]
+
+        data["soltotal"] = fmt.format(data["soltotal"] * units.calories_to_joule)
+        data["solpolar"] = fmt.format(data["solpolar"] * units.calories_to_joule)
+        data["solnonpolar"] = fmt.format(
+            data["solnonpolar"] * units.calories_to_joule
+        )
+        data["solsurface"] = fmt.format(data["solsurface"])
+        data["soldipoletotal"] = fmt.format(data["soldipoletotal"])
+
+        charges = misc.load_array(data["charges"])
+        charges = np.array(charges)
+        charge = np.sum(charges)
+        charge = np.round(charge, decimals=0)
+
+        data["charge"] = int(charge)
 
     return data

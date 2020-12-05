@@ -115,7 +115,18 @@ $(function()
 </div>
 
 
+{% if not has_solvation %}
+
+<section class="view">
+
+    <strong>Solvation calculation failed</strong>
+
+</section>
+
+{% else %}
+
 <section class="options sidebar" id="calcSolvation">
+
 
 
     <section class="sidebar-cover"></section>
@@ -208,6 +219,8 @@ Jmol.script(jmolSurf, 'set bondRadiusMilliAngstroms 100; set multipleBondSpacing
 
         </div>
 
+
 </section>
 
+{% endif %}
 

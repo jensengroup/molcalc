@@ -20,7 +20,6 @@ def calculation_pipeline(molinfo, settings):
         molinfo - dict
         settings -
 
-
     """
 
     # Read input
@@ -42,7 +41,8 @@ def calculation_pipeline(molinfo, settings):
     # Start respond message
     msg = {"smiles": smiles, "hashkey": hashkey}
 
-    _logger.info(f"got {hashkey} {smiles}")
+    atoms = chembridge.molobj_to_atoms(molobj)
+    _logger.info(f"got {hashkey} '{smiles}' {atoms}")
 
     # Create new calculation
     calculation = models.GamessCalculation()
@@ -71,7 +71,10 @@ def calculation_pipeline(molinfo, settings):
     except Exception:
         # TODO Logger + rich should store these exceptions somewhere. One file
         # per exception for easy debugging.
-        _logger.error("FatalOptimization", exc_info=True)
+        # TODO Should store SDF of the molecule if exception
+        sdfstr = chembridge.molobj_to_sdfstr(molobj)
+        _logger.error(f"{hashkey} OptimizationError", exc_info=True)
+        _logger.error(sdfstr)
         properties = None
 
     if properties is None:
@@ -135,36 +138,41 @@ def calculation_pipeline(molinfo, settings):
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 
-    if properties_sol is None:
-        return {
-            "error": "Error g-159 - gamess solvation error",
-            "message": "Error. Unable to calculate solvation",
-        }, None
+    if properties_sol is None or "error" in properties_sol:
 
-    # 'charges', 'solvation_total', 'solvation_polar', 'solvation_nonpolar',
-    # 'surface', 'total_charge', 'dipole', 'dipole_total'
-    _logger.info(f"{hashkey} solvation")
+        _logger.warning(f"{hashkey} SolvationError")
 
-    charges = properties_sol["charges"]
-    calculation.charges = misc.save_array(charges)
-    calculation.soltotal = properties_sol["solvation_total"]
-    calculation.solpolar = properties_sol["solvation_polar"]
-    calculation.solnonpolar = properties_sol["solvation_nonpolar"]
-    calculation.solsurface = properties_sol["surface"]
-    calculation.soldipole = misc.save_array(properties_sol["dipole"])
-    calculation.soldipoletotal = properties_sol["dipole_total"]
+        # return {
+        #     "error": "Error g-159 - gamess solvation error",
+        #     "message": "Error. Unable to calculate solvation",
+        # }, None
+
+    else:
+
+        # 'charges', 'solvation_total', 'solvation_polar',
+        # 'solvation_nonpolar', 'surface', 'total_charge', 'dipole',
+        # 'dipole_total'
+        _logger.info(f"{hashkey} SolvationSuccess")
+
+        charges = properties_sol["charges"]
+        calculation.charges = misc.save_array(charges)
+        calculation.soltotal = properties_sol["solvation_total"]
+        calculation.solpolar = properties_sol["solvation_polar"]
+        calculation.solnonpolar = properties_sol["solvation_nonpolar"]
+        calculation.solsurface = properties_sol["surface"]
+        calculation.soldipole = misc.save_array(properties_sol["dipole"])
+        calculation.soldipoletotal = properties_sol["dipole_total"]
+
+        # Save mol2 fmt
+        mol2 = chembridge.molobj_to_mol2(molobj, charges=charges)
+        calculation.mol2 = mol2
 
     # Saveable sdf and reset title
     sdfstr = chembridge.molobj_to_sdfstr(molobj)
     sdfstr = chembridge.clean_sdf_header(sdfstr)
 
-    # Save mol2 fmt
-    mol2 = chembridge.molobj_to_mol2(molobj, charges=charges)
-    calculation.mol2 = mol2
-
     # Get a 2D Picture
-    # TODO Compute 2D coordinates
-    svgstr = chembridge.molobj_to_svgstr(molobj, removeHs=True)
+    svgstr = chembridge.molobj_to_svgstr(molobj, removeHs=True, use_2d=True)
 
     # Success, store results database
     calculation.smiles = smiles

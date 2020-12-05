@@ -278,9 +278,19 @@ def ajax_submitquantum(request):
     molecule_info = {"sdfstr": sdfstr, "molobj": molobj, "hashkey": hashkey}
 
     settings = request.registry.settings
-    msg, new_calculation = pipelines.calculation_pipeline(
-        molecule_info, settings
-    )
+
+    try:
+        msg, new_calculation = pipelines.calculation_pipeline(
+            molecule_info, settings
+        )
+
+    except Exception:
+
+        sdfstr = chembridge.molobj_to_sdfstr(molobj)
+        _logger.error(f"{hashkey} PipelineError", exc_info=True)
+        _logger.error(sdfstr)
+
+        return {"error": "293", "message": "Internal server server. Uncaught exception"}
 
     # Add calculation to the database
     if new_calculation is not None:
