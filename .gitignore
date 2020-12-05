@@ -54,6 +54,7 @@ logs/
 
 ppqm
 ppqm_src
+ppqm.git
 chemhelp
 molcalc/chemhelp
 .test
