@@ -118,7 +118,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to vibrate molecule",
         }, None
 
-    _logger.info("{hashkey} vibrated")
+    _logger.info(f"{hashkey} vibrated")
 
     # TODO Make a custom reader and move this out of ppqm
     calculation.islinear = properties_vib["linear"]
@@ -133,7 +133,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to calculate molecular orbitals",
         }, None
 
-    _logger.info("{hashkey} orbitals")
+    _logger.info(f"{hashkey} orbitals")
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 

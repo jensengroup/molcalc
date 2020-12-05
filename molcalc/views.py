@@ -271,10 +271,11 @@ def ajax_submitquantum(request):
     if calculation is not None:
         msg = {"hashkey": hashkey}
         calculation.created = datetime.datetime.now()
+        _logger.info(f"exists {hashkey}")
         return msg
 
     # The calculation is valid and does not exists, pass to pipeline
-    _logger.info("new:", datetime.date.today(), hashkey, atoms)
+    _logger.info(f"create {hashkey}")
 
     molecule_info = {"sdfstr": sdfstr, "molobj": molobj, "hashkey": hashkey}
 

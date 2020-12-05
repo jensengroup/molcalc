@@ -50,8 +50,12 @@ serve: serve_development
 
 ## Setup enviroment
 
-env:
+env: conda pip
+
+conda:
 	${conda} env create -f environment.yml -p env
+
+pip:
 	${python} -m pip install -r requirements.txt --ignore-installed
 
 env-dev:
