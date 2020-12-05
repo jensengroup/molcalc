@@ -53,7 +53,8 @@ with the Python environment we can setup MolCalc. Note that most of the steps ar
     # make env chemhelp
     conda env create -f environment.yml -p env
     pip install -r requirements.txt
-    git clone https://github.com/charnley/chemhelp --depth 1
+    git clone https://github.com/ppqm/ppqm ppqm.git --depth 1
+    ln -s ppqm/ppqm ppqm
 
 3. Download the JavaScript and frontend libraries, using the scripts.
    You need `unzip` and `wget` installed.
