@@ -73,8 +73,8 @@ molcalc/data: scripts/setup_datadir.sh
 setup_assets: molcalc/static/chemdoodleweb molcalc/static/jsmol molcalc/static/fontawesome molcalc/static/jquery/jquery.min.js molcalc/static/rdkit/rdkit.js
 
 ppqm:
-	git clone https://github.com/ppqm/ppqm ppqm_src --depth 1
-	ln -s ./ppqm_src/ppqm ppqm
+	git clone https://github.com/ppqm/ppqm ppqm.git --depth 1
+	ln -s ./ppqm.git/ppqm ppqm
 
 molcalc/static/chemdoodleweb: scripts/setup_chemdoodle.sh
 	bash scripts/setup_chemdoodle.sh
@@ -94,7 +94,7 @@ molcalc/static/rdkit/rdkit.js: scripts/setup_rdkit.sh
 ## Admin
 
 update:
-	cd ppqm_src; git pull
+	cd ppqm.git; git pull
 
 backup:
 	# Make backup of database
