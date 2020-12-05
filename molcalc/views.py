@@ -1,7 +1,7 @@
 import datetime
 import hashlib
-import re
 import logging
+import re
 
 import models
 import numpy as np
@@ -13,7 +13,6 @@ from rdkit.Chem import AllChem
 
 from molcalc_lib import gamess_results
 from ppqm import chembridge
-
 
 _logger = logging.getLogger("molcalc:views")
 
@@ -126,7 +125,7 @@ def ajax_sdf_to_smiles(request):
 
     try:
         sdf = request.POST["sdf"].encode("utf-8")
-    except:
+    except Exception:
         return {
             "error": "Error 60 - get error",
             "message": "Error. Missing information.",
@@ -171,7 +170,7 @@ def ajax_smiles_to_sdf(request):
         return {
             "error": "Error 58 - get error",
             "message": "Error. Missing information.",
-            "exception": f"{e}"
+            "exception": f"{e}",
         }
 
     sdfstr = chembridge.smiles_to_sdfstr(smiles)
@@ -238,7 +237,6 @@ def ajax_submitquantum(request):
 
     atoms = chembridge.molobj_to_atoms(molobj)
 
-
     # TODO Check lengths of atoms
     # TODO Define max in settings
     max_atoms = 10
@@ -280,7 +278,9 @@ def ajax_submitquantum(request):
     molecule_info = {"sdfstr": sdfstr, "molobj": molobj, "hashkey": hashkey}
 
     settings = request.registry.settings
-    msg, new_calculation = pipelines.calculation_pipeline(molecule_info, settings)
+    msg, new_calculation = pipelines.calculation_pipeline(
+        molecule_info, settings
+    )
 
     # Add calculation to the database
     if new_calculation is not None:

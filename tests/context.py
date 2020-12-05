@@ -1,7 +1,7 @@
 import configparser
+import logging
 import pathlib
 import sys
-import logging
 
 try:
     import molcalc

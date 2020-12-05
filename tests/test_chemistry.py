@@ -1,12 +1,11 @@
-import numpy as np
+import pytest
 from context import CONFIG, SCR, molcalc_lib
 from rdkit import Chem
 from rdkit.Chem import AllChem
-import pytest
 
 import ppqm
-from ppqm import chembridge
 from molcalc_lib import gamess_calculations
+from ppqm import chembridge
 
 GAMESS_OPTIONS = {
     "scr": SCR,
@@ -29,10 +28,14 @@ def test_small_smiles(smi):
 
     AllChem.Compute2DCoords(molobj)
 
-    properties = gamess_calculations.optimize_coordinates(molobj, GAMESS_OPTIONS)
+    properties = gamess_calculations.optimize_coordinates(
+        molobj, GAMESS_OPTIONS
+    )
     assert ppqm.constants.COLUMN_COORDINATES in properties
 
-    properties_list = gamess_calculations.calculate_all_properties(molobj, GAMESS_OPTIONS)
+    properties_list = gamess_calculations.calculate_all_properties(
+        molobj, GAMESS_OPTIONS
+    )
 
     assert isinstance(properties_list, tuple)
 
@@ -64,7 +67,9 @@ def test_mg():
     )
     assert ppqm.constants.COLUMN_COORDINATES in properties
 
-    properties_list = gamess_calculations.calculate_all_properties(molobj, GAMESS_OPTIONS)
+    properties_list = gamess_calculations.calculate_all_properties(
+        molobj, GAMESS_OPTIONS
+    )
 
     assert isinstance(properties_list, tuple)
 

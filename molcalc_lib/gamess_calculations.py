@@ -1,9 +1,8 @@
+import copy
+import logging
 from multiprocessing import Pipe, Process
 
 import ppqm
-import copy
-import logging
-
 
 _logger = logging.getLogger("molcalc:calc")
 
@@ -70,7 +69,12 @@ def calculate_solvation(molobj, gamess_options):
     calculation_options = dict()
     calculation_options["basis"] = {"gbasis": "PM3"}
     calculation_options["system"] = {"mwords": 125}
-    calculation_options["pcm"] = {"solvnt": "water", "mxts": 15000, "icav": 1, "idisp": 1}
+    calculation_options["pcm"] = {
+        "solvnt": "water",
+        "mxts": 15000,
+        "icav": 1,
+        "idisp": 1,
+    }
     calculation_options["tescav"] = {"mthall": 4, "ntsall": 60}
 
     calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)

@@ -1,7 +1,8 @@
-import pytest
 import copy
 import pathlib
-from context import CONFIG, SCR, RESOURCES
+
+import pytest
+from context import CONFIG, RESOURCES, SCR
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
@@ -23,10 +24,7 @@ TEST_SMILES_COORD = [
     ("CCC", -23.62341),
 ]
 
-TEST_ERROR_SDF = [
-    "wrong_methane.sdf",
-    "wrong_benzene.sdf"
-]
+TEST_ERROR_SDF = ["wrong_methane.sdf", "wrong_benzene.sdf"]
 
 
 TEST_SMILES_SOLVATION = [
@@ -114,7 +112,7 @@ def test_calculate_all_properties(smiles):
 def test_error_smiles(tmpdir, filename):
 
     filename = RESOURCES / filename
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         sdfstr = f.read()
 
     gamess_options = copy.deepcopy(GAMESS_OPTIONS)
@@ -140,5 +138,3 @@ if __name__ == "__main__":
     # test_optimize_coordinates("C", 5.0)
     # test_calculate_all_properties("C")
     # test_error_smiles(tmpdir, TEST_ERROR_SDF[0])
-
-

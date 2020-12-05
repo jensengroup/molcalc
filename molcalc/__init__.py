@@ -14,7 +14,6 @@ from pyramid.config import Configurator
 from pyramid_jinja2.filters import static_url_filter
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import engine_from_config
 
 
 def get_engine(settings, prefix="sqlalchemy."):

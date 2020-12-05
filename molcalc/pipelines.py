@@ -1,14 +1,12 @@
 import datetime
 import logging
-import os
 import pathlib
 
 import models
 
-from molcalc_lib import gamess_calculations
 import ppqm
+from molcalc_lib import gamess_calculations
 from ppqm import chembridge, misc
-
 
 _logger = logging.getLogger("molcalc:pipe")
 
