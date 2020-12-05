@@ -290,7 +290,10 @@ def ajax_submitquantum(request):
         _logger.error(f"{hashkey} PipelineError", exc_info=True)
         _logger.error(sdfstr)
 
-        return {"error": "293", "message": "Internal server server. Uncaught exception"}
+        return {
+            "error": "293",
+            "message": "Internal server server. Uncaught exception",
+        }
 
     # Add calculation to the database
     if new_calculation is not None:

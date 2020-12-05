@@ -105,8 +105,12 @@ def view_gamess_calculation(calculation):
         data["dipoley"] = dipoles[1]
         data["dipolez"] = dipoles[2]
 
-        data["soltotal"] = fmt.format(data["soltotal"] * units.calories_to_joule)
-        data["solpolar"] = fmt.format(data["solpolar"] * units.calories_to_joule)
+        data["soltotal"] = fmt.format(
+            data["soltotal"] * units.calories_to_joule
+        )
+        data["solpolar"] = fmt.format(
+            data["solpolar"] * units.calories_to_joule
+        )
         data["solnonpolar"] = fmt.format(
             data["solnonpolar"] * units.calories_to_joule
         )

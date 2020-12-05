@@ -1,4 +1,4 @@
-from context import CONFIG, SCR, RESOURCES
+from context import CONFIG, RESOURCES, SCR
 
 from molcalc import pipelines
 from ppqm import chembridge
@@ -55,7 +55,7 @@ def test_partial_pipeline():
     """
 
     filename = RESOURCES / "mg.sdf"
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         sdfstr = f.read()
 
     settings = dict()
