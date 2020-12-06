@@ -16,7 +16,6 @@ def optimize_coordinates(molobj, gamess_options):
     }
 
     hashkey = gamess_options.get("filename", None)
-    _logger.info(f"{hashkey} optimizing")
 
     calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
     results = calc_obj.calculate(molobj, calculation_options)
