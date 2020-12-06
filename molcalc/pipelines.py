@@ -42,7 +42,7 @@ def calculation_pipeline(molinfo, settings):
     msg = {"smiles": smiles, "hashkey": hashkey}
 
     atoms = chembridge.molobj_to_atoms(molobj)
-    _logger.info(f"got {hashkey} '{smiles}' {atoms}")
+    _logger.info(f"{hashkey} '{smiles}' {atoms}")
 
     # Create new calculation
     calculation = models.GamessCalculation()
@@ -95,7 +95,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to optimize molecule",
         }, None
 
-    _logger.info(f"{hashkey} optimized")
+    _logger.info(f"{hashkey} OptimizationSucces")
 
     # Save and set coordinates
     coord = properties[ppqm.constants.COLUMN_COORDINATES]
@@ -119,7 +119,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to vibrate molecule",
         }, None
 
-    _logger.info(f"{hashkey} vibrated")
+    _logger.info(f"{hashkey} VibrationSuccess")
 
     # TODO Make a custom reader and move this out of ppqm
     calculation.islinear = properties_vib["linear"]
@@ -134,7 +134,7 @@ def calculation_pipeline(molinfo, settings):
             "message": "Error. Unable to calculate molecular orbitals",
         }, None
 
-    _logger.info(f"{hashkey} orbitals")
+    _logger.info(f"{hashkey} OrbitalsSuccess")
     calculation.orbitals = misc.save_array(properties_orb["orbitals"])
     calculation.orbitalstxt = properties_orb["stdout"]
 
