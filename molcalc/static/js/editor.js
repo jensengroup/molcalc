@@ -432,7 +432,7 @@ $searchFrm.submit(function(event) {
 
         // reset search on success
         $searchInp.focus();
-        $searchInp.val("");
+        // $searchInp.val(""); // Casper didn't like this behavior
         changeInputStatus($searchInp, 'success');
         promptWait.cancel();
 
