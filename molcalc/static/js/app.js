@@ -133,7 +133,7 @@ function requestCactus(from, to, successFunction, failedFunction)
                 // connection problem
                 promptError.setMessage("Connection problems to cactus.nci.nih.gov. Wait a bit and try again");
             }
-            else if (status == 404)
+            else
             {
                 // unable to find
                 promptError.setMessage("Unable to find molecule in cactus.nci.nih.gov database");
