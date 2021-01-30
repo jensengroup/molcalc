@@ -7,6 +7,7 @@ import models
 import ppqm
 from molcalc_lib import gamess_calculations
 from ppqm import chembridge, misc
+from ppqm.constants import COLUMN_COORDINATES
 
 _logger = logging.getLogger("molcalc:pipe")
 
@@ -89,7 +90,10 @@ def calculation_pipeline(molinfo, settings):
             "message": properties["error"],
         }, None
 
-    if ppqm.constants.COLUMN_COORDINATES not in properties:
+    if (
+        COLUMN_COORDINATES not in properties
+        or properties[COLUMN_COORDINATES] is None
+    ):
         return {
             "error": "Error g-104 - gamess optimization error",
             "message": "Error. Unable to optimize molecule",
@@ -113,7 +117,7 @@ def calculation_pipeline(molinfo, settings):
 
     # Check results
 
-    if properties_vib is None:
+    if properties_vib is None or "error" in properties_vib:
         return {
             "error": "Error g-104 - gamess vibration error",
             "message": "Error. Unable to vibrate molecule",
@@ -128,7 +132,7 @@ def calculation_pipeline(molinfo, settings):
     calculation.vibintens = misc.save_array(properties_vib["intens"])
     calculation.thermo = misc.save_array(properties_vib["thermo"])
 
-    if properties_orb is None:
+    if properties_orb is None or "error" in properties_orb:
         return {
             "error": "Error g-128 - gamess orbital error",
             "message": "Error. Unable to calculate molecular orbitals",
@@ -140,15 +144,10 @@ def calculation_pipeline(molinfo, settings):
 
     if properties_sol is None or "error" in properties_sol:
 
+        # Is okay solvation didn't converge, just warn.
         _logger.warning(f"{hashkey} SolvationError")
 
-        # return {
-        #     "error": "Error g-159 - gamess solvation error",
-        #     "message": "Error. Unable to calculate solvation",
-        # }, None
-
     else:
-
         # 'charges', 'solvation_total', 'solvation_polar',
         # 'solvation_nonpolar', 'surface', 'total_charge', 'dipole',
         # 'dipole_total'

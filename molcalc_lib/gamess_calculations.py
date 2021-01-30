@@ -6,6 +6,8 @@ import ppqm
 
 _logger = logging.getLogger("molcalc:calc")
 
+MAX_TIME = 10  # seconds
+
 
 def optimize_coordinates(molobj, gamess_options):
 
@@ -15,7 +17,7 @@ def optimize_coordinates(molobj, gamess_options):
         "statpt": {"opttol": 0.0005, "nstep": 300, "projct": False},
     }
 
-    hashkey = gamess_options.get("filename", None)
+    gamess_options.get("filename", None)
 
     calc_obj = ppqm.gamess.GamessCalculator(**gamess_options)
     results = calc_obj.calculate(molobj, calculation_options)
@@ -117,7 +119,8 @@ def calculate_all_properties(molobj, gamess_options):
 
         parent_conn, child_conn = Pipe()
         p = Process(
-            target=procfunc, args=(child_conn, func, molobj, gamess_options)
+            target=procfunc,
+            args=(child_conn, func, molobj, gamess_options),
         )
         p.start()
 
@@ -125,7 +128,7 @@ def calculate_all_properties(molobj, gamess_options):
         conns.append(parent_conn)
 
     for proc in procs:
-        proc.join()
+        proc.join(timeout=MAX_TIME)
 
     properties_vib = conns[0].recv()
     properties_orb = conns[1].recv()
