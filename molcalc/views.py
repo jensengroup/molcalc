@@ -12,6 +12,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 
 from molcalc_lib import gamess_results
+from molcalc import constants
 from ppqm import chembridge
 
 _logger = logging.getLogger("molcalc:views")
@@ -187,6 +188,16 @@ def ajax_submitquantum(request):
 
     """
 
+    settings = request.registry.settings
+
+    # Check if user is someone who is a know misuser
+    user_ip = request.remote_addr
+    if constants.COLUMN_BLOCK_IP in settings and user_ip in settings[constants.COLUMN_BLOCK_IP]:
+        return {
+            "error": "Error 194 - blocked ip",
+            "message": "IP address has been blocked for missue"
+        }
+
     if not request.POST:
         return {
             "error": "Error 128 - empty post",
@@ -276,8 +287,6 @@ def ajax_submitquantum(request):
     _logger.info(f"{hashkey} create")
 
     molecule_info = {"sdfstr": sdfstr, "molobj": molobj, "hashkey": hashkey}
-
-    settings = request.registry.settings
 
     try:
         msg, new_calculation = pipelines.calculation_pipeline(

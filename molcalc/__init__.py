@@ -128,7 +128,7 @@ def main(global_conf, **settings):
 
     # Load custom sections from ini file
     # TODO Is there a better solution to read settings?
-    sections = ["gamess", "scr"]
+    sections = ["gamess", "scr", "molcalc"]
     parser = configparser.ConfigParser()
     parser.read(global_conf["__file__"])
     for section in sections:
