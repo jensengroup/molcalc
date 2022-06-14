@@ -132,6 +132,8 @@ def main(global_conf, **settings):
     parser = configparser.ConfigParser()
     parser.read(global_conf["__file__"])
     for section in sections:
+        if not section in parser:
+            continue
         for k, v in parser.items(section):
             settings[section + "." + k] = v
 

@@ -50,13 +50,16 @@ serve: serve_development
 
 ## Setup enviroment
 
-env: conda pip
+env: conda pip setup_molcalc_in_env
 
 conda:
 	${conda} env create -f environment.yml -p env
 
 pip:
 	${python} -m pip install -r requirements.txt --ignore-installed
+
+setup_molcalc_in_env:
+	${python} -m pip install -e .
 
 env-dev:
 	${python} -m pip install -r requirements.dev.txt --ignore-installed
